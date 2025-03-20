@@ -25,9 +25,10 @@ class EmployeeManagement extends Component
 
     public function render()
     {
-        return view('livewire.employee')->with([
+        return view('livewire.pages.admin.employee')->with([
             'title' => 'Employee Management',
             'active' => 'employee',
+            'data' => $this->employees,
         ]);;
     }
 }

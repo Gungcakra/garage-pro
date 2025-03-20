@@ -5,7 +5,12 @@ export default defineConfig({
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.js'],
-            refresh: true,
+            refresh: true, // Pastikan refresh aktif
         }),
     ],
+    server: {
+        watch: {
+            usePolling: true, // Ini penting untuk mendeteksi perubahan file
+        },
+    },
 });
