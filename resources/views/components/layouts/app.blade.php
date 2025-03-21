@@ -56,18 +56,19 @@
         <!--begin::Authentication - Sign-in -->
         {{-- @yield('content') --}}
         {{ $slot }}
-        @livewireScripts
         <!--end::Authentication - Sign-in-->
     </div>
     <!--end::Root-->
     <!--begin::Javascript-->
     <script>
         var hostUrl = "{{ asset('assets/')}}";
-
-    </script>
+        
+        </script>
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
     <script src="{{ asset('assets/plugins/global/plugins.bundle.js')}}"></script>
     <script src="{{ asset('assets/js/scripts.bundle.js')}}"></script>
+   
+    @livewireScripts
     <!--end::Global Javascript Bundle-->
     <!--begin::Custom Javascript(used for this page only)-->
     {{-- <script src="{{ asset('assets/js/custom/authentication/sign-in/general.js')}}"></script> --}}
