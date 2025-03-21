@@ -1,66 +1,238 @@
-<x-slot:title>Employee Management</x-slot:title>
-
-<div class="flex flex-column container">
-    <h1 class="text-white">Employee Management</h1>
-
-    <div class="table-responsive">
-        <table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5">
-            <thead>
-                <tr class="fw-semibold fs-6 text-muted">
-                    <th>No</th>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Phone</th>
-                    <th>Address</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ( $data as $index => $employee)
-
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $employee->name }}</td>
-                    <td>{{ $employee->position }}</td>
-                    <td>{{ $employee->phone }}</td>
-                    <td>{{ $employee->address }}</td>
-                    <td>
-                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#kt_modal_1">
-                            Manage
-                        </button>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-
-        </table>
+<div class="d-flex flex-column flex-column-fluid">
+    <x-slot:title>Employee Management</x-slot:title>
+    <!--begin::Toolbar-->
+    <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+        <!--begin::Toolbar container-->
+        <div id="kt_app_toolbar_container" class="app-container container-fluid d-flex flex-stack">
+            <!--begin::Page title-->
+            <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+                <!--begin::Title-->
+                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Employee Management</h1>
+                <!--end::Title-->
+                <!--begin::Breadcrumb-->
+                <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
+                    <!--begin::Item-->
+                    <li class="breadcrumb-item text-muted">
+                        <a href="../../demo1/dist/index.html" class="text-muted text-hover-primary">Home</a>
+                    </li>
+                    <!--end::Item-->
+                    <!--begin::Item-->
+                    <li class="breadcrumb-item">
+                        <span class="bullet bg-gray-400 w-5px h-2px"></span>
+                    </li>
+                    <!--end::Item-->
+                    <!--begin::Item-->
+                    <li class="breadcrumb-item text-muted">Dashboards</li>
+                    <!--end::Item-->
+                </ul>
+                <!--end::Breadcrumb-->
+            </div>
+            <!--end::Page title-->
+            <!--begin::Actions-->
+            <div class="d-flex align-items-center gap-2 gap-lg-3">
+                <!--begin::Secondary button-->
+                <a href="#" class="btn btn-sm fw-bold btn-secondary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Rollover</a>
+                <!--end::Secondary button-->
+                <!--begin::Primary button-->
+                <button  class="btn btn-sm fw-bold btn-primary" wire:click="create()">Add Employee</button>
+                <!--end::Primary button-->
+            </div>
+            <!--end::Actions-->
+        </div>
+        <!--end::Toolbar container-->
     </div>
-
-
-
-    <div class="modal fade" tabindex="-1" id="kt_modal_1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Modal title</h3>
-
-                    <!--begin::Close-->
-                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+    <!--end::Toolbar-->
+    <!--begin::Content-->
+    <div id="kt_app_content" class="app-content flex-column-fluid">
+        <!--begin::Content container-->
+        <div class="flex flex-column container">
+        
+            <div class="table-responsive">
+                <table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5">
+                    <thead>
+                        <tr class="fw-semibold fs-6 text-muted">
+                            <th>No</th>
+                            <th>Name</th>
+                            <th>Position</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ( $data as $index => $employee)
+        
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $employee->name }}</td>
+                            <td>{{ $employee->position }}</td>
+                            <td>{{ $employee->phone }}</td>
+                            <td>{{ $employee->address }}</td>
+                            <td>
+                                <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+                                    <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+                                <!--begin::Menu-->
+                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+                                    <!--begin::Menu item-->
+                                    <div class="menu-item px-3">
+                                        <button wire:click="edit({{ $employee->id }})" class="menu-link px-3 w-100">Edit</button>
+                                    </div>
+                                    <!--end::Menu item-->
+                                    <!--begin::Menu item-->
+                                    <div class="menu-item px-3">
+                                        <button href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $employee->id }})">Delete</button>
+                                    </div>
+                                    <!--end::Menu item-->
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+        
+                </table>
+            </div>
+        
+        
+        
+            <div class="modal fade" tabindex="-1" id="employeeModal" wire:ignore.self>
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">{{$isEdit ? 'Edit' : 'Add'}} Employee</h3>
+        
+                            <!--begin::Close-->
+                            <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                                <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                            </div>
+                            <!--end::Close-->
+                        </div>
+        
+                        <div class="modal-body">
+                            <form id="kt_modal_new_target_form" class="form" action="#">
+        
+                                <!--begin::Input group-->
+                                <div class="row g-9 mb-8">
+        
+                                    <div class="d-flex flex-column col-md-6 mb-8 fv-row">
+                                        <!--begin::Label-->
+                                        <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                                            <span class="required">Name</span>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="Specify a target name for future usage and reference">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                        </label>
+                                        <!--end::Label-->
+                                        <input type="text" class="form-control form-control-solid" placeholder="Enter Name" name="name" wire:model="name" />
+                                    </div>
+                                    <div class="d-flex flex-column col-md-6 mb-8 fv-row">
+                                        <!--begin::Label-->
+                                        <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                                            <span class="required">Position</span>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="Specify a target Position for future usage and reference">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                        </label>
+                                        <!--end::Label-->
+                                        <input type="text" class="form-control form-control-solid" placeholder="Enter Position" autocomplete="off" wire:model="postion" />
+                                    </div>
+                                </div>
+                                <!--end::Input group-->
+                                <!--begin::Input group-->
+                                <div class="row g-9 mb-8">
+                                    <!--begin::Col-->
+                                    <div class="col-md-6 fv-row">
+                                        <label class="required fs-6 fw-semibold mb-2">Assign</label>
+                                        <select class="form-select form-select-solid" data-control="select2" data-hide-search="true" data-placeholder="Select a Team Member" name="target_assign">
+                                            <option value="">Select user...</option>
+                                            <option value="1">Karina Clark</option>
+                                            <option value="2">Robert Doe</option>
+                                            <option value="3">Niel Owen</option>
+                                            <option value="4">Olivia Wild</option>
+                                            <option value="5">Sean Bean</option>
+                                        </select>
+                                    </div>
+                                    <!--end::Col-->
+                                    <!--begin::Col-->
+                                    <div class="col-md-6 fv-row">
+                                        <label class="required fs-6 fw-semibold mb-2">Due Date</label>
+                                        <!--begin::Input-->
+                                        <div class="position-relative d-flex align-items-center">
+                                            <!--begin::Icon-->
+                                            <i class="ki-duotone ki-calendar-8 fs-2 position-absolute mx-4">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                                <span class="path5"></span>
+                                                <span class="path6"></span>
+                                            </i>
+                                            <!--end::Icon-->
+                                            <!--begin::Datepicker-->
+                                            <input class="form-control form-control-solid ps-12" placeholder="Select a date" name="due_date" />
+                                            <!--end::Datepicker-->
+                                        </div>
+                                        <!--end::Input-->
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Input group-->
+                                <!--begin::Input group-->
+        
+                        </div>
+        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                            <button class="btn btn-primary" wire:click="{{ $isEdit ? 'update' : 'store' }}">{{ $isEdit ? 'Update' : 'Store' }}</button>
+                            </form>
+                        </div>
                     </div>
-                    <!--end::Close-->
-                </div>
-
-                <div class="modal-body">
-                    <p>Modal body text goes here.</p>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
+        
+        
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    function showEmployeeModal() {
+                        var modal = new bootstrap.Modal(document.getElementById('employeeModal'));
+                        modal.show();
+                    }
+                 
+        
+                    function hideEmployeeModal() {
+                        var modalElement = document.getElementById('employeeModal');
+                        var modalInstance = bootstrap.Modal.getInstance(modalElement);
+                        if (modalInstance) {
+                            modalInstance.hide();
+                        }
+                    }
+        
+                    document.addEventListener("livewire:navigated", function() {
+                        Livewire.on('show-employee-modal', () => {
+                            showEmployeeModal();
+                            console.log('show');
+                            
+                        });
+        
+                        Livewire.on('hide-employee-modal', () => {
+                            hideEmployeeModal();
+                        });
+                    });
+                });
+        
+            </script>
+        
         </div>
+        {{-- @yield('content') --}}
+        <!--end::Content container-->
     </div>
-
+    <!--end::Content-->
 </div>
+
