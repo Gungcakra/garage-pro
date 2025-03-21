@@ -45,7 +45,7 @@ class EmployeeManagement extends Component
             'phone' => $this->phone,
             'address' => $this->address,
         ]);
-        session()->flash('message', 'Employee added successfully.');
+        $this->dispatch('success', 'Employee added successfully.');
         DataUpdate::dispatch('table-employee');
         $this->closeModal();
    
@@ -73,7 +73,7 @@ class EmployeeManagement extends Component
             'phone' => $this->phone,
             'address' => $this->address,
         ]);
-        session()->flash('message', 'Employee updated successfully.');
+        $this->dispatch('success', 'Employee updated successfully.');
         DataUpdate::dispatch('table-employee');
         $this->closeModal();
     }
@@ -88,7 +88,7 @@ class EmployeeManagement extends Component
     public function delete($id)
     {
         Employee::findOrFail($id)->delete();
-        session()->flash('message', 'Employee deleted successfully.');
+        $this->dispatch('success', 'Employee deleted successfully.');
         DataUpdate::dispatch('table-employee');
 
     }
