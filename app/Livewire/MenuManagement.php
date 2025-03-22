@@ -10,7 +10,7 @@ use Livewire\Component;
 #[Layout('layouts.admin')]
 class MenuManagement extends Component
 {
-    public $menuId, $menus, $submenus,  $name, $route, $order;
+    public $menuId, $menus, $submenus,  $name, $route, $order, $icon;
     public $isModalOpen = false;
 
     public function openModal()
@@ -18,17 +18,16 @@ class MenuManagement extends Component
 
         $this->isModalOpen = true;
         $this->dispatch('show-modal');
-
     }
     public function closeModal()
     {
-        $this->reset(['menuId', 'name', 'route', 'order']);
+        $this->reset(['menuId', 'name', 'route', 'order', 'icon']);
         $this->isModalOpen = false;
         $this->dispatch(event: 'hide-modal');
     }
     public function render()
     {
-        return view('livewire.pages.admin.menu-management',[
+        return view('livewire.pages.admin.menu-management', [
             'data' => Menu::with('submenus')->get(),
         ]);
     }
@@ -43,11 +42,13 @@ class MenuManagement extends Component
             'name' => 'required|string|max:255',
             'route' => 'required|string|max:255',
             'order' => 'required|integer',
+            'icon' => 'required|string|max:255',
         ]);
         Menu::create([
             'name' => $this->name,
             'route' => $this->route,
             'order' => $this->order,
+            'icon' => $this->icon,
         ]);
 
         $this->dispatch('success', 'Menu added successfully!');
@@ -61,6 +62,7 @@ class MenuManagement extends Component
         $this->name = $menu->name;
         $this->route = $menu->route;
         $this->order = $menu->order;
+        $this->icon = $menu->icon;
         $this->dispatch('show-modal');
     }
 
@@ -70,6 +72,7 @@ class MenuManagement extends Component
             'name' => 'required|string|max:255',
             'route' => 'required|string|max:255',
             'order' => 'required|integer',
+            'icon' => 'required|string|max:255',
         ]);
 
         $menu = Menu::findOrFail($this->menuId);
@@ -77,6 +80,7 @@ class MenuManagement extends Component
             'name' => $this->name,
             'route' => $this->route,
             'order' => $this->order,
+
         ]);
 
         $this->dispatch('success', 'Menu updated successfully!');

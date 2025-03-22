@@ -19,6 +19,7 @@ class MenuFactory extends Factory
     {
         return [
             'name' => $this->faker->word(),
+            'icon' => 'fas fa-folder', // Default icon
             'route' => null,
             'order' => 0
         ];

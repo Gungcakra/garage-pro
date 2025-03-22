@@ -217,9 +217,6 @@
                     </div>
                 </div>
             </div>
-            @if($isModalOpen)
-            {{-- @include('livewire.components.employee-modal') --}}
-            @endif
 
         </div>
     </div>
@@ -229,8 +226,9 @@
             myModal.show();
         });
         Livewire.on('hide-modal', () => {
-            $('.modal').modal('hide');
-
+        var modalEl = document.getElementById('employeeModal');
+        var modal = bootstrap.Modal.getInstance(modalEl);
+        modal.hide();
     });
 
     </script>

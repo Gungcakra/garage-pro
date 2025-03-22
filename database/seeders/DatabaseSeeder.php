@@ -65,7 +65,8 @@ class DatabaseSeeder extends Seeder
                 // Menu Dashboard
                 $dashboard = Menu::create([
                     'name' => 'Dashboard',
-                    'route' => '/dashboard',
+                    'icon' => 'fa-solid fa-house',
+                    'route' => 'dashboard',
                     'order' => 1
                 ]);
         
@@ -79,6 +80,7 @@ class DatabaseSeeder extends Seeder
                 // Menu Master Data
                 $masterData = Menu::create([
                     'name' => 'Master Data',
+                    'icon' => 'fa-solid fa-database',
                     'route' => null,
                     'order' => 2
                 ]);

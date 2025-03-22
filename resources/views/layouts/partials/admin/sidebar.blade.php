@@ -27,7 +27,7 @@ $menus = Menu::with('submenus')->get();
                         <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs($menu->submenus->pluck('route')->toArray()) ? 'show' : '' }}">
                             <span class="menu-link {{ request()->routeIs($menu->submenus->pluck('route')->toArray()) ? 'active' : '' }}">
                                 <span class="menu-icon">
-                                    <i class="ki-duotone ki-element-11 fs-2"></i>
+                                    <i class="{{ $menu->icon }} fs-2"></i>
                                 </span>
                                 <span class="menu-title">{{ $menu->name }}</span>
                                 @if ($menu->submenus->count() > 0)

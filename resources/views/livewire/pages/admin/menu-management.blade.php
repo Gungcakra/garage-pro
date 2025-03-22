@@ -54,6 +54,7 @@
                             <th>No</th>
                             <th>Action</th>
                             <th>Name</th>
+                            <th>Icon</th>
                             <th>Route</th>
                             <th>Order</th>
                         </tr>
@@ -79,7 +80,7 @@
                                     </div>
                             </td>
                             <td>{{ $menu->name }}</td>
-
+                            <td>{{ $menu->icon }}</td>
                             <td>{{ $menu->route }}</td>
                             <td>{{ $menu->order }}</td>
                         </tr>
@@ -190,7 +191,7 @@
                                 <div class="d-flex flex-column col-md-6 mb-8 fv-row">
                                     <!--begin::Label-->
                                     <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
-                                        <span class="required">Address</span>
+                                        <span class="required">Icon</span>
                                         <span class="ms-1" data-bs-toggle="tooltip" title="Specify a target Position for future usage and reference">
                                             <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
                                                 <span class="path1"></span>
@@ -200,13 +201,13 @@
                                         </span>
                                     </label>
                                     <!--end::Label-->
-                                    @error('address')
+                                    @error('icon')
                                     <div class="alert alert-danger" role="alert">
                                         {{ $message }}
                                     </div>
 
                                     @enderror
-                                    <input type="text" class="form-control form-control-solid" placeholder="Enter Address" id="address" autocomplete="off" wire:model="address" />
+                                    <input type="text" class="form-control form-control-solid" placeholder="Enter Icon" id="icon" autocomplete="off" wire:model="icon" />
 
                                 </div>
                             </div>
@@ -232,7 +233,9 @@
             myModal.show();
         });
         Livewire.on('hide-modal', () => {
-            $('.modal').modal('hide');
+        var modalEl = document.getElementById('menuModal');
+        var modal = bootstrap.Modal.getInstance(modalEl);
+        modal.hide();
     });
 
     </script>
