@@ -52,11 +52,11 @@
                     <thead>
                         <tr class="fw-semibold fs-6 text-muted">
                             <th>No</th>
+                            <th>Action</th>
                             <th>Name</th>
                             <th>Position</th>
                             <th>Phone</th>
                             <th>Address</th>
-                            <th colspan="2">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,10 +64,6 @@
 
                         <tr wire:key="employee-{{ $employee->id }}">
                             <td>{{ $index + 1 }}</td>
-                            <td>{{ $employee->name }}</td>
-                            <td>{{ $employee->position }}</td>
-                            <td>{{ $employee->phone }}</td>
-                            <td>{{ $employee->address }}</td>
                             <td>
                                 <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
                                     <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
@@ -75,15 +71,20 @@
                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                     <!--begin::Menu item-->
                                     <div class="menu-item px-3">
-                                        <button wire:click="edit({{ $employee->id }})" class="menu-link px-3 w-100">Edit</button>
+                                        <a wire:click="edit({{ $employee->id }})" class="menu-link px-3 w-100">Edit</a>
                                     </div>
                                     <!--end::Menu item-->
                                     <!--begin::Menu item-->
                                     <div class="menu-item px-3">
-                                        <button href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $employee->id }})">Delete</button>
+                                        <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $employee->id }})">Delete</a>
                                     </div>
                                     <!--end::Menu item-->
                             </td>
+                            <td>{{ $employee->name }}</td>
+                            <td>{{ $employee->position }}</td>
+                            <td>{{ $employee->phone }}</td>
+                            <td>{{ $employee->address }}</td>
+                            
                         </tr>
                         @endforeach
                     </tbody>
@@ -222,13 +223,4 @@
 
         </div>
     </div>
-    
-    <script>
-        document.addEventListener('livewire:initialized', function() {
-            Livewire.on('success', (message, type) => {
-                toastr[[type]](message);
-            });
-        });
-
-    </script>
 </div>

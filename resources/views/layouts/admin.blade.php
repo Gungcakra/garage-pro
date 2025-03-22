@@ -27,13 +27,8 @@
     <link href="{{ asset('assets/plugins/global/plugins.bundle.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/style.bundle.css')}}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireStyles
-    <!--end::Global Stylesheets Bundle-->
-    <script>
-        // Frame-busting to prevent site from being loaded within a frame without permission (click-jacking) if (window.top != window.self) { window.top.location.replace(window.self.location.href); }
 
-    </script>
+    @livewireStyles
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -76,33 +71,7 @@
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
                     <!--begin::Content wrapper-->
                     {{ $slot }}
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-                    <script>
-						document.addEventListener('livewire:initialized', function() {
-							Livewire.on('success', (message, type = 'success') => {
-								toastr[type](message);
-							});
-                        });
 
-                    </script>
-                    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-                    <script src="https://cdn.jsdelivr.net/npm/laravel-echo@2.0.2/dist/echo.iife.min.js"></script>
-                    <script>
-                        window.Pusher = Pusher;
-                        window.Echo = new Echo({
-                            broadcaster: 'pusher'
-                            , key: "{{ env('PUSHER_APP_KEY') }}"
-                            , cluster: "{{ env('PUSHER_APP_CLUSTER', 'mt1') }}"
-                            , wsHost: "{{ env('PUSHER_HOST', 'ws-mt1.pusher.com') }}"
-                            , wsPort: 443
-                            , wssPort: 443
-                            , forceTLS: true
-                            , disableStats: true
-                            , encrypted: true
-                        });
-
-                    </script>
 
                     <!--end::Content wrapper-->
                     <!--begin::Footer-->
@@ -118,23 +87,54 @@
     <!--end::App-->
 
     <!--begin::Javascript-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        document.addEventListener('livewire:initialized', function() {
+            Livewire.on('success', (message, isClose = true, type = 'success',) => {
+                toastr[type](message);
+                
+                if (isClose) {
+                    $('.modal').modal('hide');
+                }
+            });
+        });
+
+    </script>
+    {{-- <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/laravel-echo@2.0.2/dist/echo.iife.min.js"></script>
+    <script>
+        window.Pusher = Pusher;
+        window.Echo = new Echo({
+            broadcaster: 'pusher'
+            , key: "{{ env('PUSHER_APP_KEY') }}"
+            , cluster: "{{ env('PUSHER_APP_CLUSTER', 'mt1') }}"
+            , wsHost: "{{ env('PUSHER_HOST', 'ws-mt1.pusher.com') }}"
+            , wsPort: 443
+            , wssPort: 443
+            , forceTLS: true
+            , disableStats: true
+            , encrypted: true
+        });
+
+    </script> --}}
     <script>
         var hostUrl = "{{ asset('assets/')}}";
 
     </script>
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
-    <script src="{{ asset('assets/plugins/global/plugins.bundle.js')}}"></script>
-    <script src="{{ asset('assets/js/scripts.bundle.js')}}"></script>
+    <script data-navigate-once src="{{ asset('assets/plugins/global/plugins.bundle.js')}}"></script>
+    <script data-navigate-once src="{{ asset('assets/js/scripts.bundle.js')}}"></script>
     <!--end::Global Javascript Bundle-->
     <!--begin::Vendors Javascript(used for this page only)-->
-    <script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js')}}"></script>
+    {{-- <script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js')}}"></script>
     <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-    <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
+    <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script> --}}
     <!--end::Vendors Javascript-->
     <!--begin::Custom Javascript(used for this page only)-->
-    <script src="{{ asset('assets/js/widgets.bundle.js')}}"></script>
-    <script src="{{ asset('assets/js/custom/widgets.js')}}"></script>
+    {{-- <script src="{{ asset('assets/js/widgets.bundle.js')}}"></script>
+    <script src="{{ asset('assets/js/custom/widgets.js')}}"></script> --}}
 
     @livewireScripts
     <!--end::Custom Javascript-->

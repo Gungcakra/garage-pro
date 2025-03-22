@@ -32,12 +32,15 @@ class EmployeeManagement extends Component
     {
 
         $this->isModalOpen = true;
+        $this->dispatch('show-modal');
 
     }
     public function closeModal()
     {
         $this->reset(['employeeId', 'name', 'position', 'phone', 'address']);
         $this->isModalOpen = false;
+        $this->dispatch(event: 'hide-modal');
+
     }
     public function store()
     {
@@ -83,7 +86,7 @@ class EmployeeManagement extends Component
             'phone' => $this->phone,
             'address' => $this->address,
         ]);
-        $this->dispatch('success', 'Employee updated successfully.');
+        $this->dispatch('success', 'Employee updated successfully.', );
         DataUpdate::dispatch('table-employee');
         $this->closeModal();
     }

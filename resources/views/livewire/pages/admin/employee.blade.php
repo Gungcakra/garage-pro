@@ -52,11 +52,11 @@
                     <thead>
                         <tr class="fw-semibold fs-6 text-muted">
                             <th>No</th>
+                            <th>Action</th>
                             <th>Name</th>
                             <th>Position</th>
                             <th>Phone</th>
                             <th>Address</th>
-                            <th colspan="2">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,10 +64,6 @@
 
                         <tr wire:key="employee-{{ $employee->id }}">
                             <td>{{ $index + 1 }}</td>
-                            <td>{{ $employee->name }}</td>
-                            <td>{{ $employee->position }}</td>
-                            <td>{{ $employee->phone }}</td>
-                            <td>{{ $employee->address }}</td>
                             <td>
                                 <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
                                     <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
@@ -75,15 +71,20 @@
                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                     <!--begin::Menu item-->
                                     <div class="menu-item px-3">
-                                        <button wire:click="edit({{ $employee->id }})" class="menu-link px-3 w-100">Edit</button>
+                                        <a wire:click="edit({{ $employee->id }})" class="menu-link px-3 w-100">Edit</a>
                                     </div>
                                     <!--end::Menu item-->
                                     <!--begin::Menu item-->
                                     <div class="menu-item px-3">
-                                        <button href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $employee->id }})">Delete</button>
+                                        <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $employee->id }})">Delete</a>
                                     </div>
                                     <!--end::Menu item-->
                             </td>
+                            <td>{{ $employee->name }}</td>
+                            <td>{{ $employee->position }}</td>
+                            <td>{{ $employee->phone }}</td>
+                            <td>{{ $employee->address }}</td>
+
                         </tr>
                         @endforeach
                     </tbody>
@@ -92,9 +93,7 @@
                 </table>
             </div>
 
-            @if($isModalOpen)
-            {{-- @include('livewire.components.employee-modal') --}}
-            <div class="modal fade show" tabindex="-1" id="employeeModal" style="display: block;">
+            <div class="modal fade" tabindex="-1" id="employeeModal" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -131,7 +130,7 @@
                                     <div class="alert alert-danger" role="alert">
                                         {{ $message }}
                                     </div>
-                                        
+
                                     @enderror
                                     <input type="text" class="form-control form-control-solid" placeholder="Enter Name" id="name" autocomplete="off" wire:model="name" />
                                 </div>
@@ -152,7 +151,7 @@
                                     <div class="alert alert-danger" role="alert">
                                         {{ $message }}
                                     </div>
-                                        
+
                                     @enderror
                                     <input type="text" class="form-control form-control-solid" placeholder="Enter Position" autocomplete="off" id="position" wire:model="position" />
                                 </div>
@@ -178,7 +177,7 @@
                                     <div class="alert alert-danger" role="alert">
                                         {{ $message }}
                                     </div>
-                                        
+
                                     @enderror
                                     <input type="text" class="form-control form-control-solid" placeholder="Enter Phone" id="phone" autocomplete="off" wire:model="phone" />
                                 </div>
@@ -199,7 +198,7 @@
                                     <div class="alert alert-danger" role="alert">
                                         {{ $message }}
                                     </div>
-                                        
+
                                     @enderror
                                     <input type="text" class="form-control form-control-solid" placeholder="Enter Address" id="address" autocomplete="off" wire:model="address" />
 
@@ -211,24 +210,29 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-light" wire:click="closeModal">Close</button>
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close" wire:click="closeModal">Close</button>
                             <button class="btn btn-primary" wire:click="{{ isset($employeeId) ? 'update' : 'store' }}">{{ $employeeId ? 'Update' : 'Store' }}</button>
 
                         </div>
                     </div>
                 </div>
             </div>
+            @if($isModalOpen)
+            {{-- @include('livewire.components.employee-modal') --}}
             @endif
 
         </div>
     </div>
-    
     <script>
-        document.addEventListener('livewire:initialized', function() {
-            Livewire.on('success', (message, type) => {
-                toastr[[type]](message);
-            });
+        Livewire.on('show-modal', () => {
+            var myModal = new bootstrap.Modal(document.getElementById('employeeModal'), {});
+            myModal.show();
         });
+        Livewire.on('hide-modal', () => {
+        var modalEl = document.getElementById('employeeModal');
+        var modal = bootstrap.Modal.getInstance(modalEl);
+        modal.hide();
+    });
 
     </script>
 </div>
