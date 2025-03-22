@@ -10,19 +10,21 @@ use Livewire\Component;
 #[Layout('layouts.admin')]
 class MenuManagement extends Component
 {
-    public $menus, $submenus, $menuId, $name, $route, $order;
+    public $menuId, $menus, $submenus,  $name, $route, $order;
     public $isModalOpen = false;
 
     public function openModal()
     {
 
         $this->isModalOpen = true;
+        $this->dispatch('show-modal');
 
     }
     public function closeModal()
     {
         $this->reset(['menuId', 'name', 'route', 'order']);
         $this->isModalOpen = false;
+        $this->dispatch(event: 'hide-modal');
     }
     public function render()
     {
@@ -59,7 +61,7 @@ class MenuManagement extends Component
         $this->name = $menu->name;
         $this->route = $menu->route;
         $this->order = $menu->order;
-        $this->dispatch('show-menu-modal');
+        $this->dispatch('show-modal');
     }
 
     public function update()

@@ -229,9 +229,8 @@
             myModal.show();
         });
         Livewire.on('hide-modal', () => {
-        var modalEl = document.getElementById('employeeModal');
-        var modal = bootstrap.Modal.getInstance(modalEl);
-        modal.hide();
+            $('.modal').modal('hide');
+
     });
 
     </script>

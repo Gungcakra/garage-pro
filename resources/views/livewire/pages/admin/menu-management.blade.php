@@ -7,7 +7,7 @@
             <!--begin::Page title-->
             <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                 <!--begin::Title-->
-                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Employee Management</h1>
+                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Menu Management</h1>
                 <!--end::Title-->
                 <!--begin::Breadcrumb-->
                 <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -34,7 +34,7 @@
                 <a href="#" class="btn btn-sm fw-bold btn-secondary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Rollover</a>
                 <!--end::Secondary button-->
                 <!--begin::Primary button-->
-                <button class="btn btn-sm fw-bold btn-primary" wire:click="create()">Add Employee</button>
+                <button class="btn btn-sm fw-bold btn-primary" wire:click="create()">Add Menu</button>
                 <!--end::Primary button-->
             </div>
             <!--end::Actions-->
@@ -54,15 +54,14 @@
                             <th>No</th>
                             <th>Action</th>
                             <th>Name</th>
-                            <th>Position</th>
-                            <th>Phone</th>
-                            <th>Address</th>
+                            <th>Route</th>
+                            <th>Order</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ( $data as $index => $employee)
+                        @foreach ( $data as $index => $menu)
 
-                        <tr wire:key="employee-{{ $employee->id }}">
+                        <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>
                                 <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
@@ -71,35 +70,40 @@
                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                     <!--begin::Menu item-->
                                     <div class="menu-item px-3">
-                                        <a wire:click="edit({{ $employee->id }})" class="menu-link px-3 w-100">Edit</a>
+                                        <a wire:click="edit({{ $menu->id }})" class="menu-link px-3 w-100">Edit</a>
                                     </div>
                                     <!--end::Menu item-->
                                     <!--begin::Menu item-->
                                     <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $employee->id }})">Delete</a>
+                                        <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $menu->id }})">Delete</a>
                                     </div>
-                                    <!--end::Menu item-->
                             </td>
-                            <td>{{ $employee->name }}</td>
-                            <td>{{ $employee->position }}</td>
-                            <td>{{ $employee->phone }}</td>
-                            <td>{{ $employee->address }}</td>
-                            
+                            <td>{{ $menu->name }}</td>
+
+                            <td>{{ $menu->route }}</td>
+                            <td>{{ $menu->order }}</td>
                         </tr>
+                        @foreach($menu->submenus as $submenu)
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>— {{ $submenu->name }}</td>
+                                <td colspan="3">{{ $submenu->route }}</td>
+                                <td></td>
+                            </tr>
                         @endforeach
+                    @endforeach
                     </tbody>
 
 
                 </table>
             </div>
 
-            @if($isModalOpen)
-            {{-- @include('livewire.components.employee-modal') --}}
-            <div class="modal fade show" tabindex="-1" id="employeeModal" style="display: block;">
+            <div class="modal fade" tabindex="-1" id="menuModal" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h3 class="modal-title">{{$employeeId ? 'Edit' : 'Add'}} Employee</h3>
+                            <h3 class="modal-title">{{$menuId ? 'Edit' : 'Add'}} Menu</h3>
 
                             <!--begin::Close-->
                             <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close" wire:click="closeModal">
@@ -109,7 +113,7 @@
                         </div>
 
                         <div class="modal-body">
-                            {{-- <form id="kt_modal_new_target_form" class="form" wire:submit.prevent="{{ isset($employeeId) ? 'update' : 'store' }}"
+                            {{-- <form id="kt_modal_new_target_form" class="form" wire:submit.prevent="{{ isset($menuId) ? 'update' : 'store' }}"
                             > --}}
 
                             <!--begin::Input group-->
@@ -132,14 +136,14 @@
                                     <div class="alert alert-danger" role="alert">
                                         {{ $message }}
                                     </div>
-                                        
+
                                     @enderror
                                     <input type="text" class="form-control form-control-solid" placeholder="Enter Name" id="name" autocomplete="off" wire:model="name" />
                                 </div>
                                 <div class="d-flex flex-column col-md-6 mb-8 fv-row">
                                     <!--begin::Label-->
                                     <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
-                                        <span class="required">Position</span>
+                                        <span class="required">Order</span>
                                         <span class="ms-1" data-bs-toggle="tooltip" title="Specify a target Position for future usage and reference">
                                             <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
                                                 <span class="path1"></span>
@@ -149,13 +153,13 @@
                                         </span>
                                     </label>
                                     <!--end::Label-->
-                                    @error('position')
+                                    @error('route')
                                     <div class="alert alert-danger" role="alert">
                                         {{ $message }}
                                     </div>
-                                        
+
                                     @enderror
-                                    <input type="text" class="form-control form-control-solid" placeholder="Enter Position" autocomplete="off" id="position" wire:model="position" />
+                                    <input type="text" class="form-control form-control-solid" placeholder="Enter Order" autocomplete="off" id="order" wire:model="order" />
                                 </div>
                             </div>
                             <!--end::Input group-->
@@ -165,7 +169,7 @@
                                 <div class="d-flex flex-column col-md-6 mb-8 fv-row">
                                     <!--begin::Label-->
                                     <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
-                                        <span class="required">Phone</span>
+                                        <span class="required">Route</span>
                                         <span class="ms-1" data-bs-toggle="tooltip" title="Specify a target name for future usage and reference">
                                             <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
                                                 <span class="path1"></span>
@@ -175,13 +179,13 @@
                                         </span>
                                     </label>
                                     <!--end::Label-->
-                                    @error('phone')
+                                    @error('route')
                                     <div class="alert alert-danger" role="alert">
                                         {{ $message }}
                                     </div>
-                                        
+
                                     @enderror
-                                    <input type="text" class="form-control form-control-solid" placeholder="Enter Phone" id="phone" autocomplete="off" wire:model="phone" />
+                                    <input type="text" class="form-control form-control-solid" placeholder="Enter Route" id="route" autocomplete="off" wire:model="route" />
                                 </div>
                                 <div class="d-flex flex-column col-md-6 mb-8 fv-row">
                                     <!--begin::Label-->
@@ -200,7 +204,7 @@
                                     <div class="alert alert-danger" role="alert">
                                         {{ $message }}
                                     </div>
-                                        
+
                                     @enderror
                                     <input type="text" class="form-control form-control-solid" placeholder="Enter Address" id="address" autocomplete="off" wire:model="address" />
 
@@ -212,15 +216,24 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-light" wire:click="closeModal">Close</button>
-                            <button class="btn btn-primary" wire:click="{{ isset($employeeId) ? 'update' : 'store' }}">{{ $employeeId ? 'Update' : 'Store' }}</button>
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close" wire:click="closeModal">Close</button>
+                            <button class="btn btn-primary" wire:click="{{ isset($menuId) ? 'update' : 'store' }}">{{ $menuId ? 'Update' : 'Store' }}</button>
 
                         </div>
                     </div>
                 </div>
             </div>
-            @endif
 
         </div>
     </div>
+    <script>
+        Livewire.on('show-modal', () => {
+            var myModal = new bootstrap.Modal(document.getElementById('menuModal'), {});
+            myModal.show();
+        });
+        Livewire.on('hide-modal', () => {
+            $('.modal').modal('hide');
+    });
+
+    </script>
 </div>

@@ -4,7 +4,7 @@
         <!--begin::Copyright-->
         <div class="text-dark order-2 order-md-1">
             <span class="text-muted fw-semibold me-1">2023&copy;</span>
-            <a href="https://keenthemes.com" target="_blank" class="text-gray-800 text-hover-primary">Keenthemes</a>
+            <a href="https://keenthemes.com" target="_blank" class="text-gray-800 text-hover-primary">Cakra Jaya</a>
         </div>
         <!--end::Copyright-->
         <!--begin::Menu-->
