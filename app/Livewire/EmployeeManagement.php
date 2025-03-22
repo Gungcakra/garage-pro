@@ -39,6 +39,14 @@ class EmployeeManagement extends Component
     }
     public function store()
     {
+
+        $this->validate([
+            'name' => 'required|string|max:255',
+            'position' => 'required|string|max:255',
+            'phone' => 'required|string|max:15',
+            'address' => 'required|string|max:255',
+        ]);
+
         Employee::create([
             'name' => $this->name,
             'position' => $this->position,

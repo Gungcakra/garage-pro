@@ -127,6 +127,12 @@
                                         </span>
                                     </label>
                                     <!--end::Label-->
+                                    @error('name')
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ $message }}
+                                    </div>
+                                        
+                                    @enderror
                                     <input type="text" class="form-control form-control-solid" placeholder="Enter Name" id="name" autocomplete="off" wire:model="name" />
                                 </div>
                                 <div class="d-flex flex-column col-md-6 mb-8 fv-row">
@@ -142,6 +148,12 @@
                                         </span>
                                     </label>
                                     <!--end::Label-->
+                                    @error('position')
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ $message }}
+                                    </div>
+                                        
+                                    @enderror
                                     <input type="text" class="form-control form-control-solid" placeholder="Enter Position" autocomplete="off" id="position" wire:model="position" />
                                 </div>
                             </div>
@@ -162,6 +174,12 @@
                                         </span>
                                     </label>
                                     <!--end::Label-->
+                                    @error('phone')
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ $message }}
+                                    </div>
+                                        
+                                    @enderror
                                     <input type="text" class="form-control form-control-solid" placeholder="Enter Phone" id="phone" autocomplete="off" wire:model="phone" />
                                 </div>
                                 <div class="d-flex flex-column col-md-6 mb-8 fv-row">
@@ -177,6 +195,12 @@
                                         </span>
                                     </label>
                                     <!--end::Label-->
+                                    @error('address')
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ $message }}
+                                    </div>
+                                        
+                                    @enderror
                                     <input type="text" class="form-control form-control-solid" placeholder="Enter Address" id="address" autocomplete="off" wire:model="address" />
 
                                 </div>
