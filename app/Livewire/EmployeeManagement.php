@@ -6,6 +6,7 @@ use App\Events\DataUpdate;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Models\Employee;
+use App\Models\Menu;
 use Livewire\Attributes\Layout;
 
 #[Layout('layouts.admin')]
@@ -19,6 +20,7 @@ class EmployeeManagement extends Component
 
         return view('livewire.pages.admin.employee', [
             'data' => Employee::get(),
+            'menus' => Menu::with('submenus')->get()
         ]);
     }
 

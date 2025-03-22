@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Employee;
+use App\Models\Menu;
+use App\Models\SubMenu;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -59,5 +61,41 @@ class DatabaseSeeder extends Seeder
             'phone' => '1112223333',
             'address' => '987 Birch St, Suburbia'
         ]);
+
+                // Menu Dashboard
+                $dashboard = Menu::create([
+                    'name' => 'Dashboard',
+                    'route' => '/dashboard',
+                    'order' => 1
+                ]);
+        
+                SubMenu::create([
+                    'menu_id' => $dashboard->id,
+                    'name' => 'Home',
+                    'route' => 'dashboard',
+                    'order' => 1
+                ]);
+        
+                // Menu Master Data
+                $masterData = Menu::create([
+                    'name' => 'Master Data',
+                    'route' => null,
+                    'order' => 2
+                ]);
+        
+                Submenu::create([
+                    'menu_id' => $masterData->id,
+                    'name' => 'Employee',
+                    'route' => 'employee',
+                    'order' => 1
+                ]);
+        
+                Submenu::create([
+                    'menu_id' => $masterData->id,
+                    'name' => 'Menu',
+                    'route' => 'menu',
+                    'order' => 2
+                ]);
+        
     }
 }
