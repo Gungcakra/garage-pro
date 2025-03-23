@@ -98,11 +98,11 @@
                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
 
                                     <div class="menu-item px-3">
-                                        <a class="menu-link px-3 w-100" wire:click="createSubMenu({{ $menu->id }})">Edit</a>
+                                        <a class="menu-link px-3 w-100" wire:click="editSubMenu({{ $submenu->id}})">Edit</a>
                                     </div>
 
                                     <div class="menu-item px-3">
-                                        <a class="menu-link px-3 w-100" wire:click="deleteSubMenu({{ $menu->id }})">Delete</a>
+                                        <a class="menu-link px-3 w-100" wire:click="deleteSubMenu({{ $submenu->id }})">Delete</a>
                                     </div>
                             </td>
                             <td>— {{ $submenu->name }}</td>
@@ -117,6 +117,7 @@
                 </table>
             </div>
 
+            {{-- MENU MODAL --}}
             <div class="modal fade" tabindex="-1" id="menuModal" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -239,6 +240,8 @@
                 </div>
             </div>
 
+
+            {{-- SUBMENU MODAL --}}
             <div class="modal fade" tabindex="-1" id="subMenuModal" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -246,7 +249,7 @@
                             <h3 class="modal-title">SubMenu</h3>
 
                             <!--begin::Close-->
-                            <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close" wire:click="closeModal">
+                            <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close" wire:click="closeSubMenuModal">
                                 <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
                             </div>
                             <!--end::Close-->
@@ -256,15 +259,85 @@
 
                             <div class="row g-9 mb-8">
 
+                                <div class="d-flex flex-column col-md-6 mb-8 fv-row">
+                                    <!--begin::Label-->
+                                    <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                                        <span class="required">Name</span>
+                                        <span class="ms-1" data-bs-toggle="tooltip" title="Specify a target name for future usage and reference">
+                                            <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                            </i>
+                                        </span>
+                                    </label>
+                                    <!--end::Label-->
+                                    @error('subMenuName')
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ $message }}
+                                    </div>
+
+                                    @enderror
+                                    <input type="text" class="form-control form-control-solid" placeholder="Enter Name" id="name" autocomplete="off" wire:model="subMenuName" />
+                                    <input type="hidden" class="form-control form-control-solid" placeholder="Enter Name" id="name" autocomplete="off" wire:model="menuId" />
+                                </div>
+                                <div class="d-flex flex-column col-md-6 mb-8 fv-row">
+                                    <!--begin::Label-->
+                                    <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                                        <span class="required">Order</span>
+                                        <span class="ms-1" data-bs-toggle="tooltip" title="Specify a target Position for future usage and reference">
+                                            <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                            </i>
+                                        </span>
+                                    </label>
+                                    <!--end::Label-->
+                                    @error('subMenuOrder')
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ $message }}
+                                    </div>
+
+                                    @enderror
+                                    <input type="text" class="form-control form-control-solid" placeholder="Enter Order" autocomplete="off" id="order" wire:model="subMenuOrder" />
+                                </div>
                             </div>
-                         
+                            <!--end::Input group-->
+                            <!--begin::Input group-->
+                            <div class="row g-9 mb-8">
+
+                                <div class="d-flex flex-column col-md-12 mb-8 fv-row">
+                                    <!--begin::Label-->
+                                    <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                                        <span class="required">Route</span>
+                                        <span class="ms-1" data-bs-toggle="tooltip" title="Specify a target name for future usage and reference">
+                                            <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                            </i>
+                                        </span>
+                                    </label>
+                                    <!--end::Label-->
+                                    @error('subMenuRoute')
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ $message }}
+                                    </div>
+
+                                    @enderror
+                                    <input type="text" class="form-control form-control-solid" placeholder="Enter Route" id="subMenuRoute" autocomplete="off" wire:model="subMenuRoute" />
+                                </div>
+                               
+                            </div>
+                            <!--end::Input group-->
 
 
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close" wire:click="closeModal">Close</button>
-                            <button class="btn btn-primary" wire:click="{{ isset($menuId) ? 'update' : 'store' }}">{{ $menuId ? 'Update' : 'Store' }}</button>
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close" wire:click="closeSubMenuModal">Close</button>
+                            <button class="btn btn-primary" wire:click="{{ $subMenuId ? 'updateSubMenu('.$subMenuId.')' : 'storeSubMenu('.$menuId.')' }}">{{ $subMenuId ? 'Update' : 'Store' }}</button>
 
                         </div>
                     </div>
@@ -283,11 +356,16 @@
             var modal = bootstrap.Modal.getInstance(modalEl);
             modal.hide();
         });
-
+        
         Livewire.on('show-submenu-modal', () => {
             var myModal = new bootstrap.Modal(document.getElementById('subMenuModal'), {});
             myModal.show();
-
+            
+        });
+        Livewire.on('hide-submenu-modal', () => {
+            var modalEl = document.getElementById('subMenuModal');
+            var modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
         });
 
     </script>

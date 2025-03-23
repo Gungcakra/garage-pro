@@ -10,7 +10,7 @@ use Livewire\Component;
 #[Layout('layouts.admin')]
 class MenuManagement extends Component
 {
-    public $menuId, $menus, $submenus, $name, $route, $order, $icon, $dataSubMenu, $subMenuName, $subMenuRoute, $subMenuOrder;
+    public $menuId, $menus, $submenus, $name, $route, $order, $icon, $dataSubMenu, $subMenuId,  $subMenuName, $subMenuRoute, $subMenuOrder;
     
     public $isModalOpen = false;
 
@@ -25,6 +25,12 @@ class MenuManagement extends Component
         $this->reset(['menuId', 'name', 'route', 'order', 'icon']);
         $this->isModalOpen = false;
         $this->dispatch(event: 'hide-modal');
+    }
+
+    public function closeSubMenuModal()
+    {
+        $this->reset(['menuId', 'subMenuName', 'subMenuRoute', 'subMenuRoute']);
+        $this->dispatch(event: 'hide-submenu-modal');
     }
     public function render()
     {
@@ -96,13 +102,27 @@ class MenuManagement extends Component
 
     public function createSubMenu($id)
     {
-        $this->menuId = $id;
-        $this->dataSubMenu = SubMenu::where('menu_id', operator: $this->menuId)->get();
-        $this->subMenuName = $this->dataSubMenu->pluck('name');
-        $this->subMenuRoute = $this->dataSubMenu->pluck('route');
-        $this->subMenuOrder = $this->dataSubMenu->pluck('order');
+        $this->menuId = $id;  
         $this->dispatch(event: 'show-submenu-modal');
         
+    }
+    public function storeSubMenu($menuId)
+    {
+        $this->validate([
+            'subMenuName' => 'required|string|max:255',
+            'subMenuRoute' => 'required|string|max:255',
+            'subMenuOrder' => 'required|integer',
+        ]);
+
+        SubMenu::create([
+            'menu_id' => $menuId,
+            'name' => $this->subMenuName,
+            'route' => $this->subMenuRoute,
+            'order' => $this->subMenuOrder,
+        ]);
+
+        $this->dispatch('success', 'Submenu added successfully!');
+        $this->closeSubMenuModal();
     }
     public function deleteSubMenu($id)
     {
@@ -110,50 +130,32 @@ class MenuManagement extends Component
         $submenu->delete();
         $this->dispatch('success', 'Submenu deleted successfully!');
     }
-    public function storeSubMenu($menuId)
-    {
-        $this->validate([
-            'name' => 'required|string|max:255',
-            'route' => 'required|string|max:255',
-            'order' => 'required|integer',
-        ]);
-
-        SubMenu::create([
-            'menu_id' => $menuId,
-            'name' => $this->name,
-            'route' => $this->route,
-            'order' => $this->order,
-        ]);
-
-        $this->dispatch('success', 'Submenu added successfully!');
-        $this->closeModal();
-    }
     public function editSubMenu($id)
     {
         $submenu = SubMenu::findOrFail($id);
-        $this->menuId = $submenu->menu_id;
-        $this->name = $submenu->name;
-        $this->route = $submenu->route;
-        $this->order = $submenu->order;
+        $this->subMenuId = $id;
+        $this->subMenuName = $submenu->name;
+        $this->subMenuRoute = $submenu->route;
+        $this->subMenuOrder = $submenu->order;
         $this->dispatch('show-submenu-modal');
     }
-    public function updateSubMenu()
+    public function updateSubMenu($id)
     {
         $this->validate([
-            'name' => 'required|string|max:255',
-            'route' => 'required|string|max:255',
-            'order' => 'required|integer',
+            'subMenuName' => 'required|string|max:255',
+            'subMenuRoute' => 'required|string|max:255',
+            'subMenuOrder' => 'required|integer',
         ]);
 
-        $submenu = SubMenu::findOrFail($this->menuId);
+        $submenu = SubMenu::findOrFail($id);
         $submenu->update([
-            'name' => $this->name,
-            'route' => $this->route,
-            'order' => $this->order,
+            'name' => $this->subMenuName,
+            'route' => $this->subMenuRoute,
+            'order' => $this->subMenuOrder,
         ]);
 
         $this->dispatch('success', 'Submenu updated successfully!');
-        $this->closeModal();
+        $this->closeSubMenuModal();
     }
     public function submitForm()
     {
@@ -163,12 +165,5 @@ class MenuManagement extends Component
             $this->store();
         }
     }
-    public function submitSubMenuForm()
-    {
-        if ($this->menuId) {
-            $this->updateSubMenu();
-        } else {
-            $this->storeSubMenu($this->menuId);
-        }
-    }
+
 }
