@@ -328,7 +328,7 @@
                                     @enderror
                                     <input type="text" class="form-control form-control-solid" placeholder="Enter Route" id="subMenuRoute" autocomplete="off" wire:model="subMenuRoute" />
                                 </div>
-                               
+
                             </div>
                             <!--end::Input group-->
 
@@ -356,11 +356,11 @@
             var modal = bootstrap.Modal.getInstance(modalEl);
             modal.hide();
         });
-        
+
         Livewire.on('show-submenu-modal', () => {
             var myModal = new bootstrap.Modal(document.getElementById('subMenuModal'), {});
             myModal.show();
-            
+
         });
         Livewire.on('hide-submenu-modal', () => {
             var modalEl = document.getElementById('subMenuModal');

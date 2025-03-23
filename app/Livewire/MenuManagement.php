@@ -11,7 +11,7 @@ use Livewire\Component;
 class MenuManagement extends Component
 {
     public $menuId, $menus, $submenus, $name, $route, $order, $icon, $dataSubMenu, $subMenuId,  $subMenuName, $subMenuRoute, $subMenuOrder;
-    
+
     public $isModalOpen = false;
 
     public function openModal()
@@ -87,6 +87,7 @@ class MenuManagement extends Component
             'name' => $this->name,
             'route' => $this->route,
             'order' => $this->order,
+            'icon' => $this->icon,
 
         ]);
 
@@ -102,9 +103,8 @@ class MenuManagement extends Component
 
     public function createSubMenu($id)
     {
-        $this->menuId = $id;  
+        $this->menuId = $id;
         $this->dispatch(event: 'show-submenu-modal');
-        
     }
     public function storeSubMenu($menuId)
     {
@@ -165,5 +165,4 @@ class MenuManagement extends Component
             $this->store();
         }
     }
-
 }
