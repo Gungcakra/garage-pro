@@ -10,7 +10,8 @@ use Livewire\Component;
 #[Layout('layouts.admin')]
 class MenuManagement extends Component
 {
-    public $menuId, $menus, $submenus,  $name, $route, $order, $icon;
+    public $menuId, $menus, $submenus, $name, $route, $order, $icon, $dataSubMenu, $subMenuName, $subMenuRoute, $subMenuOrder;
+    
     public $isModalOpen = false;
 
     public function openModal()
@@ -91,6 +92,17 @@ class MenuManagement extends Component
         $menu = Menu::findOrFail($id);
         $menu->delete();
         $this->dispatch('success', 'Menu deleted successfully!');
+    }
+
+    public function createSubMenu($id)
+    {
+        $this->menuId = $id;
+        $this->dataSubMenu = SubMenu::where('menu_id', operator: $this->menuId)->get();
+        $this->subMenuName = $this->dataSubMenu->pluck('name');
+        $this->subMenuRoute = $this->dataSubMenu->pluck('route');
+        $this->subMenuOrder = $this->dataSubMenu->pluck('order');
+        $this->dispatch(event: 'show-submenu-modal');
+        
     }
     public function deleteSubMenu($id)
     {

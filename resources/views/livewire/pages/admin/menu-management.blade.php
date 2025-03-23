@@ -65,7 +65,7 @@
                         <tr>
                             <td>{{ $index + 1 }}</td>
                             <td>
-                                <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+                                <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Menu
                                     <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
                                 <!--begin::Menu-->
                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
@@ -78,6 +78,10 @@
                                     <div class="menu-item px-3">
                                         <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $menu->id }})">Delete</a>
                                     </div>
+
+                                    <div class="menu-item px-3">
+                                        <a class="menu-link px-3 w-100" wire:click="createSubMenu({{ $menu->id }})">Add SubMenu</a>
+                                    </div>
                             </td>
                             <td>{{ $menu->name }}</td>
                             <td>{{ $menu->icon }}</td>
@@ -85,15 +89,28 @@
                             <td>{{ $menu->order }}</td>
                         </tr>
                         @foreach($menu->submenus as $submenu)
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td>— {{ $submenu->name }}</td>
-                                <td colspan="3">{{ $submenu->route }}</td>
-                                <td></td>
-                            </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">SubMenu
+                                    <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+                                <!--begin::Menu-->
+                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+
+                                    <div class="menu-item px-3">
+                                        <a class="menu-link px-3 w-100" wire:click="createSubMenu({{ $menu->id }})">Edit</a>
+                                    </div>
+
+                                    <div class="menu-item px-3">
+                                        <a class="menu-link px-3 w-100" wire:click="deleteSubMenu({{ $menu->id }})">Delete</a>
+                                    </div>
+                            </td>
+                            <td>— {{ $submenu->name }}</td>
+                            <td colspan="3">{{ $submenu->route }}</td>
+                            <td></td>
+                        </tr>
                         @endforeach
-                    @endforeach
+                        @endforeach
                     </tbody>
 
 
@@ -114,10 +131,7 @@
                         </div>
 
                         <div class="modal-body">
-                            {{-- <form id="kt_modal_new_target_form" class="form" wire:submit.prevent="{{ isset($menuId) ? 'update' : 'store' }}"
-                            > --}}
 
-                            <!--begin::Input group-->
                             <div class="row g-9 mb-8">
 
                                 <div class="d-flex flex-column col-md-6 mb-8 fv-row">
@@ -225,6 +239,38 @@
                 </div>
             </div>
 
+            <div class="modal fade" tabindex="-1" id="subMenuModal" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">SubMenu</h3>
+
+                            <!--begin::Close-->
+                            <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close" wire:click="closeModal">
+                                <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                            </div>
+                            <!--end::Close-->
+                        </div>
+
+                        <div class="modal-body">
+
+                            <div class="row g-9 mb-8">
+
+                            </div>
+                         
+
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close" wire:click="closeModal">Close</button>
+                            <button class="btn btn-primary" wire:click="{{ isset($menuId) ? 'update' : 'store' }}">{{ $menuId ? 'Update' : 'Store' }}</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
     <script>
@@ -233,10 +279,16 @@
             myModal.show();
         });
         Livewire.on('hide-modal', () => {
-        var modalEl = document.getElementById('menuModal');
-        var modal = bootstrap.Modal.getInstance(modalEl);
-        modal.hide();
-    });
+            var modalEl = document.getElementById('menuModal');
+            var modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+        });
+
+        Livewire.on('show-submenu-modal', () => {
+            var myModal = new bootstrap.Modal(document.getElementById('subMenuModal'), {});
+            myModal.show();
+
+        });
 
     </script>
 </div>
