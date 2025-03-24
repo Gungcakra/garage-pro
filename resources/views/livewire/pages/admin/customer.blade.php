@@ -54,7 +54,7 @@
                             <th>No</th>
                             <th>Action</th>
                             <th>Name</th>
-                            <th>Position</th>
+                            <th>Email</th>
                             <th>Phone</th>
                             <th>Address</th>
                         </tr>
@@ -81,7 +81,7 @@
                                     <!--end::Menu item-->
                             </td>
                             <td>{{ $Customer->name }}</td>
-                            <td>{{ $Customer->position }}</td>
+                            <td>{{ $Customer->email }}</td>
                             <td>{{ $Customer->phone }}</td>
                             <td>{{ $Customer->address }}</td>
 
@@ -137,7 +137,7 @@
                                 <div class="d-flex flex-column col-md-6 mb-8 fv-row">
                                     <!--begin::Label-->
                                     <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
-                                        <span class="required">Position</span>
+                                        <span class="required">Email</span>
                                         <span class="ms-1" data-bs-toggle="tooltip" title="Specify a target Position for future usage and reference">
                                             <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
                                                 <span class="path1"></span>
@@ -147,13 +147,13 @@
                                         </span>
                                     </label>
                                     <!--end::Label-->
-                                    @error('position')
+                                    @error('email')
                                     <div class="alert alert-danger" role="alert">
                                         {{ $message }}
                                     </div>
 
                                     @enderror
-                                    <input type="text" class="form-control form-control-solid" placeholder="Enter Position" autocomplete="off" id="position" wire:model="position" />
+                                    <input type="text" class="form-control form-control-solid" placeholder="Enter Position" autocomplete="off" id="position" wire:model="email" />
                                 </div>
                             </div>
                             <!--end::Input group-->

@@ -12,14 +12,19 @@ use Livewire\Attributes\Layout;
 #[Layout('layouts.admin')]
 class EmployeeManagement extends Component
 {
-    public $employeeId, $name, $position, $phone, $address;
+    public $employeeId, $name, $position, $phone, $address, $data;
     public $isModalOpen = false;
     #[On('echo:data-refresh,.table-employee')]
+
+    public function loadData()
+    {
+        $this->data = Employee::get();
+    }
     public function render()
     {
 
         return view('livewire.pages.admin.employee', [
-            'data' => Employee::get(),
+            'data' => $this->loadData(),
             'menus' => Menu::with('submenus')->get()
         ]);
     }
