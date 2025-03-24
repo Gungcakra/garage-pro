@@ -1,5 +1,5 @@
 <div class="d-flex flex-column flex-column-fluid">
-    <x-slot:title>Employee Management</x-slot:title>
+    <x-slot:title>Customer Management</x-slot:title>
     <!--begin::Toolbar-->
     <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
         <!--begin::Toolbar container-->
@@ -7,7 +7,7 @@
             <!--begin::Page title-->
             <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                 <!--begin::Title-->
-                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Employee Management</h1>
+                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Customer Management</h1>
                 <!--end::Title-->
                 <!--begin::Breadcrumb-->
                 <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -22,7 +22,7 @@
                     </li>
                     <!--end::Item-->
                     <!--begin::Item-->
-                    <li class="breadcrumb-item text-muted">Employee</li>
+                    <li class="breadcrumb-item text-muted">Customer</li>
                     <!--end::Item-->
                 </ul>
                 <!--end::Breadcrumb-->
@@ -34,7 +34,7 @@
                 <a href="#" class="btn btn-sm fw-bold btn-secondary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Rollover</a>
                 <!--end::Secondary button-->
                 <!--begin::Primary button-->
-                <button class="btn btn-sm fw-bold btn-primary" wire:click="create()">Add Employee</button>
+                <button class="btn btn-sm fw-bold btn-primary" wire:click="create()">Add Customer</button>
                 <!--end::Primary button-->
             </div>
             <!--end::Actions-->
@@ -60,9 +60,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ( $data as $index => $employee)
+                        @foreach ( $data as $index => $Customer)
 
-                        <tr wire:key="employee-{{ $employee->id }}">
+                        <tr wire:key="Customer-{{ $Customer->id }}">
                             <td>{{ $index + 1 }}</td>
                             <td>
                                 <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
@@ -71,19 +71,19 @@
                                 <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                     <!--begin::Menu item-->
                                     <div class="menu-item px-3">
-                                        <a wire:click="edit({{ $employee->id }})" class="menu-link px-3 w-100">Edit</a>
+                                        <a wire:click="edit({{ $Customer->id }})" class="menu-link px-3 w-100">Edit</a>
                                     </div>
                                     <!--end::Menu item-->
                                     <!--begin::Menu item-->
                                     <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $employee->id }})">Delete</a>
+                                        <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $Customer->id }})">Delete</a>
                                     </div>
                                     <!--end::Menu item-->
                             </td>
-                            <td>{{ $employee->name }}</td>
-                            <td>{{ $employee->position }}</td>
-                            <td>{{ $employee->phone }}</td>
-                            <td>{{ $employee->address }}</td>
+                            <td>{{ $Customer->name }}</td>
+                            <td>{{ $Customer->position }}</td>
+                            <td>{{ $Customer->phone }}</td>
+                            <td>{{ $Customer->address }}</td>
 
                         </tr>
                         @endforeach
@@ -93,11 +93,11 @@
                 </table>
             </div>
 
-            <div class="modal fade" tabindex="-1" id="employeeModal" aria-hidden="true">
+            <div class="modal fade" tabindex="-1" id="CustomerModal" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h3 class="modal-title">{{$employeeId ? 'Edit' : 'Add'}} Employee</h3>
+                            <h3 class="modal-title">{{$CustomerId ? 'Edit' : 'Add'}} Customer</h3>
 
                             <!--begin::Close-->
                             <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close" wire:click="closeModal">
@@ -107,7 +107,7 @@
                         </div>
 
                         <div class="modal-body">
-                            {{-- <form id="kt_modal_new_target_form" class="form" wire:submit.prevent="{{ isset($employeeId) ? 'update' : 'store' }}"
+                            {{-- <form id="kt_modal_new_target_form" class="form" wire:submit.prevent="{{ isset($CustomerId) ? 'update' : 'store' }}"
                             > --}}
 
                             <!--begin::Input group-->
@@ -211,7 +211,7 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close" wire:click="closeModal">Close</button>
-                            <button class="btn btn-primary" wire:click="{{ isset($employeeId) ? 'update' : 'store' }}">{{ $employeeId ? 'Update' : 'Store' }}</button>
+                            <button class="btn btn-primary" wire:click="{{ isset($CustomerId) ? 'update' : 'store' }}">{{ $CustomerId ? 'Update' : 'Store' }}</button>
 
                         </div>
                     </div>
@@ -222,11 +222,11 @@
     </div>
     <script>
         Livewire.on('show-modal', () => {
-            var myModal = new bootstrap.Modal(document.getElementById('employeeModal'), {});
+            var myModal = new bootstrap.Modal(document.getElementById('CustomerModal'), {});
             myModal.show();
         });
         Livewire.on('hide-modal', () => {
-        var modalEl = document.getElementById('employeeModal');
+        var modalEl = document.getElementById('CustomerModal');
         var modal = bootstrap.Modal.getInstance(modalEl);
         modal.hide();
     });

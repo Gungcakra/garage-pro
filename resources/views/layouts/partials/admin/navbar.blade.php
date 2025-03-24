@@ -360,7 +360,7 @@
                     </div>
                     <!--end:Menu item-->
                     <!--begin:Menu item-->
-                    <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion me-0 me-lg-2">
+                    {{-- <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion me-0 me-lg-2">
                         <!--begin:Menu link-->
                         <span class="menu-link">
                             <span class="menu-title">Pages</span>
@@ -1592,10 +1592,10 @@
                             <!--end:Pages menu-->
                         </div>
                         <!--end:Menu sub-->
-                    </div>
+                    </div> --}}
                     <!--end:Menu item-->
                     <!--begin:Menu item-->
-                    <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
+                    {{-- <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
                         <!--begin:Menu link-->
                         <span class="menu-link">
                             <span class="menu-title">Apps</span>
@@ -2769,10 +2769,10 @@
                             <!--end:Menu item-->
                         </div>
                         <!--end:Menu sub-->
-                    </div>
+                    </div> --}}
                     <!--end:Menu item-->
                     <!--begin:Menu item-->
-                    <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion me-0 me-lg-2">
+                    {{-- <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion me-0 me-lg-2">
                         <!--begin:Menu link-->
                         <span class="menu-link">
                             <span class="menu-title">Layouts</span>
@@ -3003,10 +3003,10 @@
                             <!--end:Dashboards menu-->
                         </div>
                         <!--end:Menu sub-->
-                    </div>
+                    </div> --}}
                     <!--end:Menu item-->
                     <!--begin:Menu item-->
-                    <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
+                    {{-- <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start" class="menu-item menu-lg-down-accordion menu-sub-lg-down-indention me-0 me-lg-2">
                         <!--begin:Menu link-->
                         <span class="menu-link">
                             <span class="menu-title">Help</span>
@@ -3064,7 +3064,7 @@
                             <!--end:Menu item-->
                         </div>
                         <!--end:Menu sub-->
-                    </div>
+                    </div> --}}
                     <!--end:Menu item-->
                 </div>
                 <!--end::Menu-->
