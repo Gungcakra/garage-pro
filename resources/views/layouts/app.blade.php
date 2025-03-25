@@ -60,16 +60,30 @@
     </div>
     <!--end::Root-->
     <!--begin::Javascript-->
-    <script src="{{ asset('assets/plugins/global/plugins.bundle.js')}}"></script>
-    <script src="{{ asset('assets/js/scripts.bundle.js')}}"></script>
-    <script src="{{ asset('assets/js/custom/authentication/sign-in/general.js')}}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Livewire.on('success-login', (message) => {
+                Swal.fire({
+                    title: message
+                    , confirmButtonText: "Continue!"
+                    , icon: "success"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "/dashboard";
+                    }
+                });
+            });
+        });
+
+    </script>
     <script>
         var hostUrl = "{{ asset('assets/')}}";
-        
-        </script>
-    <!--begin::Global Javascript Bundle(mandatory for all pages)-->
-   
+
+    </script>
+    <script src="{{ asset('assets/plugins/global/plugins.bundle.js')}}"></script>
+    <script src="{{ asset('assets/js/scripts.bundle.js')}}"></script>
+    {{-- <script src="{{ asset('assets/js/custom/authentication/sign-in/general.js')}}"></script> --}}
+
     @livewireScripts
 </body>
-<!--end::Body-->
 </html>

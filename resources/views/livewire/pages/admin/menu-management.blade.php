@@ -379,7 +379,7 @@
                 if (result.isConfirmed) {
                     Livewire.dispatch('deleteMenu');
                 } else {
-                    Swal.fire("Cancelled", "The Menu is safe.", "info");
+                    Swal.fire("Cancelled", "Delete Cancelled.", "info");
                 }
             });
         });
@@ -395,7 +395,7 @@
                 if (result.isConfirmed) {
                     Livewire.dispatch('deleteSubMenuConfirmed');
                 } else {
-                    Swal.fire("Cancelled", "The Menu is safe.", "info");
+                    Swal.fire("Cancelled", "Delete Cancelled", "info");
                 }
             });
         });

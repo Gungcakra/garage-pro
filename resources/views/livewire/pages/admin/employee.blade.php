@@ -241,7 +241,7 @@
                 if (result.isConfirmed) {
                     Livewire.dispatch('deleteEmployee');
                 } else {
-                    Swal.fire("Cancelled", "The employee is safe.", "info");
+                    Swal.fire("Cancelled", "Delete Cancelled.", "info");
                 }
             });
         });

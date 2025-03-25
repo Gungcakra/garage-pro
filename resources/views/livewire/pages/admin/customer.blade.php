@@ -241,7 +241,7 @@
                 if (result.isConfirmed) {
                     Livewire.dispatch('deleteCustomer');
                 } else {
-                    Swal.fire("Cancelled", "The customer is safe.", "info");
+                    Swal.fire("Cancelled", "Delete Cancelled.", "info");
                 }
             });
         });

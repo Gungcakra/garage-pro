@@ -4,6 +4,9 @@ namespace App\Livewire\Auth;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
+
+#[Layout('layouts.app')]
 
 class Login extends Component
 {
@@ -20,10 +23,22 @@ class Login extends Component
 
         if (Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
             session()->regenerate();
-            return $this->redirect('/dashboard', navigate: true); // No reload
+
+            session(['user_id' => Auth::id()]);
+
+            return $this->dispatch('success-login', 'Login successful.');
         } else {
             $this->addError('email', 'Invalid email or password.');
         }
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        session()->invalidate();
+        session()->regenerateToken();
+
+        return redirect('/login');
     }
 
     public function render()

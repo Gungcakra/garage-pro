@@ -6,7 +6,7 @@
             <!--begin::Wrapper-->
             <div class="w-lg-500px p-10">
                 <!--begin::Form-->
-                <form class="form w-100" novalidate="novalidate" id="kt_sign_in_form" data-kt-redirect-url="{{ route('dashboard') }}" action="#">
+                {{-- <form class="form w-100" novalidate="novalidate" id="kt_sign_in_form"  action="#"> --}}
                     <!--begin::Heading-->
                     <div class="text-center mb-11">
                         <!--begin::Title-->
@@ -66,7 +66,7 @@
                     <!--end::Wrapper-->
                     <!--begin::Submit button-->
                     <div class="d-grid mb-10">
-                        <button type="submit" id="kt_sign_in_submit" class="btn btn-primary">
+                        <button wire:click="login" id="kt_sign_in_submit" class="btn btn-primary">
                             <!--begin::Indicator label-->
                             <span class="indicator-label">Sign In</span>
                             <!--end::Indicator label-->
@@ -82,7 +82,7 @@
                     {{-- <a href="../../demo1/dist/authentication/layouts/corporate/sign-up.html" class="link-primary">Sign up</a> --}}
                 </div>
                     <!--end::Sign up-->
-                </form>
+                {{-- </form> --}}
                 <!--end::Form-->
             </div>
             <!--end::Wrapper-->
@@ -119,4 +119,5 @@
         <!--end::Content-->
     </div>
     <!--end::Aside-->
+
 </div>
