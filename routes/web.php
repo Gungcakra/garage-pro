@@ -15,3 +15,4 @@ Route::get('/dashboard',Dashboard::class)->name('dashboard');
 Route::get('/customer',action: Customer::class)->name('customer');
 Route::get('/employee',EmployeeManagement::class)->name('employee');
 Route::get('/menu',MenuManagement::class)->name('menu');
+Route::get('/test',action: MenuManagement::class)->name('test');

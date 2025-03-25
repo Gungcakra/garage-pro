@@ -230,6 +230,21 @@
         var modal = bootstrap.Modal.getInstance(modalEl);
         modal.hide();
     });
+    Livewire.on('confirm-delete', (message) => {
+            Swal.fire({
+                title: message
+                , showCancelButton: true
+                , confirmButtonText: "Yes"
+                , cancelButtonText: "No"
+                , icon: "warning"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.dispatch('deleteCustomer');
+                } else {
+                    Swal.fire("Cancelled", "The customer is safe.", "info");
+                }
+            });
+        });
 
     </script>
 </div>

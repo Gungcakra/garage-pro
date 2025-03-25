@@ -368,5 +368,37 @@
             modal.hide();
         });
 
+        Livewire.on('delete-menu', (message) => {
+            Swal.fire({
+                title: message
+                , showCancelButton: true
+                , confirmButtonText: "Yes"
+                , cancelButtonText: "No"
+                , icon: "warning"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.dispatch('deleteMenu');
+                } else {
+                    Swal.fire("Cancelled", "The Menu is safe.", "info");
+                }
+            });
+        });
+
+        Livewire.on('delete-submenu', (message) => {
+            Swal.fire({
+                title: message
+                , showCancelButton: true
+                , confirmButtonText: "Yes"
+                , cancelButtonText: "No"
+                , icon: "warning"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.dispatch('deleteSubMenuConfirmed');
+                } else {
+                    Swal.fire("Cancelled", "The Menu is safe.", "info");
+                }
+            });
+        });
+
     </script>
 </div>

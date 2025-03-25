@@ -93,10 +93,13 @@
         document.addEventListener('livewire:initialized', function() {
             Livewire.on('success', (message, isClose = true, type = 'success') => {
                 toastr[type](message);
-                
+
                 if (isClose) {
                     $('.modal').modal('hide');
                 }
+            });
+            Livewire.on('delete-success', (message) => {
+                Swal.fire("Deleted!", message, "success");
             });
         });
 
@@ -108,14 +111,14 @@
         window.Echo = new Echo({
             broadcaster: 'pusher'
             , key: "{{ env('PUSHER_APP_KEY') }}"
-            , cluster: "{{ env('PUSHER_APP_CLUSTER', 'mt1') }}"
-            , wsHost: "{{ env('PUSHER_HOST', 'ws-mt1.pusher.com') }}"
-            , wsPort: 443
-            , wssPort: 443
-            , forceTLS: true
-            , disableStats: true
-            , encrypted: true
-        });
+    , cluster: "{{ env('PUSHER_APP_CLUSTER', 'mt1') }}"
+    , wsHost: "{{ env('PUSHER_HOST', 'ws-mt1.pusher.com') }}"
+    , wsPort: 443
+    , wssPort: 443
+    , forceTLS: true
+    , disableStats: true
+    , encrypted: true
+    });
 
     </script> --}}
     <script>

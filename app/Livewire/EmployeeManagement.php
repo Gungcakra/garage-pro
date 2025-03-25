@@ -12,8 +12,9 @@ use Livewire\Attributes\Layout;
 #[Layout('layouts.admin')]
 class EmployeeManagement extends Component
 {
-    public $employeeId, $name, $position, $phone, $address, $data;
+    public $employeeId, $name, $position, $phone, $address, $data, $idToDelete;
     public $isModalOpen = false;
+    protected $listeners = ['deleteEmployee'];
     #[On('echo:data-refresh,.table-employee')]
 
     public function loadData()
@@ -105,10 +106,17 @@ class EmployeeManagement extends Component
     }
     public function delete($id)
     {
-        Employee::findOrFail($id)->delete();
-        $this->dispatch('success', 'Employee deleted successfully.');
-        DataUpdate::dispatch('table-employee');
+       $this->dispatch('confirm-delete', "Are you sure you want to delete this employee?");
+       $this->idToDelete = $id;
+       
+    }
 
+    public function deleteEmployee()
+    {
+      if($this->idToDelete){
+        Employee::findOrFail($this->idToDelete)->delete();
+        $this->dispatch('delete-success', 'Employee deleted successfully.');
+      }
     }
 
 }

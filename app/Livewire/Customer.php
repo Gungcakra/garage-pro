@@ -9,7 +9,8 @@ use Livewire\Component;
 #[Layout('layouts.admin')]
 class Customer extends Component
 {
-    public $CustomerId, $name, $email, $phone, $address;
+    public $CustomerId, $name, $email, $phone, $address, $idToDelete;
+    protected $listeners = ['deleteCustomer'];
     public function render()
     {
         return view('livewire.pages.admin.customer', [
@@ -83,9 +84,19 @@ class Customer extends Component
 
     public function delete($id)
     {
-        $customer = ModelsCustomer::findOrFail($id);
-        $customer->delete();
-        $this->dispatch('success', 'Customer deleted successfully.');
-        $this->closeModal();
+        $this->idToDelete = $id;
+        $this->dispatch('confirm-delete', 'Are you sure you want to delete this customer?');
+
+     
+    }
+    
+    public function deleteCustomer()
+    {
+        if($this->idToDelete)
+        {
+            $customer = ModelsCustomer::find($this->idToDelete);
+            $customer->delete();
+            $this->dispatch('delete-success', 'Customer deleted successfully.');
+        }
     }
 }

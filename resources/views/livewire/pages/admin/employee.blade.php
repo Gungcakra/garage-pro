@@ -226,10 +226,25 @@
             myModal.show();
         });
         Livewire.on('hide-modal', () => {
-        var modalEl = document.getElementById('employeeModal');
-        var modal = bootstrap.Modal.getInstance(modalEl);
-        modal.hide();
-    });
+            var modalEl = document.getElementById('employeeModal');
+            var modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+        });
+        Livewire.on('confirm-delete', (message) => {
+            Swal.fire({
+                title: message
+                , showCancelButton: true
+                , confirmButtonText: "Yes"
+                , cancelButtonText: "No"
+                , icon: "warning"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.dispatch('deleteEmployee');
+                } else {
+                    Swal.fire("Cancelled", "The employee is safe.", "info");
+                }
+            });
+        });
 
     </script>
 </div>

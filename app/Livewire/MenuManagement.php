@@ -10,8 +10,9 @@ use Livewire\Component;
 #[Layout('layouts.admin')]
 class MenuManagement extends Component
 {
-    public $menuId, $menus, $submenus, $name, $route, $order, $icon, $dataSubMenu, $subMenuId,  $subMenuName, $subMenuRoute, $subMenuOrder;
+    public $menuId, $menus, $submenus, $name, $route, $order, $icon, $dataSubMenu, $subMenuId,  $subMenuName, $subMenuRoute, $subMenuOrder, $menuIdToDelete, $subMenuIdToDelete;
 
+    protected $listeners = ['deleteMenu', 'deleteSubMenuConfirmed'];
     public $isModalOpen = false;
 
     public function openModal()
@@ -96,9 +97,17 @@ class MenuManagement extends Component
     }
     public function delete($id)
     {
-        $menu = Menu::findOrFail($id);
-        $menu->delete();
-        $this->dispatch('success', 'Menu deleted successfully!');
+       $this->menuIdToDelete = $id;
+        $this->dispatch( 'delete-menu',"Are you sure you want to delete this menu?");
+    }
+
+    public function deleteMenu()
+    {
+        if($this->menuIdToDelete){
+            $menu = Menu::findOrFail($this->menuIdToDelete);
+            $menu->delete();
+            $this->dispatch('delete-success', 'Menu deleted successfully!');
+        }
     }
 
     public function createSubMenu($id)
@@ -126,9 +135,17 @@ class MenuManagement extends Component
     }
     public function deleteSubMenu($id)
     {
-        $submenu = SubMenu::findOrFail($id);
-        $submenu->delete();
-        $this->dispatch('success', 'Submenu deleted successfully!');
+        $this->subMenuIdToDelete = $id;
+        $this->dispatch('delete-submenu', 'Are you sure you want to delete this submenu?');
+    }
+
+    public function deleteSubMenuConfirmed()
+    {
+        if ($this->subMenuIdToDelete) {
+            $submenu = SubMenu::findOrFail($this->subMenuIdToDelete);
+            $submenu->delete();
+            $this->dispatch('delete-success', 'Submenu deleted successfully!');
+        }
     }
     public function editSubMenu($id)
     {
