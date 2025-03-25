@@ -14,12 +14,18 @@ class EmployeeManagement extends Component
 {
     public $employeeId, $name, $position, $phone, $address, $data, $idToDelete;
     public $isModalOpen = false;
-    protected $listeners = ['deleteEmployee'];
+    protected $listeners = ['deleteEmployee', 'loadData'];
+
+    public $search = '';
     #[On('echo:data-refresh,.table-employee')]
 
     public function loadData()
     {
-        $this->data = Employee::get();
+        if(!$this->search){
+            $this->data = Employee::get();
+        }else{
+            $this->data = Employee::where('name', 'like', '%'.$this->search.'%')->get();
+        }
     }
     public function render()
     {

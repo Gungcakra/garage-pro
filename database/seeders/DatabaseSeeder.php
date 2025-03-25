@@ -99,5 +99,19 @@ class DatabaseSeeder extends Seeder
                     'order' => 2
                 ]);
         
+                Submenu::create([
+                    'menu_id' => $masterData->id,
+                    'name' => 'Customer',
+                    'route' => 'customer',
+                    'order' => 3
+                ]);
+
+                Submenu::create([
+                    'menu_id' => $masterData->id,
+                    'name' => 'Service',
+                    'route' => 'service',
+                    'order' => 4
+                ]);
+        
     }
 }

@@ -27,6 +27,9 @@
                 </ul>
                 <!--end::Breadcrumb-->
             </div>
+            <div class="d-flex items-center">
+                <input type="text" class="form-control form-control-solid" placeholder="Search Employee Name" id="search" autocomplete="off" wire:model="search" onkeydown="handleSearch()" />
+            </div>
             <!--end::Page title-->
             <!--begin::Actions-->
             <div class="d-flex align-items-center gap-2 gap-lg-3">
@@ -60,6 +63,12 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @if (count($data) < 1)
+                        <tr>
+                            <td colspan="6" class="text-center">No Data Found</td>
+                        </tr>
+                        @else
+
                         @foreach ( $data as $index => $employee)
 
                         <tr wire:key="employee-{{ $employee->id }}">
@@ -87,6 +96,7 @@
 
                         </tr>
                         @endforeach
+                        @endif
                     </tbody>
 
 
@@ -245,6 +255,10 @@
                 }
             });
         });
+
+        function handleSearch() {
+            Livewire.dispatch('loadData');
+        }
 
     </script>
 </div>
