@@ -5,16 +5,22 @@ namespace App\Livewire;
 use App\Models\Service as ModelsService;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('layouts.admin')]
 class Service extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
     public $ServiceId, $name, $price, $idToDelete;
-    protected $listeners = ['deleteService'];
+    protected $listeners = ['deleteService', 'loadData'];
+    public $search = '';
     public function render()
     {
         return view('livewire.pages.admin.service', [
-            'data' => ModelsService::all(),
+            'data' => ModelsService::when($this->search, function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%');
+            })->paginate(10),
         ]);
     }
     

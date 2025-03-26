@@ -27,6 +27,9 @@
                 </ul>
                 <!--end::Breadcrumb-->
             </div>
+            <div class="d-flex items-center">
+                <input type="text" class="form-control form-control-solid" placeholder="Search Service Name" id="search" autocomplete="off" wire:model="search" onkeydown="handleSearch()" />
+            </div>
             <!--end::Page title-->
             <!--begin::Actions-->
             <div class="d-flex align-items-center gap-2 gap-lg-3">
@@ -94,6 +97,10 @@
 
 
                 </table>
+
+                <div class="mt-4 d-flex justify-content-center">
+                    {{ $data->onEachSide(1)->links() }}
+                </div>
             </div>
 
             <div class="modal fade" tabindex="-1" id="ServiceModal" aria-hidden="true">
@@ -201,5 +208,8 @@
             });
         });
 
+        function handleSearch() {
+            Livewire.dispatch('loadData')
+        }
     </script>
 </div>

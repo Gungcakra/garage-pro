@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\Menu;
+use App\Models\Service;
 use App\Models\SubMenu;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -28,6 +29,7 @@ class DatabaseSeeder extends Seeder
 
         Employee::factory(30)->create();
         Customer::factory(30)->create();
+        Service::factory(30)->create();
 
                 // Menu Dashboard
                 $dashboard = Menu::create([
