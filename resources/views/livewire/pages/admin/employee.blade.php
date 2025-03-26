@@ -101,6 +101,9 @@
 
 
                 </table>
+                <div class="mt-4 d-flex justify-content-center">
+                    {{ $data->onEachSide(1)->links() }}
+                </div>
             </div>
 
             <div class="modal fade" tabindex="-1" id="employeeModal" aria-hidden="true">

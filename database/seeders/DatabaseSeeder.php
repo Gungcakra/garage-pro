@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\Menu;
 use App\Models\SubMenu;
@@ -25,42 +26,8 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin'
         ]);
 
-        Employee::factory()->create([
-            'name' => 'John Doe',
-            'position' => 'Manager',
-            'phone' => '1234567890',
-            'address' => '123 Main St, Cityville'
-        ]);
-        Employee::factory()->create([
-            'name' => 'Jane Smith',
-            'position' => 'Developer',
-            'phone' => '0987654321',
-            'address' => '456 Elm St, Townsville'
-        ]);
-        Employee::factory()->create([
-            'name' => 'Alice Johnson',
-            'position' => 'Designer',
-            'phone' => '5551234567',
-            'address' => '789 Oak St, Villageburg'
-        ]);
-        Employee::factory()->create([
-            'name' => 'Bob Brown',
-            'position' => 'Analyst',
-            'phone' => '4449876543',
-            'address' => '321 Pine St, Hamletville'
-        ]);
-        Employee::factory()->create([
-            'name' => 'Charlie Green',
-            'position' => 'Tester',
-            'phone' => '2225551234',
-            'address' => '654 Maple St, Citytown'
-        ]);
-        Employee::factory()->create([
-            'name' => 'David White',
-            'position' => 'Support',
-            'phone' => '1112223333',
-            'address' => '987 Birch St, Suburbia'
-        ]);
+        Employee::factory(30)->create();
+        Customer::factory(30)->create();
 
                 // Menu Dashboard
                 $dashboard = Menu::create([

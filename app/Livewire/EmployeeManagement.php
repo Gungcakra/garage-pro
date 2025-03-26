@@ -8,31 +8,28 @@ use Livewire\Component;
 use App\Models\Employee;
 use App\Models\Menu;
 use Livewire\Attributes\Layout;
+use Livewire\WithPagination;
 
 #[Layout('layouts.admin')]
 class EmployeeManagement extends Component
 {
-    public $employeeId, $name, $position, $phone, $address, $data, $idToDelete;
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+    public $employeeId, $name, $position, $phone, $address, $idToDelete;
     public $isModalOpen = false;
     protected $listeners = ['deleteEmployee', 'loadData'];
 
     public $search = '';
     #[On('echo:data-refresh,.table-employee')]
 
-    public function loadData()
-    {
-        if(!$this->search){
-            $this->data = Employee::get();
-        }else{
-            $this->data = Employee::where('name', 'like', '%'.$this->search.'%')->get();
-        }
-    }
     public function render()
     {
 
         return view('livewire.pages.admin.employee', [
-            'data' => $this->loadData(),
-            'menus' => Menu::with('submenus')->get()
+            'data' => Employee::when($this->search, function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%');
+            })->paginate(10),
+
         ]);
     }
 

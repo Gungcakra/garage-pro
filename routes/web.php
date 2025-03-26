@@ -9,13 +9,14 @@ use App\Livewire\MenuManagement;
 use App\Livewire\Service;
 use Illuminate\Support\Facades\Route;
 
-
 Route::get('/login', Login::class)->name('login');
 Route::get('/logout', [Login::class, 'logout'])->name('logout');
 
-Route::get('/dashboard',Dashboard::class)->name('dashboard');
-Route::get('/customer',action: Customer::class)->name('customer');
-Route::get('/employee',EmployeeManagement::class)->name('employee');
-Route::get('/menu',MenuManagement::class)->name('menu');
-Route::get('/service', Service::class)->name('service');
-Route::get('/test',action: MenuManagement::class)->name('test');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', Dashboard::class)->name('dashboard');
+    Route::get('/customer', Customer::class)->name('customer');
+    Route::get('/employee', EmployeeManagement::class)->name('employee');
+    Route::get('/menu', MenuManagement::class)->name('menu');
+    Route::get('/service', Service::class)->name('service');
+    Route::get('/test', MenuManagement::class)->name('test');
+});
