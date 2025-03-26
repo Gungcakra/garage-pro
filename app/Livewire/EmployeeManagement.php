@@ -14,7 +14,7 @@ use Livewire\WithPagination;
 class EmployeeManagement extends Component
 {
     use WithPagination;
-    protected $paginationTheme = 'bootstrap';
+     protected $paginationTheme = 'bootstrap';
     public $employeeId, $name, $position, $phone, $address, $idToDelete;
     public $isModalOpen = false;
     protected $listeners = ['deleteEmployee', 'loadData'];

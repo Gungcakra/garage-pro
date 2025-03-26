@@ -14,9 +14,10 @@ class Customer extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $CustomerId, $name, $email, $phone, $address, $idToDelete;
-    protected $listeners = ['deleteCustomer'];
+    protected $listeners = ['deleteCustomer','loadData'];
     public $search = '';
-    
+
+   
     public function render()
     {
         return view('livewire.pages.admin.customer', [
