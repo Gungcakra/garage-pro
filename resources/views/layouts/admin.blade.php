@@ -90,7 +90,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
-        document.addEventListener('livewire:initialized', function() {
+        document.addEventListener('livewire:init', function() {
             Livewire.on('success', (message, isClose = true, type = 'success') => {
                 toastr[type](message);
 

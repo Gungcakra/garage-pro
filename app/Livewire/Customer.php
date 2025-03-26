@@ -5,16 +5,24 @@ namespace App\Livewire;
 use App\Models\Customer as ModelsCustomer;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('layouts.admin')]
 class Customer extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+
     public $CustomerId, $name, $email, $phone, $address, $idToDelete;
     protected $listeners = ['deleteCustomer'];
+    public $search = '';
+    
     public function render()
     {
         return view('livewire.pages.admin.customer', [
-            'data' => ModelsCustomer::all(),
+            'data' => ModelsCustomer::when($this->search, function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%');
+            })->paginate(10),
         ]);
     }
 
