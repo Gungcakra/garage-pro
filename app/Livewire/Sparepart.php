@@ -30,6 +30,7 @@ class Sparepart extends Component
     }
     public function closeModal()
     {
+        $this->SparePartId = null;
         $this->reset(['name', 'brand', 'price', 'stock']);
         $this->dispatch('hide-modal');
     }

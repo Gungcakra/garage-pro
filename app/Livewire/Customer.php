@@ -34,6 +34,7 @@ class Customer extends Component
     
     public function closeModal()
     {
+        $this->CustomerId = null;
         $this->reset(['name', 'email', 'phone', 'address']);
         $this->dispatch('hide-modal');
     }

@@ -31,6 +31,7 @@ class Service extends Component
 
     public function closeModal()
     {
+        $this->ServiceId = null;
         $this->reset(['name','price']);
         $this->dispatch('hide-modal');
     }
