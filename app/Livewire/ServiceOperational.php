@@ -63,6 +63,7 @@ class ServiceOperational extends Component
             'status' => $this->status,
         ]);
         $this->dispatch('success', 'Service operational created successfully.');
+        $this->reset(['code', 'customer_id', 'check', 'stnk', 'bpkb', 'kunci', 'plate_number', 'status']);
     }
     public function mount()
     {
