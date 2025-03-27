@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class ServiceOperational extends Model
 {
     protected $fillable = [
+        'code',
         'customer_id',
         'check',
         'stnk',
         'bpkb',
         'kunci',
+        'plate_number',
         'status'
     ];
 

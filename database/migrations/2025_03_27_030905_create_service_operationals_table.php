@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('service_operationals', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
+            $table->string('code');
             $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
             $table->string('check');
+            $table->string('plate_number');
             $table->boolean('stnk')->default(false);
             $table->boolean('bpkb')->default(false);
             $table->boolean('kunci')->default(false);

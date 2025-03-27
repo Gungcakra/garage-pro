@@ -102,6 +102,9 @@
                 Swal.fire("Deleted!", message, "success");
             });
         });
+        Livewire.hook('morphed', () => {
+            KTMenu.createInstances();
+        });
 
     </script>
     {{-- <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
