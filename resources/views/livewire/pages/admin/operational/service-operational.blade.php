@@ -86,18 +86,19 @@
                                 <!--begin::Input group-->
                                 <div class="fv-row">
                                     <!--begin::Label-->
-                                    <label class="required form-label">Customer</label>
+                                    <label class="required form-label">Customer {{ $customer_id }}</label>
                                     <!--end::Label-->
-                                    <!--begin::Select2-->
-
-                                    <select class="form-select" data-control="select2" data-placeholder="Select an option" wire:model="customer_id">
-                                        <option>Select Customer</option>
-                                        @forelse($customers as $item)
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                        @empty
-                                        <option value="">No Data</option>
-                                        @endforelse
-                                    </select>
+                                    <!--begin:: 2-->
+                                    <div wire:ignore>
+                                        <select class="form-select" data-control="select2" data-placeholder="Select an option" wire:model="customer_id" onchange="@this.set('customer_id', this.value)">
+                                            <option>Select Customer</option>
+                                            @forelse($customers as $item)
+                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @empty
+                                            <option value="">No Data</option>
+                                            @endforelse
+                                        </select>
+                                    </div>
                                     <input type="hidden" wire:model="status" value="pending" wire:ignore>
                                     <!--end::Select2-->
                                     <!--begin::Description-->
