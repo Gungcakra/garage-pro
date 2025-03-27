@@ -9,6 +9,9 @@ class ServiceOperational extends Component
 {
     public function render()
     {
-        return view('livewire.pages.admin.operational.service-operational');
+        return view('livewire.pages.admin.operational.service-operational', [
+            'customers' => \App\Models\Customer::orderBy('id', 'desc')->get(),
+            
+        ]);
     }
 }

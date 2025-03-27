@@ -43,10 +43,10 @@
                 <div class="m-0">
                     <!--begin::Menu toggle-->
                     <a href="#" class="btn btn-sm btn-flex btn-secondary fw-bold" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                    <i class="ki-duotone ki-filter fs-6 text-muted me-1">
-                        <span class="path1"></span>
-                        <span class="path2"></span>
-                    </i>Filter</a>
+                        <i class="ki-duotone ki-filter fs-6 text-muted me-1">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>Filter</a>
                     <!--end::Menu toggle-->
                     <!--begin::Menu 1-->
                     <div class="menu menu-sub menu-sub-dropdown w-250px w-md-300px" data-kt-menu="true" id="kt_menu_64b77613eb015">
@@ -88,13 +88,13 @@
                                     <!--begin::Options-->
                                     <label class="form-check form-check-sm form-check-custom form-check-solid me-5">
                                         <input class="form-check-input" type="checkbox" value="1" />
-                                        <span class="form-check-label">Author</span>
+                                        <span>Author</span>
                                     </label>
                                     <!--end::Options-->
                                     <!--begin::Options-->
                                     <label class="form-check form-check-sm form-check-custom form-check-solid">
                                         <input class="form-check-input" type="checkbox" value="2" checked="checked" />
-                                        <span class="form-check-label">Customer</span>
+                                        <span>Customer</span>
                                     </label>
                                     <!--end::Options-->
                                 </div>
@@ -109,7 +109,7 @@
                                 <!--begin::Switch-->
                                 <div class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
                                     <input class="form-check-input" type="checkbox" value="" name="notifications" checked="checked" />
-                                    <label class="form-check-label">Enabled</label>
+                                    <label>Enabled</label>
                                 </div>
                                 <!--end::Switch-->
                             </div>
@@ -129,7 +129,7 @@
                 <!--begin::Secondary button-->
                 <!--end::Secondary button-->
                 <!--begin::Primary button-->
-                <a href="#" class="btn btn-sm fw-bold btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Create</a>
+                <a href="#" class="btn btn-sm fw-bold btn-primary">Add Customer</a>
                 <!--end::Primary button-->
             </div>
             <!--end::Actions-->
@@ -150,7 +150,7 @@
                         <!--begin::Card header-->
                         <div class="card-header">
                             <div class="card-title">
-                                <h2>Order Details</h2>
+                                <h2>Service Details</h2>
                             </div>
                         </div>
                         <!--end::Card header-->
@@ -163,61 +163,53 @@
                                     <label class="form-label">Order ID</label>
                                     <!--end::Label-->
                                     <!--begin::Auto-generated ID-->
-                                    <div class="fw-bold fs-3">#13621</div>
+                                    <input type="hidden" wire:model="code">
+                                    <div class="fw-bold fs-3">
+                                        {{ $serviceOperationalId ?? '#' . now()->format('YmdHis') }}
+                                    </div>
                                     <!--end::Input-->
                                 </div>
                                 <!--end::Input group-->
                                 <!--begin::Input group-->
                                 <div class="fv-row">
                                     <!--begin::Label-->
-                                    <label class="required form-label">Payment Method</label>
+                                    <label class="required form-label">Customer</label>
                                     <!--end::Label-->
                                     <!--begin::Select2-->
-                                    <select class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select an option" name="payment_method" id="kt_ecommerce_edit_order_payment">
-                                        <option></option>
-                                        <option value="cod">Cash on Delivery</option>
-                                        <option value="visa">Credit Card (Visa)</option>
-                                        <option value="mastercard">Credit Card (Mastercard)</option>
-                                        <option value="paypal">Paypal</option>
+
+                                    <select class="form-select" data-control="select2" data-placeholder="Select an option">
+                                        <option>Select Customer</option>
+                                        @forelse($customers as $item)
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        @empty
+                                        <option value="">No Data</option>
+                                        @endforelse
                                     </select>
                                     <!--end::Select2-->
                                     <!--begin::Description-->
-                                    <div class="text-muted fs-7">Set the date of the order to process.</div>
+                                    <div class="text-muted fs-7">Select Customer.</div>
                                     <!--end::Description-->
                                 </div>
                                 <!--end::Input group-->
-                                <!--begin::Input group-->
-                                <div class="fv-row">
-                                    <!--begin::Label-->
-                                    <label class="required form-label">Shipping Method</label>
-                                    <!--end::Label-->
-                                    <!--begin::Select2-->
-                                    <select class="form-select mb-2" data-control="select2" data-hide-search="true" data-placeholder="Select an option" name="shipping_method" id="kt_ecommerce_edit_order_shipping">
-                                        <option></option>
-                                        <option value="none">N/A - Virtual Product</option>
-                                        <option value="standard">Standard Rate</option>
-                                        <option value="express">Express Rate</option>
-                                        <option value="speed">Speed Overnight Rate</option>
-                                    </select>
-                                    <!--end::Select2-->
-                                    <!--begin::Description-->
-                                    <div class="text-muted fs-7">Set the date of the order to process.</div>
-                                    <!--end::Description-->
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                                    <label for="flexCheckDefault">
+                                        STNK
+                                    </label>
                                 </div>
-                                <!--end::Input group-->
-                                <!--begin::Input group-->
-                                <div class="fv-row">
-                                    <!--begin::Label-->
-                                    <label class="required form-label">Order Date</label>
-                                    <!--end::Label-->
-                                    <!--begin::Editor-->
-                                    <input id="kt_ecommerce_edit_order_date" name="order_date" placeholder="Select a date" class="form-control mb-2" value="" />
-                                    <!--end::Editor-->
-                                    <!--begin::Description-->
-                                    <div class="text-muted fs-7">Set the date of the order to process.</div>
-                                    <!--end::Description-->
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" />
+                                    <label  for="flexCheckChecked">
+                                        BPKB
+                                    </label>
                                 </div>
-                                <!--end::Input group-->
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" />
+                                    <label for="flexCheckChecked">
+                                        Kunci
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <!--end::Card header-->
@@ -253,14 +245,14 @@
                                     <!--begin::Selected products-->
                                     <!--begin::Total price-->
                                     <div class="fw-bold fs-4">Total Cost: $
-                                    <span id="kt_ecommerce_edit_order_total_price">0.00</span></div>
+                                        <span id="kt_ecommerce_edit_order_total_price">0.00</span></div>
                                     <!--end::Total price-->
                                 </div>
                                 <!--end::Input group-->
                                 <!--begin::Separator-->
                                 <div class="separator"></div>
                                 <!--end::Separator-->
-                               
+
                             </div>
                         </div>
                         <!--end::Card header-->
@@ -569,7 +561,7 @@
                                 <!--begin::Checkbox-->
                                 <div class="form-check form-check-custom form-check-solid">
                                     <input class="form-check-input" type="checkbox" value="" id="same_as_billing" checked="checked" />
-                                    <label class="form-check-label" for="same_as_billing">Shipping address is the same as billing address</label>
+                                    <label for="same_as_billing">Shipping address is the same as billing address</label>
                                 </div>
                                 <!--end::Checkbox-->
                                 <!--begin::Shipping address-->
@@ -877,7 +869,7 @@
                         <button type="submit" id="kt_ecommerce_edit_order_submit" class="btn btn-primary">
                             <span class="indicator-label">Save Changes</span>
                             <span class="indicator-progress">Please wait...
-                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
+                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                         </button>
                         <!--end::Button-->
                     </div>

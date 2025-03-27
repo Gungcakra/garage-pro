@@ -83,6 +83,19 @@ class DatabaseSeeder extends Seeder
                     'route' => 'service',
                     'order' => 4
                 ]);
+
+            $operational = Menu::create([
+                'name' => 'Operational',
+                'icon' => 'fa-solid fa-gauge',
+                'route' => null,
+                'order' => 3
+            ]);
+            Submenu::create([
+                'menu_id' => $operational->id,
+                'name' => 'Service Operational',
+                'route' => 'serviceoperational',
+                'order' => 1
+            ]);
         
     }
 }
