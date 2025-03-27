@@ -17,7 +17,7 @@ class Service extends Component
     public $search = '';
     public function render()
     {
-        return view('livewire.pages.admin.service', [
+        return view('livewire.pages.admin.masterdata.service', [
             'data' => ModelsService::when($this->search, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
             })->paginate(10),

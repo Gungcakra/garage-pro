@@ -10,7 +10,7 @@ class Dashboard extends Component
 {
     public function render()
     {
-        return view('livewire.pages.admin.dashboard')->with([
+        return view('livewire.pages.admin.masterdata.dashboard')->with([
             'title' => 'Dashboard',
             'active' => 'dashboard',
             'menus' => Menu::with('submenus')->get()
