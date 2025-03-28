@@ -10,7 +10,7 @@ use Livewire\Component;
 #[Layout('layouts.admin')]
 class ServiceOperational extends Component
 {
-    public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $status, $idToDelete, $name, $email, $phone, $address;
+    public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $status, $idToDelete, $name, $email, $phone, $address, $latestId;
 
     public function openModal()
     {
@@ -63,7 +63,10 @@ class ServiceOperational extends Component
             'status' => $this->status,
         ]);
         $this->dispatch('success', 'Service operational created successfully.');
-        $this->reset(['code', 'customer_id', 'check', 'stnk', 'bpkb', 'kunci', 'plate_number', 'status']);
+        $this->reset([ 'customer_id', 'check', 'stnk', 'bpkb', 'kunci', 'plate_number', 'status']);
+        $this->latestId = ModelsServiceOperational::where('code', $this->code)->first()->id;
+        $this->js("window.location.href = '" . route('serviceinvoice', ['id' => $this->latestId]) . "'");
+
     }
     public function mount()
     {
@@ -71,6 +74,14 @@ class ServiceOperational extends Component
         $this->status = 0;
     }
 
+    public function getInvoice($id)
+    {
+        
+        $data = ModelsServiceOperational::where('id', $id)->first();
+        return view('livewire.pages.admin.operational.service-invoice', [
+            'data' => $data,
+        ]);
+    }
     public function render()
     {
         return view('livewire.pages.admin.operational.service-operational', [

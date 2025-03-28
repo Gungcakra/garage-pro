@@ -17,9 +17,9 @@ return new class extends Migration
             $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
             $table->string('check');
             $table->string('plate_number');
-            $table->boolean('stnk')->default(false);
-            $table->boolean('bpkb')->default(false);
-            $table->boolean('kunci')->default(false);
+            $table->boolean('stnk')->default(false)->nullable();
+            $table->boolean('bpkb')->default(false)->nullable();
+            $table->boolean('kunci')->default(false)->nullable();
             $table->boolean('status')->default(false);
             $table->timestamps();
         });

@@ -22,5 +22,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/service', Service::class)->name('service');
     Route::get('/sparepart', LivewireSparepart::class)->name('sparepart');
     Route::get('/serviceoperational', ServiceOperational::class)->name('serviceoperational');
+    Route::get('/serviceinvoice/{id}', [ServiceOperational::class, 'getInvoice'])->name('serviceinvoice');
     Route::get('/test', MenuManagement::class)->name('test');
 });

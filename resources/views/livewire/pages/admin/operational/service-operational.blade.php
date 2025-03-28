@@ -86,11 +86,11 @@
                                 <!--begin::Input group-->
                                 <div class="fv-row">
                                     <!--begin::Label-->
-                                    <label class="required form-label">Customer {{ $customer_id }}</label>
+                                    <label class="required form-label">Customer</label>
                                     <!--end::Label-->
                                     <!--begin:: 2-->
-                                    <div wire:ignore>
-                                        <select class="form-select" data-control="select2" data-placeholder="Select an option" wire:model="customer_id" onchange="@this.set('customer_id', this.value)">
+                                    <div wire:ignore>   
+                                        <select class="form-select" data-control="select2" data-placeholder="Select an option" wire:model="customer_id" onchange="@this.set('customer_id', this.value)" name="customer_id">
                                             <option>Select Customer</option>
                                             @forelse($customers as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -331,6 +331,11 @@
             var modal = bootstrap.Modal.getInstance(modalEl);
             modal.hide();
             modal.hide();
+        });
+        Livewire.on('success', () => {
+          var customerSelect = document.querySelector('select[name="customer_id"]');
+            customerSelect.value = '';
+            
         });
     </script>
 </div>
