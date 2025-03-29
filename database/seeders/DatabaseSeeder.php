@@ -11,6 +11,8 @@ use App\Models\SubMenu;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -58,30 +60,42 @@ class DatabaseSeeder extends Seeder
         
                 Submenu::create([
                     'menu_id' => $masterData->id,
+                    'name' => 'Role',
+                    'route' => 'role',
+                    'order' => 1
+                ]);
+                Submenu::create([
+                    'menu_id' => $masterData->id,
                     'name' => 'Employee',
                     'route' => 'employee',
-                    'order' => 1
+                    'order' => 2
                 ]);
         
                 Submenu::create([
                     'menu_id' => $masterData->id,
                     'name' => 'Menu',
                     'route' => 'menu',
-                    'order' => 2
+                    'order' => 3
                 ]);
         
                 Submenu::create([
                     'menu_id' => $masterData->id,
                     'name' => 'Customer',
                     'route' => 'customer',
-                    'order' => 3
+                    'order' => 4
                 ]);
 
                 Submenu::create([
                     'menu_id' => $masterData->id,
                     'name' => 'Service',
                     'route' => 'service',
-                    'order' => 4
+                    'order' => 5
+                ]);
+                Submenu::create([
+                    'menu_id' => $masterData->id,
+                    'name' => 'Spare Part',
+                    'route' => 'sparepart',
+                    'order' => 6
                 ]);
 
             $operational = Menu::create([
@@ -96,6 +110,25 @@ class DatabaseSeeder extends Seeder
                 'route' => 'serviceoperational',
                 'order' => 1
             ]);
+
+
+            $admin = Role::firstOrCreate(['name' => 'admin']);
+            $employee = Role::firstOrCreate(['name' => 'employee']);
+    
+            // Define permissions
+            $permissions = [
+                'masterdata',
+                'operational',
+                'report'
+            ];
+    
+            foreach ($permissions as $permission) {
+                Permission::firstOrCreate(['name' => $permission]);
+            }
+    
+            // Assign permissions to roles
+            $admin->syncPermissions(['masterdata', 'operational', 'report']);
+            $employee->syncPermissions(['operational']);
         
     }
 }

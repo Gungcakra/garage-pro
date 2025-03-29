@@ -6,7 +6,7 @@
             <!--begin::Page title-->
             <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                 <!--begin::Title-->
-                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Menu Management</h1>
+                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Role Management</h1>
                 <!--end::Title-->
                 <!--begin::Breadcrumb-->
                 <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -21,7 +21,7 @@
                     </li>
                     <!--end::Item-->
                     <!--begin::Item-->
-                    <li class="breadcrumb-item text-muted">Menu</li>
+                    <li class="breadcrumb-item text-muted">Role</li>
                     <!--end::Item-->
                 </ul>
                 <!--end::Breadcrumb-->
@@ -30,10 +30,10 @@
             <!--begin::Actions-->
             <div class="d-flex align-items-center gap-2 gap-lg-3">
                 <!--begin::Secondary button-->
-                <a href="#" class="btn btn-sm fw-bold btn-secondary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Rollover</a>
+                {{-- <a href="#" class="btn btn-sm fw-bold btn-secondary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Rollover</a> --}}
                 <!--end::Secondary button-->
                 <!--begin::Primary button-->
-                <button class="btn btn-sm fw-bold btn-primary" wire:click="create()">Add Menu</button>
+                <button class="btn btn-sm fw-bold btn-primary" wire:click="create()">Add Role</button>
                 <!--end::Primary button-->
             </div>
             <!--end::Actions-->
@@ -44,7 +44,7 @@
     <!--begin::Content-->
     <div id="kt_app_content" class="app-content flex-column-fluid">
         <!--begin::Content container-->
-        <div class="row g-5 g-xl-8">
+        <div class="row g-5 g-xl-8 d-flex justify-content-center">
 
             @foreach ($roles as $role)
             <div class="col-xl-4">
@@ -54,16 +54,32 @@
                     <div class="card-header border-0 pt-5">
                         <h3 class="card-title align-items-start flex-column">
                             <span class="card-label fw-bold text-dark">{{ $role->name }}</span>
-                            <span class="text-muted mt-1 fw-semibold fs-7">Pending 10 tasks</span>
+                            {{-- <span class="text-muted mt-1 fw-semibold fs-7">Pending 10 tasks</span> --}}
                         </h3>
                         <div class="card-toolbar">
+
                             <!--begin::Menu-->
+                            <button wire:click="editRole({{ $role->id }})" class="btn btn-sm btn-icon btn-color-success btn-active-light-success" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                <i class="ki-duotone ki-pencil">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                </i>
+                            </button>
                             <button type="button" class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                 <i class="ki-duotone ki-category fs-6">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
                                     <span class="path3"></span>
                                     <span class="path4"></span>
+                                </i>
+                            </button>
+                            <button wire:click="deleteRole({{ $role->id }})" class="btn btn-sm btn-icon btn-color-danger btn-active-light-danger" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                <i class="ki-duotone ki-trash">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                    <span class="path3"></span>
+                                    <span class="path4"></span>
+                                    <span class="path5"></span>
                                 </i>
                             </button>
                             <!--begin::Menu 1-->
@@ -102,9 +118,65 @@
                 <!--end::List Widget 1-->
             </div>
             @endforeach
-            
+
         </div>
-        
+
+        <div class="modal fade" tabindex="-1" id="menuModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">{{$roleId ? 'Edit' : 'Add'}} Role</h3>
+
+                        <!--begin::Close-->
+                        <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close" wire:click="closeModal">
+                            <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                        </div>
+                        <!--end::Close-->
+                    </div>
+
+                    <div class="modal-body">
+                        {{-- <form id="kt_modal_new_target_form" class="form" wire:submit.prevent="{{ isset($CustomerId) ? 'update' : 'store' }}"
+                        > --}}
+
+                        <!--begin::Input group-->
+                        <div class="row g-9 mb-8">
+
+                            <div class="d-flex flex-column col-md-12 mb-8 fv-row">
+                                <!--begin::Label-->
+                                <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                                    <span class="required">Name</span>
+                                    <span class="ms-1" data-bs-toggle="tooltip" title="Specify a target name for future usage and reference">
+                                        <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                        </i>
+                                    </span>
+                                </label>
+                                <!--end::Label-->
+                                @error('name')
+                                <div class="alert alert-danger" role="alert">
+                                    {{ $message }}
+                                </div>
+
+                                @enderror
+                                <input type="text" class="form-control form-control-solid" placeholder="Enter Name" id="name" autocomplete="off" wire:model="name" />
+                            </div>
+                        
+                        </div>
+                        <!--end::Input group-->
+
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close" wire:click="closeModal">Close</button>
+                        <button class="btn btn-primary" wire:click="{{ isset($roleId) ? 'updateRole' : 'storeRole' }}">{{ $roleId ? 'Update' : 'Store' }}</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
     <script>
@@ -129,7 +201,7 @@
             modal.hide();
         });
 
-        Livewire.on('delete-menu', (message) => {
+        Livewire.on('delete-role', (message) => {
             Swal.fire({
                 title: message
                 , showCancelButton: true
@@ -138,7 +210,7 @@
                 , icon: "warning"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Livewire.dispatch('deleteMenu');
+                    Livewire.dispatch('deleteRoleConfirm');
                 } else {
                     Swal.fire("Cancelled", "Delete Cancelled.", "info");
                 }
