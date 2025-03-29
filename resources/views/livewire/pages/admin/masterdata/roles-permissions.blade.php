@@ -34,6 +34,7 @@
                 <!--end::Secondary button-->
                 <!--begin::Primary button-->
                 <button class="btn btn-sm fw-bold btn-primary" wire:click="create()">Add Role</button>
+                <button class="btn btn-sm fw-bold btn-primary" wire:click="createPermission()">Add Permission</button>
                 <!--end::Primary button-->
             </div>
             <!--end::Actions-->
@@ -44,7 +45,7 @@
     <!--begin::Content-->
     <div id="kt_app_content" class="app-content flex-column-fluid">
         <!--begin::Content container-->
-        <div class="row g-5 g-xl-8 d-flex justify-content-center">
+        <div class="row g-5 g-xl-8 d-flex justify-content-center m-5">
 
             @foreach ($roles as $role)
             <div class="col-xl-4">
@@ -65,7 +66,7 @@
                                     <span class="path2"></span>
                                 </i>
                             </button>
-                            <button type="button" class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                            <button wire:click="createAsign({{ $role->id }})" class="btn btn-sm btn-icon btn-color-primary btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
                                 <i class="ki-duotone ki-category fs-6">
                                     <span class="path1"></span>
                                     <span class="path2"></span>
@@ -120,8 +121,53 @@
             @endforeach
 
         </div>
+        <div class="row g-5 g-xl-8 d-flex justify-content-center m-5">
+            <table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5">
+                <thead>
+                    <tr class="fw-semibold fs-6 text-muted">
+                        <th>No</th>
+                        <th>Action</th>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-        <div class="modal fade" tabindex="-1" id="menuModal" aria-hidden="true">
+                    @if (count($permissions) < 1)
+                    <tr>
+                        <td colspan="6" class="text-center">No Data Found</td>
+                    </tr>
+                    @else
+                    @foreach ( $permissions as $index => $permission)
+
+                    <tr wire:key="permission-{{ $permission->id }}">
+                        <td>{{ $index + 1 }}</td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+                                <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+                            <!--begin::Menu-->
+                            <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+                                <!--begin::Menu item-->
+                                <div class="menu-item px-3">
+                                    <a wire:click="editPermission({{ $permission->id }})" class="menu-link px-3 w-100">Edit</a>
+                                </div>
+                                <!--end::Menu item-->
+                                <!--begin::Menu item-->
+                                <div class="menu-item px-3">
+                                    <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="deletePermission({{ $permission->id }})">Delete</a>
+                                </div>
+                                <!--end::Menu item-->
+                        </td>
+                        <td>{{ $permission->name }}</td>
+
+                    </tr>
+                    @endforeach
+                    @endif
+                </tbody>
+
+
+            </table>
+        </div>
+        <div class="modal fade" tabindex="-1" id="roleModal" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -178,25 +224,141 @@
             </div>
         </div>
 
+        <div class="modal fade" tabindex="-1" id="permissionModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">{{$permissionId ? 'Edit' : 'Add'}} Permission</h3>
+
+                        <!--begin::Close-->
+                        <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close" wire:click="closeModal">
+                            <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                        </div>
+                        <!--end::Close-->
+                    </div>
+
+                    <div class="modal-body">
+                        {{-- <form id="kt_modal_new_target_form" class="form" wire:submit.prevent="{{ isset($CustomerId) ? 'update' : 'store' }}"
+                        > --}}
+
+                        <!--begin::Input group-->
+                        <div class="row g-9 mb-8">
+
+                            <div class="d-flex flex-column col-md-12 mb-8 fv-row">
+                                <!--begin::Label-->
+                                <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                                    <span class="required">Name</span>
+                                    <span class="ms-1" data-bs-toggle="tooltip" title="Specify a target name for future usage and reference">
+                                        <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                        </i>
+                                    </span>
+                                </label>
+                                <!--end::Label-->
+                                @error('name')
+                                <div class="alert alert-danger" role="alert">
+                                    {{ $message }}
+                                </div>
+
+                                @enderror
+                                <input type="text" class="form-control form-control-solid" placeholder="Enter Name" id="name" autocomplete="off" wire:model="permissionName" />
+                            </div>
+                        
+                        </div>
+                        <!--end::Input group-->
+
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close" wire:click="closeModalPermission">Close</button>
+                        <button class="btn btn-primary" wire:click="{{ isset($permissionId) ? 'updatePermission' : 'storePermission' }}" >{{ $permissionId ? 'Update' : 'Store' }}</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" tabindex="-1" id="asignModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Asign Permission</h3>
+
+                        <!--begin::Close-->
+                        <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close" wire:click="closeModalAsign">
+                            <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                        </div>
+                        <!--end::Close-->
+                    </div>
+
+                    <div class="modal-body">
+                        {{-- <form id="kt_modal_new_target_form" class="form" wire:submit.prevent="{{ isset($CustomerId) ? 'update' : 'store' }}"
+                        > --}}
+
+                        <!--begin::Input group-->
+                        <div class="row g-9 mb-8">
+
+                            <div class="d-flex flex-column col-md-12 mb-8 fv-row">
+                                <!--begin::Label-->
+                                
+                                @foreach ($permissions as $permission)
+                                <div class="form-check">
+                                    <input type="checkbox" wire:model="selectedPermissions" class="form-check-input" name="permissions[]" value="{{ $permission->id }}"
+                                    {{ in_array($permission->id, $selectedPermissions) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="permission-{{ $permission->id }}">
+                                        {{ $permission->name }}
+                                    </label>
+                                </div>
+                                @endforeach
+                            </div>
+                        
+                        </div>
+                        <!--end::Input group-->
+
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal" aria-label="Close" wire:click="closeModalAsign">Close</button>
+                        <button class="btn btn-primary" wire:click="assignPermissionsToRole">{{ $permissionId ? 'Update' : 'Store' }}</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
     <script>
         Livewire.on('show-modal', () => {
-            var myModal = new bootstrap.Modal(document.getElementById('menuModal'), {});
+            var modalEl = document.getElementById('roleModal');
             myModal.show();
         });
         Livewire.on('hide-modal', () => {
-            var modalEl = document.getElementById('menuModal');
+            var modalEl = document.getElementById('roleModal');
             var modal = bootstrap.Modal.getInstance(modalEl);
             modal.hide();
         });
 
-        Livewire.on('show-submenu-modal', () => {
-            var myModal = new bootstrap.Modal(document.getElementById('subMenuModal'), {});
+        Livewire.on('show-modal-permission', () => {
+            var myModal = new bootstrap.Modal(document.getElementById('permissionModal'), {});
             myModal.show();
 
         });
-        Livewire.on('hide-submenu-modal', () => {
-            var modalEl = document.getElementById('subMenuModal');
+        Livewire.on('show-modal-asign', () => {
+            var myModal = new bootstrap.Modal(document.getElementById('asignModal'), {});
+            myModal.show();
+
+        });
+        Livewire.on('hide-modal-permission', () => {
+            var modalEl = document.getElementById('permissionModal');
+            var modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+        });
+        Livewire.on('hide-modal-asign', () => {
+            var modalEl = document.getElementById('asignModal');
             var modal = bootstrap.Modal.getInstance(modalEl);
             modal.hide();
         });
@@ -217,7 +379,7 @@
             });
         });
 
-        Livewire.on('delete-submenu', (message) => {
+        Livewire.on('delete-permission', (message) => {
             Swal.fire({
                 title: message
                 , showCancelButton: true
@@ -226,7 +388,7 @@
                 , icon: "warning"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Livewire.dispatch('deleteSubMenuConfirmed');
+                    Livewire.dispatch('deletePermissionConfirm');
                 } else {
                     Swal.fire("Cancelled", "Delete Cancelled", "info");
                 }

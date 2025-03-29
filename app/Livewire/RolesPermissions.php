@@ -11,8 +11,8 @@ use Spatie\Permission\Models\Role;
 
 class RolesPermissions extends Component
 {
-    public $roles, $permissions, $name, $selectedRole, $selectedPermissions = [], $roleId, $idRoleToDelete;
-    protected $listeners = ['deleteRoleConfirm'];
+    public $roles, $permissions, $name, $permissionName, $selectedRole, $selectedPermissions = [], $roleId, $idRoleToDelete, $permissionId, $roleWithPermissions;
+    protected $listeners = ['deleteRoleConfirm', 'deletePermissionConfirm'];
 
     public function mount()
     {
@@ -24,9 +24,19 @@ class RolesPermissions extends Component
         $this->roles = Role::with('permissions')->get();
     }
 
+
     public function openModal()
     {
         $this->dispatch('show-modal');
+    }
+
+    public function openModalPermission()
+    {
+        $this->dispatch('show-modal-permission');
+    }
+    public function openModalAsign()
+    {
+        $this->dispatch('show-modal-asign');
     }
 
     public function closeModal()
@@ -34,11 +44,72 @@ class RolesPermissions extends Component
         $this->reset(['name']);
         $this->dispatch('hide-modal');
     }
+    public function closeModalPermission()
+    {
+        $this->reset(['permissionName']);
+        $this->dispatch('hide-modal-permission');
+    }
+    public function closeModalAsign()
+    {
+        $this->dispatch('hide-modal-asign');
+    }
     public function create()
     {
         $this->openModal();
     }
 
+    public function createPermission()
+    {
+        $this->openModalPermission();
+    }
+
+    public function createAsign($id)
+    {
+        $this->roleId = $id;
+        $role = Role::findOrFail($id);
+
+        // Ambil semua permissions
+        $this->permissions = Permission::all();
+
+        // Ambil permissions yang sudah dimiliki oleh role
+        $this->selectedPermissions = $role->permissions->pluck('id')->toArray();
+        // dd($this->selectedPermissions);
+        $this->openModalAsign();
+    }
+
+    public function assignPermissionsToRole()
+    {
+        $this->validate([
+            'selectedPermissions' => 'required|array',
+        ]);
+        $role = Role::findOrFail($this->roleId);
+        $permissionNames = Permission::whereIn('id', $this->selectedPermissions)->pluck('name')->toArray();
+        $role->syncPermissions($permissionNames);
+        if ($role) {
+            $this->dispatch('success', 'Permissions assigned to role successfully');
+            $this->fetchRoles();
+        } else {
+            $this->dispatch('error', 'Role not found');
+        }
+        $this->closeModalAsign();
+    }
+    public function storePermission()
+    {
+        $this->validate([
+            'permissionName' => 'required|unique:permissions,name',
+        ]);
+        Permission::create(['name' => $this->permissionName]);
+        $this->dispatch('success', 'Permission created successfully');
+        // $latestPermissionId = Permission::latest()->first()->id;
+        // $role = Role::find($this->roleId);
+        // if ($role) {
+        //     $role->givePermissionTo($latestPermissionId);
+        // } else {
+        //     $this->dispatch('error', 'Role not found');
+        // }
+        $this->closeModalPermission();
+        $this->fetchRoles();
+    }
     public function storeRole()
     {
         $this->validate([
@@ -62,6 +133,7 @@ class RolesPermissions extends Component
         }
     }
 
+
     public function updateRole()
     {
         $this->validate([
@@ -79,15 +151,70 @@ class RolesPermissions extends Component
         }
     }
 
+    public function editPermission($id)
+    {
+        $this->permissionId = $id;
+        $permission = Permission::find($id);
+        if ($permission) {
+            $this->permissionName = $permission->name;
+            $this->dispatch('show-modal-permission');
+        } else {
+            $this->dispatch('error', 'Permission not found');
+        }
+    }
+    public function updatePermission()
+    {
+        $this->validate([
+            'permissionName' => 'required|unique:permissions,name,' . $this->permissionId,
+        ]);
+        $permission = Permission::find($this->permissionId);
+        if ($permission) {
+            $permission->name = $this->permissionName;
+            $permission->save();
+            $this->dispatch('success', 'Permission updated successfully');
+            $this->closeModalPermission();
+            $this->permissions = Permission::all();
+        } else {
+            $this->dispatch('error', 'Permission not found');
+        }
+    }
+    public function assignPermissionToRole($roleId, $permissionId)
+    {
+        $role = Role::find($roleId);
+        $permission = Permission::find($permissionId);
+        if ($role && $permission) {
+            $role->givePermissionTo($permission);
+            $this->dispatch('success', 'Permission assigned to role successfully');
+        } else {
+            $this->dispatch('error', 'Role or Permission not found');
+        }
+    }
     public function deleteRole($id)
     {
         $this->idRoleToDelete = $id;
         $this->dispatch('delete-role', 'Are you sure you want to delete this role?');
-
+    }
+    public function deletePermission($id)
+    {
+        $this->permissionId = $id;
+        $this->dispatch('delete-permission', 'Are you sure you want to delete this permission?');
+    }
+    public function deletePermissionConfirm()
+    {
+        if ($this->permissionId) {
+            $permission = Permission::find($this->permissionId);
+            if ($permission) {
+                $permission->delete();
+                $this->dispatch('delete-success', 'Permission deleted successfully');
+                $this->permissions = Permission::all();
+            } else {
+                $this->dispatch('error', 'Permission not found');
+            }
+        }
     }
     public function deleteRoleConfirm()
     {
-        if($this->idRoleToDelete) {
+        if ($this->idRoleToDelete) {
             $role = Role::find($this->idRoleToDelete);
             if ($role) {
                 $role->delete();
