@@ -60,42 +60,49 @@ class DatabaseSeeder extends Seeder
 
         Submenu::create([
             'menu_id' => $masterData->id,
+            'name' => 'User',
+            'route' => 'user',
+            'order' => 1
+        ]);
+
+        Submenu::create([
+            'menu_id' => $masterData->id,
             'name' => 'Role',
             'route' => 'role',
-            'order' => 1
+            'order' => 2
         ]);
         Submenu::create([
             'menu_id' => $masterData->id,
             'name' => 'Employee',
             'route' => 'employee',
-            'order' => 2
+            'order' => 3
         ]);
 
         Submenu::create([
             'menu_id' => $masterData->id,
             'name' => 'Menu',
             'route' => 'menu',
-            'order' => 3
+            'order' => 4
         ]);
 
         Submenu::create([
             'menu_id' => $masterData->id,
             'name' => 'Customer',
             'route' => 'customer',
-            'order' => 4
+            'order' => 5
         ]);
 
         Submenu::create([
             'menu_id' => $masterData->id,
             'name' => 'Service',
             'route' => 'service',
-            'order' => 5
+            'order' => 6
         ]);
         Submenu::create([
             'menu_id' => $masterData->id,
             'name' => 'Spare Part',
             'route' => 'sparepart',
-            'order' => 6
+            'order' => 7
         ]);
 
         $operational = Menu::create([

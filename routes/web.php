@@ -10,6 +10,7 @@ use App\Livewire\RolesPermissions;
 use App\Livewire\Service;
 use App\Livewire\ServiceOperational;
 use App\Livewire\Sparepart as LivewireSparepart;
+use App\Livewire\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', Login::class)->name('login');
@@ -17,6 +18,7 @@ Route::get('/logout', [Login::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
+    Route::get('/user', User::class)->name('user');
     Route::get('/customer', Customer::class)->name('customer');
     Route::get('/employee', EmployeeManagement::class)->name('employee');
     Route::get('/menu', MenuManagement::class)->name('menu');

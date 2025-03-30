@@ -333,8 +333,9 @@
     </div>
     <script>
         Livewire.on('show-modal', () => {
-            var modalEl = document.getElementById('roleModal');
+            var myModal = new bootstrap.Modal(document.getElementById('roleModal'), {});
             myModal.show();
+            
         });
         Livewire.on('hide-modal', () => {
             var modalEl = document.getElementById('roleModal');
