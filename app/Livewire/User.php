@@ -5,11 +5,13 @@ namespace App\Livewire;
 use App\Models\User as ModelsUser;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Spatie\Permission\Models\Role;
+
 #[Layout('layouts.admin')]
 
 class User extends Component
 {
-    public $userId, $name, $email, $password,  $idToDelete;
+    public $userId, $name, $email, $password,  $idToDelete, $selectedRole;
     protected $listeners = ['deleteUser', 'loadData'];
     public $search = '';
 
@@ -35,10 +37,13 @@ class User extends Component
             'password' => 'required|min:6',
         ]);
 
-        \App\Models\User::create([
+       ModelsUser::create([
+            'name' => $this->name,
             'email' => $this->email,
             'password' => bcrypt($this->password),
+            'role'=> $this->selectedRole
         ]);
+        
 
         $this->dispatch('success', 'User created successfully.');
         $this->closeModal();
@@ -46,7 +51,7 @@ class User extends Component
 
     public function edit($id)
     {
-        $user = \App\Models\User::find($id);
+        $user = ModelsUser::find($id);
         $this->userId = $user->id;
         $this->name = $user->name;
         $this->email = $user->email;
@@ -76,7 +81,8 @@ class User extends Component
         return view('livewire.pages.admin.masterdata.user',[
             'data' => ModelsUser::when($this->search, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
-            })->paginate(10)
+            })->paginate(10),
+            'roles' => Role::all(),
         ]);
     }
 }

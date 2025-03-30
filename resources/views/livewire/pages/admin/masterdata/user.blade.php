@@ -104,11 +104,11 @@
                 </div>
             </div>
 
-            <div class="modal fade" tabindex="-1" id="employeeModal" aria-hidden="true">
+            <div class="modal fade" tabindex="-1" id="userModal" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h3 class="modal-title">{{$userId ? 'Edit' : 'Add'}} Employee</h3>
+                            <h3 class="modal-title">{{$userId ? 'Edit' : 'Add'}} User</h3>
 
                             <!--begin::Close-->
                             <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close" wire:click="closeModal">
@@ -148,7 +148,7 @@
                                 <div class="d-flex flex-column col-md-6 mb-8 fv-row">
                                     <!--begin::Label-->
                                     <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
-                                        <span class="required">Position</span>
+                                        <span class="required">Email</span>
                                         <span class="ms-1" data-bs-toggle="tooltip" title="Specify a target Position for future usage and reference">
                                             <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
                                                 <span class="path1"></span>
@@ -158,13 +158,69 @@
                                         </span>
                                     </label>
                                     <!--end::Label-->
-                                    @error('position')
+                                    @error('email')
                                     <div class="alert alert-danger" role="alert">
                                         {{ $message }}
                                     </div>
 
                                     @enderror
-                                    <input type="text" class="form-control form-control-solid" placeholder="Enter Position" autocomplete="off" id="position" wire:model="position" />
+                                    <input type="text" class="form-control form-control-solid" placeholder="Enter Position" autocomplete="off" id="position" wire:model="email" />
+                                </div>
+                            </div>
+                            <!--end::Input group-->
+
+                            <!--begin::Input group-->
+                            <div class="row g-9 mb-8">
+
+                                <div class="d-flex flex-column col-md-6 mb-8 fv-row">
+                                    <!--begin::Label-->
+                                    <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                                        <span class="required">Role</span>
+                                        <span class="ms-1" data-bs-toggle="tooltip" title="Specify a target name for future usage and reference">
+                                            <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                            </i>
+                                        </span>
+                                    </label>
+                                    <!--end::Label-->
+                                    @error('role')
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ $message }}
+                                    </div>
+
+                                    @enderror
+                                    <select class="form-select" data-control="select2" data-placeholder="Select Role" wire:model="selectedRole">
+
+                                        <option></option>
+                                        @foreach ($roles as $role)
+                                            
+                                        <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                        @endforeach
+
+                                    </select>
+                                </div>
+                                <div class="d-flex flex-column col-md-6 mb-8 fv-row">
+                                    <!--begin::Label-->
+                                    <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                                        <span class="required">Password</span>
+                                        <span class="ms-1" data-bs-toggle="tooltip" title="Specify a target Position for future usage and reference">
+                                            <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                            </i>
+                                        </span>
+                                    </label>
+                                    <!--end::Label-->
+                                    @error('password')
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ $message }}
+                                    </div>
+
+                                    @enderror
+                                    <input type="text" class="form-control form-control-solid" placeholder="Enter Position" autocomplete="off" id="position" wire:model="password" />
                                 </div>
                             </div>
                             <!--end::Input group-->
@@ -185,11 +241,11 @@
     </div>
     <script>
         Livewire.on('show-modal', () => {
-            var myModal = new bootstrap.Modal(document.getElementById('employeeModal'), {});
+            var myModal = new bootstrap.Modal(document.getElementById('userModal'), {});
             myModal.show();
         });
         Livewire.on('hide-modal', () => {
-            var modalEl = document.getElementById('employeeModal');
+            var modalEl = document.getElementById('userModal');
             var modal = bootstrap.Modal.getInstance(modalEl);
             modal.hide();
         });
