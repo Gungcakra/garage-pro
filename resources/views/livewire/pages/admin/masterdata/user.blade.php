@@ -90,7 +90,7 @@
                             </td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            <td>{{ $user->role }}</td>
+                            <td>{{ $user->getRoleNames()->first() }}</td>
 
                         </tr>
                         @endforeach
@@ -193,7 +193,7 @@
                                     @enderror
                                     <select class="form-select" data-control="select2" data-placeholder="Select Role" wire:model="selectedRole">
 
-                                        <option></option>
+                                        <option>Select Role</option>
                                         @foreach ($roles as $role)
                                             
                                         <option value="{{ $role->name }}">{{ $role->name }}</option>

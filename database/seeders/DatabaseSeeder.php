@@ -23,13 +23,7 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'admin',
-            'email' => 'admin@gmail.com',
-            'password' => bcrypt('admin123'),
-            'role' => 'admin'
-        ]);
-
+    
         Employee::factory(30)->create();
         Customer::factory(30)->create();
         Service::factory(30)->create();
@@ -136,5 +130,11 @@ class DatabaseSeeder extends Seeder
         // Assign permissions to roles
         $admin->syncPermissions(['masterdata', 'operational', 'report']);
         $employee->syncPermissions(['operational']);
+        $user =  User::factory()->create([
+            'name' => 'admin',
+            'email' => 'admin@gmail.com',
+            'password' => bcrypt('admin123')
+        ]);
+        $user->assignRole('admin');
     }
 }

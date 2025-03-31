@@ -37,16 +37,15 @@ class User extends Component
             'password' => 'required|min:6',
             'selectedRole' => 'required',
         ]);
-        
-       $rolee = $this->selectedRole;
-       ModelsUser::create([
+
+        $user =  ModelsUser::create([
             'name' => $this->name,
             'email' => $this->email,
             'password' => bcrypt($this->password),
-            'role' => $rolee
         ]);
-        
-        
+
+        $user->assignRole($this->selectedRole);
+
 
         $this->dispatch('success', 'User created successfully.');
         $this->closeModal();
@@ -59,8 +58,8 @@ class User extends Component
         $this->name = $user->name;
         $this->email = $user->email;
         $this->password = '';
-        $role = $user->role;
-        $this->selectedRole = $role;
+        $this->selectedRole = $user->getRoleNames()->first();
+        $this->dispatch('load-data', $user);
         $this->openModal();
     }
     public function update()
@@ -75,8 +74,7 @@ class User extends Component
             $user = ModelsUser::find($this->userId);
             $dataToUpdate = [
                 'name' => $this->name,
-                'email' => $this->email,
-                'role' => $this->selectedRole
+                'email' => $this->email
             ];
 
             if (!empty($this->password)) {
@@ -85,6 +83,7 @@ class User extends Component
 
             $user->update($dataToUpdate);
 
+            $user->syncRoles($this->selectedRole);
             $this->dispatch('success', 'User updated successfully.');
             $this->closeModal();
         } catch (\Exception $e) {
@@ -112,7 +111,7 @@ class User extends Component
     }
     public function render()
     {
-        return view('livewire.pages.admin.masterdata.user',[
+        return view('livewire.pages.admin.masterdata.user', [
             'data' => ModelsUser::when($this->search, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
             })->paginate(10),
