@@ -35,14 +35,17 @@ class User extends Component
             'name' => 'required|string|max:255',
             'email' => 'required|email',
             'password' => 'required|min:6',
+            'selectedRole' => 'required',
         ]);
-
+        
+       $rolee = $this->selectedRole;
        ModelsUser::create([
             'name' => $this->name,
             'email' => $this->email,
             'password' => bcrypt($this->password),
-            'role'=> $this->selectedRole
+            'role' => $rolee
         ]);
+        
         
 
         $this->dispatch('success', 'User created successfully.');
@@ -55,7 +58,9 @@ class User extends Component
         $this->userId = $user->id;
         $this->name = $user->name;
         $this->email = $user->email;
-        $this->password = $user->password;
+        $this->password = '';
+        $role = $user->role;
+        $this->selectedRole = $role;
         $this->openModal();
     }
     public function update()
@@ -63,18 +68,47 @@ class User extends Component
         $this->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email',
-            'password' => 'required|min:6',
+            'selectedRole' => 'required',
+            'password' => 'nullable|min:6',
         ]);
+        try {
+            $user = ModelsUser::find($this->userId);
+            $dataToUpdate = [
+                'name' => $this->name,
+                'email' => $this->email,
+                'role' => $this->selectedRole
+            ];
 
-        $user = ModelsUser::find($this->userId);
-        $user->update([
-            'name' => $this->name,
-            'email' => $this->email,
-            'password' => bcrypt($this->password),
-        ]);
+            if (!empty($this->password)) {
+                $dataToUpdate['password'] = bcrypt($this->password);
+            }
 
-        $this->dispatch('success', 'User updated successfully.');
-        $this->closeModal();
+            $user->update($dataToUpdate);
+
+            $this->dispatch('success', 'User updated successfully.');
+            $this->closeModal();
+        } catch (\Exception $e) {
+            $this->dispatch('error', 'Failed to update user: ' . $e->getMessage());
+        }
+    }
+    public function delete($id)
+    {
+        $this->idToDelete = $id;
+        $this->dispatch('confirm-delete', 'Are you sure you want to delete this user?');
+    }
+    public function deleteUser()
+    {
+        try {
+            $user = ModelsUser::find($this->idToDelete);
+            if ($user) {
+                $user->delete();
+                $this->dispatch('delete-success', params: 'User deleted successfully.');
+            } else {
+                $this->dispatch('error', 'User not found.');
+            }
+        } catch (\Exception $e) {
+            $this->dispatch('error', 'Failed to delete user: ' . $e->getMessage());
+        }
     }
     public function render()
     {

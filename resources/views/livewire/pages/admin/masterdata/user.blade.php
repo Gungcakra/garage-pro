@@ -34,10 +34,10 @@
             <!--begin::Actions-->
             <div class="d-flex align-items-center gap-2 gap-lg-3">
                 <!--begin::Secondary button-->
-                <a href="#" class="btn btn-sm fw-bold btn-secondary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Rollover</a>
+                {{-- <a href="#" class="btn btn-sm fw-bold btn-secondary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Rollover</a> --}}
                 <!--end::Secondary button-->
                 <!--begin::Primary button-->
-                <button class="btn btn-sm fw-bold btn-primary" wire:click="create()">Add Employee</button>
+                <button class="btn btn-sm fw-bold btn-primary" wire:click="create()">Add User</button>
                 <!--end::Primary button-->
             </div>
             <!--end::Actions-->
@@ -70,7 +70,7 @@
 
                         @foreach ( $data as $index => $user)
 
-                        <tr wire:key="employee-{{ $user->id }}">
+                        <tr wire:key="user-{{ $user->id }}">
                             <td>{{ $index + 1 }}</td>
                             <td>
                                 <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
@@ -220,7 +220,7 @@
                                     </div>
 
                                     @enderror
-                                    <input type="text" class="form-control form-control-solid" placeholder="Enter Position" autocomplete="off" id="position" wire:model="password" />
+                                    <input type="text" class="form-control form-control-solid" placeholder="Enter Password" autocomplete="off" id="position" wire:model="password" />
                                 </div>
                             </div>
                             <!--end::Input group-->
@@ -258,7 +258,7 @@
                 , icon: "warning"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Livewire.dispatch('deleteEmployee');
+                    Livewire.dispatch('deleteUser');
                 } else {
                     Swal.fire("Cancelled", "Delete Cancelled.", "info");
                 }
