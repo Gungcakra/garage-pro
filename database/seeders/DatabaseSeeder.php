@@ -28,22 +28,6 @@ class DatabaseSeeder extends Seeder
         Customer::factory(1000)->create();
         Service::factory(30)->create();
         SparePart::factory(30)->create();
-
-        // Menu Dashboard
-        $dashboard = Menu::create([
-            'name' => 'Dashboard',
-            'icon' => 'fa-solid fa-house',
-            'route' => 'dashboard',
-            'order' => 1
-        ]);
-
-        SubMenu::create([
-            'menu_id' => $dashboard->id,
-            'name' => 'Home',
-            'route' => 'dashboard',
-            'order' => 1
-        ]);
-
        
 
 
@@ -52,6 +36,7 @@ class DatabaseSeeder extends Seeder
 
         // Define permissions
         $permissions = [
+            'dashboard',
             'user',
             'employee',
             'customer',
@@ -69,7 +54,7 @@ class DatabaseSeeder extends Seeder
         }
 
         // Assign permissions to roles
-        $admin->syncPermissions(['user', 'employee', 'customer',
+        $admin->syncPermissions(['dashboard','user', 'employee', 'customer',
             'menu','role', 'menu', 'service', 'sparepart', 'serviceoperational']);
         $employee->syncPermissions(['employee']);
         $user =  User::factory()->create([
@@ -78,6 +63,24 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('admin123')
         ]);
         $user->assignRole('admin');
+
+        
+        // Menu Dashboard
+        $dashboard = Menu::create([
+            'name' => 'Dashboard',
+            'icon' => 'fa-solid fa-house',
+            'route' => 'dashboard',
+            'order' => 1,
+        ]);
+
+        SubMenu::create([
+            'menu_id' => $dashboard->id,
+            'name' => 'Home',
+            'route' => 'dashboard',
+            'order' => 1,
+            'permission_id' => Permission::where('name', 'dashboard')->first()->id
+
+        ]);
 
          // Menu Master Data
          $masterData = Menu::create([
