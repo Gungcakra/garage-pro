@@ -188,7 +188,7 @@
                 <!--begin::Input group-->
                 <div class="row g-9 mb-8">
 
-                    <div class="d-flex flex-column col-md-12 mb-8 fv-row">
+                    <div class="d-flex flex-column col-md-6 mb-8 fv-row">
                         <!--begin::Label-->
                         <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
                             <span class="required">Route</span>
@@ -208,6 +208,36 @@
 
                         @enderror
                         <input type="text" class="form-control form-control-solid" placeholder="Enter Route" id="subMenuRoute" autocomplete="off" wire:model="subMenuRoute" />
+                    </div>
+
+                    <div class="d-flex flex-column col-md-6 mb-8 fv-row">
+                        <!--begin::Label-->
+                        <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                            <span class="required">Permission</span>
+                            <span class="ms-1" data-bs-toggle="tooltip" title="Specify a target name for future usage and reference">
+                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                    <span class="path3"></span>
+                                </i>
+                            </span>
+                        </label>
+                        <!--end::Label-->
+                        @error('permissionId')
+                        <div class="alert alert-danger" role="alert">
+                            {{ $message }}
+                        </div>
+
+                        @enderror
+                        <select class="form-select" data-control="select2" data-placeholder="Select Role" wire:model="permissionId">
+
+                            <option>Select Role</option>
+                            @foreach ($permissions as $permission)
+
+                            <option value="{{ $permission->id }}">{{ $permission->name }}</option>
+                            @endforeach
+
+                        </select>
                     </div>
 
                 </div>

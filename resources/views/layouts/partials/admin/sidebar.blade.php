@@ -22,35 +22,44 @@ $menus = Menu::with('submenus')->get();
         <div id="kt_app_sidebar_menu_wrapper" class="app-sidebar-wrapper">
             <div id="kt_app_sidebar_menu_scroll" class="scroll-y my-5 mx-3" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_app_sidebar_logo, #kt_app_sidebar_footer" data-kt-scroll-wrappers="#kt_app_sidebar_menu" data-kt-scroll-offset="5px" data-kt-scroll-save-state="true">
                 <div class="menu menu-column menu-rounded menu-sub-indention fw-semibold fs-6" id="#kt_app_sidebar_menu" data-kt-menu="true" data-kt-menu-expand="false">
-                    
-                    @foreach ($menus as $menu)
-                        <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs($menu->submenus->pluck('route')->toArray()) ? 'show' : '' }}">
-                            <span class="menu-link {{ request()->routeIs($menu->submenus->pluck('route')->toArray()) ? 'active' : '' }}">
-                                <span class="menu-icon">
-                                    <i class="{{ $menu->icon }} fs-2"></i>
-                                </span>
-                                <span class="menu-title">{{ $menu->name }}</span>
-                                @if ($menu->submenus->count() > 0)
-                                    <span class="menu-arrow"></span>
-                                @endif
-                            </span>
 
-                            @if ($menu->submenus->count() > 0)
-                                <div class="menu-sub menu-sub-accordion">
-                                    @foreach ($menu->submenus as $submenu)
-                                        <div class="menu-item">
-                                            <a class="menu-link {{ request()->routeIs($submenu->route) ? 'active' : '' }}" href="{{ route($submenu->route) }}" wire:navigate>
-                                                <span class="menu-bullet">
-                                                    <span class="bullet bullet-dot"></span>
-                                                </span>
-                                                <span class="menu-title">{{ $submenu->name }}</span>
-                                            </a>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            @endif
+                    @foreach ($menus as $menu)
+                    @php
+                    // Filter submenus based on the user's permissions through roles
+                    $filteredSubmenus = $menu->submenus->filter(function ($submenu) {
+                    $userPermissions = auth()->user()->roles->flatMap(function ($role) {
+                    return $role->permissions->pluck('id');
+                    });
+                    return $userPermissions->contains($submenu->permission_id);
+                    });
+                    @endphp
+
+                    @if ($filteredSubmenus->isNotEmpty())
+                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs($filteredSubmenus->pluck('route')->toArray()) ? 'show' : '' }}">
+                        <span class="menu-link {{ request()->routeIs($filteredSubmenus->pluck('route')->toArray()) ? 'active' : '' }}">
+                            <span class="menu-icon">
+                                <i class="{{ $menu->icon }} fs-2"></i>
+                            </span>
+                            <span class="menu-title">{{ $menu->name }}</span>
+                            <span class="menu-arrow"></span>
+                        </span>
+
+                        <div class="menu-sub menu-sub-accordion">
+                            @foreach ($filteredSubmenus as $submenu)
+                            <div class="menu-item">
+                                <a class="menu-link {{ request()->routeIs($submenu->route) ? 'active' : '' }}" href="{{ route($submenu->route) }}" wire:navigate>
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title">{{ $submenu->name }}</span>
+                                </a>
+                            </div>
+                            @endforeach
                         </div>
+                    </div>
+                    @endif
                     @endforeach
+
 
                 </div>
             </div>

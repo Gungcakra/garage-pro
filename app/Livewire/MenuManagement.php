@@ -6,11 +6,12 @@ use App\Models\Menu;
 use App\Models\SubMenu;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Spatie\Permission\Models\Permission;
 
 #[Layout('layouts.admin')]
 class MenuManagement extends Component
 {
-    public $menuId, $menus, $submenus, $name, $route, $order, $icon, $dataSubMenu, $subMenuId,  $subMenuName, $subMenuRoute, $subMenuOrder, $menuIdToDelete, $subMenuIdToDelete;
+    public $menuId, $menus, $submenus, $name, $route, $order, $icon, $dataSubMenu, $subMenuId,  $subMenuName, $subMenuRoute, $subMenuOrder, $permissionId, $menuIdToDelete, $subMenuIdToDelete;
 
     protected $listeners = ['deleteMenu', 'deleteSubMenuConfirmed'];
     public $isModalOpen = false;
@@ -36,7 +37,8 @@ class MenuManagement extends Component
     public function render()
     {
         return view('livewire.pages.admin.masterdata.menu.index', [
-            'data' => Menu::with('submenus')->get(),
+            'data' => Menu::with(['submenus.permission'])->get(),
+            'permissions' => Permission::all(),
         ]);
     }
 
@@ -121,6 +123,7 @@ class MenuManagement extends Component
             'subMenuName' => 'required|string|max:255',
             'subMenuRoute' => 'required|string|max:255',
             'subMenuOrder' => 'required|integer',
+            'permissionId' => 'required|exists:permissions,id',
         ]);
 
         SubMenu::create([
@@ -128,6 +131,7 @@ class MenuManagement extends Component
             'name' => $this->subMenuName,
             'route' => $this->subMenuRoute,
             'order' => $this->subMenuOrder,
+            'permission_id' => $this->permissionId,
         ]);
 
         $this->dispatch('success', 'Submenu added successfully!');
@@ -162,6 +166,7 @@ class MenuManagement extends Component
             'subMenuName' => 'required|string|max:255',
             'subMenuRoute' => 'required|string|max:255',
             'subMenuOrder' => 'required|integer',
+            'permissionId' => 'required|exists:permissions,id',
         ]);
 
         $submenu = SubMenu::findOrFail($id);
@@ -169,6 +174,7 @@ class MenuManagement extends Component
             'name' => $this->subMenuName,
             'route' => $this->subMenuRoute,
             'order' => $this->subMenuOrder,
+            'permission_id' => $this->permissionId,
         ]);
 
         $this->dispatch('success', 'Submenu updated successfully!');

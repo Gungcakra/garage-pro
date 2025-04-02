@@ -106,8 +106,8 @@
                                     </div>
                             </td>
                             <td>— {{ $submenu->name }}</td>
-                            <td colspan="3">{{ $submenu->route }}</td>
-                            <td></td>
+                            <td>{{ $submenu->route }}</td>
+                            <td>{{ $submenu->permission->name }}</td>
                         </tr>
                         @endforeach
                         @endforeach

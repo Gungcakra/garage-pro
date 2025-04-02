@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('route')->nullable();
             $table->integer('order')->default(0);
+            $table->integer('permission_id')->nullable();
             $table->timestamps();
         }); 
     }
