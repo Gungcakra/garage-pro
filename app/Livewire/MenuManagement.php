@@ -35,7 +35,7 @@ class MenuManagement extends Component
     }
     public function render()
     {
-        return view('livewire.pages.admin.masterdata.menu-management', [
+        return view('livewire.pages.admin.masterdata.menu.index', [
             'data' => Menu::with('submenus')->get(),
         ]);
     }

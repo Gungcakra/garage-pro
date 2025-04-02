@@ -111,7 +111,7 @@ class User extends Component
     }
     public function render()
     {
-        return view('livewire.pages.admin.masterdata.user', [
+        return view('livewire.pages.admin.masterdata.user.index', data: [
             'data' => ModelsUser::when($this->search, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
             })->paginate(10),

@@ -13,6 +13,9 @@ use App\Livewire\Sparepart as LivewireSparepart;
 use App\Livewire\User;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/', function () {
+    return redirect('/login');
+});
 Route::get('/login', Login::class)->name('login');
 Route::get('/logout', [Login::class, 'logout'])->name('logout');
 

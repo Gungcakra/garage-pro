@@ -17,7 +17,7 @@ class Sparepart extends Component
 
     public function render()
     {
-        return view('livewire.pages.admin.masterdata.sparepart', [
+        return view('livewire.pages.admin.masterdata.sparepart.index', [
             'data' => \App\Models\SparePart::when($this->search, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
             })->paginate(10),
