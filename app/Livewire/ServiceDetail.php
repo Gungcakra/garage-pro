@@ -12,7 +12,7 @@ class ServiceDetail extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-    public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $status, $idToDelete, $tabService = true, $tabSparepart, $serviceAdd = [];
+    public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $status, $idToDelete, $tabService = true, $tabSparepart, $serviceAdd = [], $sparepartAdd = [];
     protected $listeners = ['loadDataService', 'loadDataSparepart'];
     
     public $search = '', $searchService = '', $searchSparepart = '';
@@ -58,6 +58,8 @@ class ServiceDetail extends Component
 
     public function addService($id)
     {
+        $this->tabService = true;
+        $this->tabSparepart = false;
         $serviceData = Service::find($id);
         if ($serviceData) {
             foreach ($this->serviceAdd as $service) {
@@ -73,6 +75,31 @@ class ServiceDetail extends Component
             ];
         } else {
             $this->dispatch('error', 'Service not found.');
+        }
+    }
+    public function addSparepart($id)
+    {
+        $this->tabService = false;
+        $this->tabSparepart = true;
+        $sparepartData = \App\Models\SparePart::find($id);
+        if ($sparepartData) {
+            foreach ($this->sparepartAdd as &$sparepart) {
+            if ($sparepart['id'] === $sparepartData->id) {
+                $sparepart['qty'] = isset($sparepart['qty']) ? $sparepart['qty'] + 1 : 2;
+                $sparepart['price'] = $sparepartData->price * $sparepart['qty'];
+                return;
+            }
+            }
+            $this->sparepartAdd[] = [
+            'id' => $sparepartData->id,
+            'name' => $sparepartData->name,
+            'brand' => $sparepartData->brand,
+            'stock' => $sparepartData->stock,
+            'price' => $sparepartData->price,
+            'qty' => 1,
+            ];
+        } else {
+            $this->dispatch('error', 'Spare part not found.');
         }
     }
 }

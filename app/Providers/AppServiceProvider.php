@@ -19,6 +19,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        if (!function_exists('toRupiah')) {
+            function toRupiah($number)
+            {
+                return 'Rp ' . number_format($number, 0, ',', '.');
+            }
+        }
     }
 }
