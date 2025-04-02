@@ -65,4 +65,5 @@ $menus = Menu::with('submenus')->get();
             </div>
         </div>
     </div>
+   
 </div>

@@ -32,5 +32,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/serviceoperational', ServiceOperational::class)->name('serviceoperational');
     Route::get('/serviceinvoice/{id}', [ServiceOperational::class, 'getInvoice'])->name('serviceinvoice');
     Route::get('/servicedetail', ServiceDetail::class)->name('servicedetail');
+    Route::get('/servicefinalize/{id}', [ServiceDetail::class, 'finalize'])->name('servicefinalize');
     Route::get('/test', MenuManagement::class)->name('test');
 });
