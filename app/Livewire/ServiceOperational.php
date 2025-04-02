@@ -78,13 +78,13 @@ class ServiceOperational extends Component
     {
         
         $data = ModelsServiceOperational::where('id', $id)->first();
-        return view('livewire.pages.admin.operational.service-invoice', [
+        return view('livewire.pages.admin.operational.service.service-invoice', [
             'data' => $data,
         ]);
     }
     public function render()
     {
-        return view('livewire.pages.admin.operational.service-operational', [
+        return view('livewire.pages.admin.operational.service.service-operational', [
             'customers' => Customer::orderBy('id', 'desc')->get(),
 
         ]);

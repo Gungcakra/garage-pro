@@ -8,6 +8,7 @@ use App\Livewire\Dashboard;
 use App\Livewire\MenuManagement;
 use App\Livewire\RolesPermissions;
 use App\Livewire\Service;
+use App\Livewire\ServiceDetail;
 use App\Livewire\ServiceOperational;
 use App\Livewire\Sparepart as LivewireSparepart;
 use App\Livewire\User;
@@ -30,5 +31,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/sparepart', LivewireSparepart::class)->name('sparepart');
     Route::get('/serviceoperational', ServiceOperational::class)->name('serviceoperational');
     Route::get('/serviceinvoice/{id}', [ServiceOperational::class, 'getInvoice'])->name('serviceinvoice');
+    Route::get('/servicedetail', ServiceDetail::class)->name('servicedetail');
     Route::get('/test', MenuManagement::class)->name('test');
 });
