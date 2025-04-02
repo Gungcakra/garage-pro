@@ -137,7 +137,7 @@
 
                                     </table>
 
-                                    <div class="mt-4 d-flex justify-content-center">
+                                    <div class="mt-4 d-flex justify-content-center" onclick="handleSearchService()">
                                         {{ $services->onEachSide(1)->links() }}
                                     </div>
                                 </div>
@@ -185,7 +185,7 @@
 
                                     </table>
 
-                                    <div class="mt-4 d-flex justify-content-center">
+                                    <div class="mt-4 d-flex justify-content-center" onclick="handleSearchSparepart()">
                                         {{ $spareparts->onEachSide(1)->links() }}
                                     </div>
                                 </div>
