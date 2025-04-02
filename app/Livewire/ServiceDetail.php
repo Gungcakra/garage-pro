@@ -12,7 +12,7 @@ class ServiceDetail extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-    public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $status, $idToDelete, $tabService = true, $tabSparepart;
+    public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $status, $idToDelete, $tabService = true, $tabSparepart, $serviceAdd = [];
     protected $listeners = ['loadDataService', 'loadDataSparepart'];
     
     public $search = '', $searchService = '', $searchSparepart = '';
@@ -55,4 +55,24 @@ class ServiceDetail extends Component
         $this->tabSparepart = true;
     }
   
+
+    public function addService($id)
+    {
+        $serviceData = Service::find($id);
+        if ($serviceData) {
+            foreach ($this->serviceAdd as $service) {
+            if ($service['id'] === $serviceData->id) {
+                $this->dispatch('error', 'Service already added.');
+                return;
+            }
+            }
+            $this->serviceAdd[] = [
+            'id' => $serviceData->id,
+            'name' => $serviceData->name,
+            'price' => $serviceData->price,
+            ];
+        } else {
+            $this->dispatch('error', 'Service not found.');
+        }
+    }
 }

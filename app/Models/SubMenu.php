@@ -18,6 +18,6 @@ class SubMenu extends Model
     }
     public function permission()
     {
-        return $this->belongsTo(Permission::class)->withDefault();;
+        return $this->belongsTo(Permission::class)->withDefault();
     }
 }
