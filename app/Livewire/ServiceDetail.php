@@ -12,7 +12,7 @@ class ServiceDetail extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-    public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $status, $idToDelete, $tabService = true, $tabSparepart, $serviceAdd = [], $sparepartAdd = [];
+    public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $status, $idToDelete, $tabService = true, $tabSparepart, $serviceAdd = [], $sparepartAdd = [], $totalServicePrice, $totalSparepartPrice, $subTotal = 0, $tax = 12000, $totalPrice = 0;
     protected $listeners = ['loadDataService', 'loadDataSparepart'];
     
     public $search = '', $searchService = '', $searchSparepart = '';
@@ -63,19 +63,53 @@ class ServiceDetail extends Component
         $serviceData = Service::find($id);
         if ($serviceData) {
             foreach ($this->serviceAdd as $service) {
-            if ($service['id'] === $serviceData->id) {
-                $this->dispatch('error', 'Service already added.');
-                return;
-            }
+                if ($service['id'] === $serviceData->id) {
+                    $this->dispatch('error', 'Service already added.');
+                    return;
+                }
             }
             $this->serviceAdd[] = [
-            'id' => $serviceData->id,
-            'name' => $serviceData->name,
-            'price' => $serviceData->price,
+                'id' => $serviceData->id,
+                'name' => $serviceData->name,
+                'price' => $serviceData->price,
             ];
+
+            $this->totalServicePrice = array_sum(array_column($this->serviceAdd, 'price'));
+            $this->subTotal = $this->totalServicePrice + $this->totalSparepartPrice;
+            $this->totalPrice = $this->subTotal + $this->tax;
         } else {
             $this->dispatch('error', 'Service not found.');
         }
+    }
+
+    public function addQty($id)
+    {
+        foreach ($this->sparepartAdd as &$sparepart) {
+            if ($sparepart['id'] === $id) {
+                $sparepart['qty'] += 1;
+                $sparepart['price'] = $sparepart['qty'] * \App\Models\SparePart::find($id)->price;
+                $this->updateTotalSparepartPrice();
+                return;
+            }
+        }
+        $this->dispatch('error', 'Spare part not found in the list.');
+    }
+
+    public function minQty($id)
+    {
+        foreach ($this->sparepartAdd as $key => &$sparepart) {
+            if ($sparepart['id'] === $id) {
+                if ($sparepart['qty'] > 1) {
+                    $sparepart['qty'] -= 1;
+                    $sparepart['price'] = $sparepart['qty'] * \App\Models\SparePart::find($id)->price;
+                } else {
+                    unset($this->sparepartAdd[$key]);
+                }
+                $this->updateTotalSparepartPrice();
+                return;
+            }
+        }
+        $this->dispatch('error', 'Spare part not found in the list.');
     }
     public function addSparepart($id)
     {
@@ -84,22 +118,34 @@ class ServiceDetail extends Component
         $sparepartData = \App\Models\SparePart::find($id);
         if ($sparepartData) {
             foreach ($this->sparepartAdd as &$sparepart) {
-            if ($sparepart['id'] === $sparepartData->id) {
-                $sparepart['qty'] = isset($sparepart['qty']) ? $sparepart['qty'] + 1 : 2;
-                $sparepart['price'] = $sparepartData->price * $sparepart['qty'];
-                return;
-            }
+                if ($sparepart['id'] === $sparepartData->id) {
+                    $sparepart['qty'] = isset($sparepart['qty']) ? $sparepart['qty'] + 1 : 2;
+                    $sparepart['price'] = $sparepartData->price * $sparepart['qty'];
+                    $this->updateTotalSparepartPrice();
+                    return;
+                }
             }
             $this->sparepartAdd[] = [
-            'id' => $sparepartData->id,
-            'name' => $sparepartData->name,
-            'brand' => $sparepartData->brand,
-            'stock' => $sparepartData->stock,
-            'price' => $sparepartData->price,
-            'qty' => 1,
+                'id' => $sparepartData->id,
+                'name' => $sparepartData->name,
+                'brand' => $sparepartData->brand,
+                'stock' => $sparepartData->stock,
+                'price' => $sparepartData->price * 1,
+                'qty' => 1,
             ];
+
+            $this->updateTotalSparepartPrice();
         } else {
             $this->dispatch('error', 'Spare part not found.');
         }
+    }
+
+    private function updateTotalSparepartPrice()
+    {
+        $this->totalSparepartPrice = array_sum(array_map(function ($sparepart) {
+            return $sparepart['price'];
+        }, $this->sparepartAdd));
+        $this->subTotal = $this->totalServicePrice + $this->totalSparepartPrice;
+        $this->totalPrice = $this->subTotal + $this->tax;
     }
 }

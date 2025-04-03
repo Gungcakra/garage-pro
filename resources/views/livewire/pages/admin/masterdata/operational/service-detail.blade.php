@@ -31,10 +31,10 @@
             <!--begin::Actions-->
             <div class="d-flex align-items-center gap-2 gap-lg-3">
                 <!--begin::Secondary button-->
-                <a href="../../demo1/dist/apps/ecommerce/sales/listing.html" class="btn btn-sm fw-bold btn-secondary">Recent Orders</a>
+                {{-- <a href="../../demo1/dist/apps/ecommerce/sales/listing.html" class="btn btn-sm fw-bold btn-secondary">Recent Orders</a>
                 <!--end::Secondary button-->
                 <!--begin::Primary button-->
-                <a href="../../demo1/dist/apps/ecommerce/catalog/add-product.html" class="btn btn-sm fw-bold btn-primary">New Product</a>
+                <a href="../../demo1/dist/apps/ecommerce/catalog/add-product.html" class="btn btn-sm fw-bold btn-primary">New Product</a> --}}
                 <!--end::Primary button-->
             </div>
             <!--end::Actions-->
@@ -61,6 +61,7 @@
                                     <!--begin::Food icon-->
                                     {{-- <img src="assets/media/svg/food-icons/spaghetti.svg" class="w-50px" alt="" /> --}}
                                     <!--end::Food icon-->
+                                    <i class="ki-solid ki-gear fs-5x text-gray-400"></i>
                                 </div>
                                 <!--end::Icon-->
                                 <!--begin::Info-->
@@ -80,6 +81,7 @@
                                     <!--begin::Food icon-->
                                     {{-- <img src="assets/media/svg/food-icons/spaghetti.svg" class="w-50px" alt="" /> --}}
                                     <!--end::Food icon-->
+                                    <i class="ki-solid ki-wrench fs-5x text-gray-400"></i>
                                 </div>
                                 <!--end::Icon-->
                                 <!--begin::Info-->
@@ -238,15 +240,16 @@
                                 <tr data-kt-pos-element="item" data-kt-pos-item-price="33">
                                     <td class="pe-0">
                                         <div class="d-flex align-items-center">
-                                            <div class="w-50px h-50px"></div>
-                                            <span class="fw-bold text-gray-800 cursor-pointer text-hover-primary fs-6 me-1">{{ $service['name'] }}</span>
+                                            {{-- <div class="w-50px h-50px"></div> --}}
+                                            <i class="ki-solid ki-gear fs-2x text-gray-400"></i>
+                                            <span class="fw-bold text-gray-800 cursor-pointer text-hover-primary fs-3 me-1">{{ $service['name'] }}</span>
                                         </div>
                                     </td>
                                     <td class="pe-0">
 
                                     </td>
                                     <td class="text-end">
-                                        <span class="fw-bold text-primary fs-2" data-kt-pos-element="item-total">RP {{ number_format($service['price'], 0, ',', '.') }}</span>
+                                        <span class="fw-bold text-primary fs-3" data-kt-pos-element="item-total">RP {{ number_format($service['price'], 0, ',', '.') }}</span>
                                     </td>
                                 </tr>
                                 @empty
@@ -278,17 +281,18 @@
                                 <tr data-kt-pos-element="item" data-kt-pos-item-price="33">
                                     <td class="pe-0">
                                         <div class="d-flex align-items-center">
-                                            <div class="w-50px h-50px">
+                                            {{-- <div class="w-50px h-50px">
 
-                                            </div>
-                                            <span class="fw-bold text-gray-800 cursor-pointer text-hover-primary fs-6 me-1">{{ $sparepart['name'] }}</span>
+                                            </div> --}}
+                                            <i class="ki-solid ki-wrench fs-2x text-gray-400"></i>
+                                            <span class="fw-bold text-gray-800 cursor-pointer text-hover-primary fs-3 me-1">{{ $sparepart['name'] }}</span>
                                         </div>
                                     </td>
                                     <td class="pe-0">
                                         <!--begin::Dialer-->
                                         <div class="position-relative d-flex align-items-center" data-kt-dialer="true" data-kt-dialer-min="1" data-kt-dialer-max="10" data-kt-dialer-step="1" data-kt-dialer-decimals="0">
                                             <!--begin::Decrease control-->
-                                            <button type="button" class="btn btn-icon btn-sm btn-light btn-icon-gray-400" data-kt-dialer-control="decrease">
+                                            <button type="button" wire:click="minQty({{ $sparepart['id'] }})" class="btn btn-icon btn-sm btn-light btn-icon-gray-400" data-kt-dialer-control="decrease">
                                                 <i class="ki-duotone ki-minus fs-3x"></i>
                                             </button>
                                             <!--end::Decrease control-->
@@ -296,7 +300,7 @@
                                             <input type="text" class="form-control border-0 text-center px-0 fs-3 fw-bold text-gray-800 w-30px" data-kt-dialer-control="input" placeholder="Amount" name="manageBudget" readonly="readonly" value="{{ $sparepart['qty'] }}" />
                                             <!--end::Input control-->
                                             <!--begin::Increase control-->
-                                            <button type="button" class="btn btn-icon btn-sm btn-light btn-icon-gray-400" data-kt-dialer-control="increase">
+                                            <button type="button" wire:click="addQty({{ $sparepart['id'] }})" class="btn btn-icon btn-sm btn-light btn-icon-gray-400" data-kt-dialer-control="increase">
                                                 <i class="ki-duotone ki-plus fs-3x"></i>
                                             </button>
                                             <!--end::Increase control-->
@@ -304,7 +308,7 @@
                                         <!--end::Dialer-->
                                     </td>
                                     <td class="text-end">
-                                        <span class="fw-bold text-primary fs-2" data-kt-pos-element="item-total">RP {{ number_format($sparepart['price'], 0, ',', '.') }}</span>
+                                        <span class="fw-bold text-primary fs-3" data-kt-pos-element="item-total">RP {{ number_format($sparepart['price'], 0, ',', '.') }}</span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -319,17 +323,17 @@
                                     <!--begin::Content-->
                                     <div class="fs-6 fw-bold text-white">
                                         <span class="d-block lh-1 mb-2">Subtotal</span>
-                                        <span class="d-block mb-2">Discounts</span>
-                                        <span class="d-block mb-9">Tax(12%)</span>
+                                        {{-- <span class="d-block mb-2">Discounts</span> --}}
+                                        <span class="d-block mb-9">Tax</span>
                                         <span class="d-block fs-2qx lh-1">Total</span>
                                     </div>
                                     <!--end::Content-->
                                     <!--begin::Content-->
                                     <div class="fs-6 fw-bold text-white text-end">
-                                        <span class="d-block lh-1 mb-2" data-kt-pos-element="total">$100.50</span>
-                                        <span class="d-block mb-2" data-kt-pos-element="discount">-$8.00</span>
-                                        <span class="d-block mb-9" data-kt-pos-element="tax">$11.20</span>
-                                        <span class="d-block fs-2qx lh-1" data-kt-pos-element="grant-total">$93.46</span>
+                                        <span class="d-block lh-1 mb-2" data-kt-pos-element="total">RP {{ number_format($subTotal, 0, ',', '.') }}</span>
+                                        {{-- <span class="d-block mb-2" data-kt-pos-element="discount">-$8.00</span> --}}
+                                        <span class="d-block mb-9" data-kt-pos-element="tax">RP {{ number_format($tax, 0, ',', '.') }}</span>
+                                        <span class="d-block fs-2qx lh-1" data-kt-pos-element="grant-total">RP {{ number_format($totalPrice, 0, ',', '.') }}</span>
                                     </div>
                                     <!--end::Content-->
                                 </div>
