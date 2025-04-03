@@ -9,4 +9,11 @@ class SparePart extends Model
 {
     use HasFactory;
     protected $fillable = ['name', 'brand', 'price', 'stock'];
+
+    public function serviceOperationals()
+    {
+        return $this->belongsToMany(ServiceOperational::class, 'spareparts_transactions')
+            ->withPivot('quantity', 'price')
+            ->withTimestamps();
+    }
 }

@@ -7,13 +7,13 @@
             <!--begin::Page title-->
             <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
                 <!--begin::Title-->
-                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">POS System</h1>
+                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Service Finalization</h1>
                 <!--end::Title-->
                 <!--begin::Breadcrumb-->
                 <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
                     <!--begin::Item-->
                     <li class="breadcrumb-item text-muted">
-                        <a href="../../demo1/dist/index.html" class="text-muted text-hover-primary">Home</a>
+                        <a href="{{ route('dashboard') }}" class="text-muted text-hover-primary" wire:navigate>Home</a>
                     </li>
                     <!--end::Item-->
                     <!--begin::Item-->
@@ -22,7 +22,14 @@
                     </li>
                     <!--end::Item-->
                     <!--begin::Item-->
-                    <li class="breadcrumb-item text-muted">Dashboards</li>
+                    <li class="breadcrumb-item text-muted">Service Operational</li>
+
+                    <li class="breadcrumb-item">
+                        <span class="bullet bg-gray-400 w-5px h-2px"></span>
+                    </li>
+                    <!--end::Item-->
+                    <!--begin::Item-->
+                    <li class="breadcrumb-item text-muted">Service Finalization</li>
                     <!--end::Item-->
                 </ul>
                 <!--end::Breadcrumb-->
@@ -363,7 +370,7 @@
                                         </label>
                                         <!--end::Radio-->
                                         <!--begin::Radio-->
-                                        <label class="btn bg-light btn-color-gray-600 btn-active-text-gray-800 border border-3 border-gray-100 border-active-primary btn-active-light-primary w-100 px-4 active" data-kt-button="true">
+                                        <label class="btn bg-light btn-color-gray-600 btn-active-text-gray-800 border border-3 border-gray-100 border-active-primary btn-active-light-primary w-100 px-4" data-kt-button="true">
                                             <!--begin::Input-->
                                             <input class="btn-check" type="radio" name="method" value="1" />
                                             <!--end::Input-->
@@ -384,20 +391,17 @@
                                             <input class="btn-check" type="radio" name="method" value="2" />
                                             <!--end::Input-->
                                             <!--begin::Icon-->
-                                            <i class="ki-duotone ki-paypal fs-2hx mb-2 pe-0">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>
+                                            <i class="fa fa-qrcode fs-2hx mb-2 pe-0" aria-hidden="true"></i>
                                             <!--end::Icon-->
                                             <!--begin::Title-->
-                                            <span class="fs-7 fw-bold d-block">E-Wallet</span>
+                                            <span class="fs-7 fw-bold d-block">QRIS</span>
                                             <!--end::Title-->
                                         </label>
                                         <!--end::Radio-->
                                     </div>
                                     <!--end::Radio group-->
                                     <!--begin::Actions-->
-                                    <button class="btn btn-primary fs-1 w-100 py-4">Print Bills</button>
+                                    <button wire:click="printBill" class="btn btn-primary fs-1 w-100 py-4" {{ $totalPrice ? '' : 'disabled' }}>Print Bills</button>
                                     <!--end::Actions-->
                                 </div>
                                 <!--end::Payment Method-->

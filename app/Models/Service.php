@@ -11,4 +11,11 @@ class Service extends Model
 
     protected $fillable = ['name', 'price'];
 
+    public function serviceOperationals()
+    {
+        return $this->belongsToMany(ServiceOperational::class, 'service_transactions')
+            ->withPivot('price')
+            ->withTimestamps();
+    }
+
 }

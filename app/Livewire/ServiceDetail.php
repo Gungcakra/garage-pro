@@ -148,4 +148,50 @@ class ServiceDetail extends Component
         $this->subTotal = $this->totalServicePrice + $this->totalSparepartPrice;
         $this->totalPrice = $this->subTotal + $this->tax;
     }
+
+    public function printBill()
+    {
+        // Pastikan transaksi memiliki ID ServiceOperational yang valid
+        if (!$this->ServiceOperationalId) {
+            $this->dispatch('error', 'Service Operational ID is required.');
+            return;
+        }
+    
+        $serviceOperational = ServiceOperational::find($this->ServiceOperationalId);
+    
+        if (!$serviceOperational) {
+            $this->dispatch('error', 'Service Operational not found.');
+            return;
+        }
+    
+        // Simpan layanan (services) yang ditambahkan ke dalam tabel pivot
+        foreach ($this->serviceAdd as $service) {
+            $serviceOperational->services()->attach($service['id'], ['price' => $service['price']]);
+        }
+    
+        // Simpan suku cadang (spareparts) yang ditambahkan ke dalam tabel pivot
+        foreach ($this->sparepartAdd as $sparepart) {
+            $serviceOperational->spareparts()->attach($sparepart['id'], [
+                'quantity' => $sparepart['qty'],
+                'price' => $sparepart['price']
+            ]);
+        }
+    
+        // Perbarui status transaksi menjadi "Completed" atau sesuai dengan kebutuhan
+        $serviceOperational->update(['status' => 1]);
+    
+        // Reset data setelah transaksi selesai
+        $this->serviceAdd = [];
+        $this->sparepartAdd = [];
+        $this->totalServicePrice = 0;
+        $this->totalSparepartPrice = 0;
+        $this->subTotal = 0;
+        $this->totalPrice = 0;
+    
+        // Kirim notifikasi bahwa transaksi berhasil
+        $this->dispatch('success', 'Transaction saved successfully.');
+    
+        // Bisa ditambahkan kode untuk mencetak struk atau mengarahkan ke halaman cetak
+    }
+    
 }
