@@ -12,7 +12,7 @@ class ServiceDetail extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-    public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $status, $idToDelete, $tabService = true, $tabSparepart, $serviceAdd = [], $sparepartAdd = [], $totalServicePrice, $totalSparepartPrice, $subTotal = 0, $tax = 12000, $totalPrice = 0;
+    public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $status, $idToDelete, $tabService = true, $tabSparepart, $serviceAdd = [], $sparepartAdd = [], $totalServicePrice, $totalSparepartPrice, $subTotal = 0, $tax = 12000, $totalPrice = 0, $invoice, $invoiceId;
     protected $listeners = ['loadDataService', 'loadDataSparepart'];
     
     public $search = '', $searchService = '', $searchSparepart = '';
@@ -31,7 +31,21 @@ class ServiceDetail extends Component
                 $query->where('name', 'like', '%' . $this->searchSparepart . '%');
             })->paginate(10),
         ]);
-       }else{
+       } else if ($this->invoice) {
+        $data = ServiceOperational::where('id', $this->ServiceOperationalId)->first();
+        return view('livewire.pages.admin.masterdata.operational.invoice-service', [
+            'data' => $data,
+            'services' => Service::when($this->searchService, function ($query) {
+                $query->where('name', 'like', '%' . $this->searchService . '%');
+            })->paginate(10),
+
+            'spareparts' => \App\Models\SparePart::when($this->searchSparepart, function ($query) {
+                $query->where('name', 'like', '%' . $this->searchSparepart . '%');
+            })->paginate(10),
+        ]);
+
+       }
+       else{
         return view('livewire.pages.admin.masterdata.operational.index',[
             'data' => ServiceOperational::when($this->search, function ($query) {
                 $query->where('code', 'like', '%' . $this->search . '%');
@@ -40,6 +54,11 @@ class ServiceDetail extends Component
        }
     }
 
+    public function invoiceService($id)
+    {
+        $this->invoiceId = $id;
+        $this->invoice = true;
+    }
     public function finalize($id)
     {
         $this->ServiceOperationalId = $id;   
@@ -193,5 +212,6 @@ class ServiceDetail extends Component
     
         // Bisa ditambahkan kode untuk mencetak struk atau mengarahkan ke halaman cetak
     }
+   
     
 }
