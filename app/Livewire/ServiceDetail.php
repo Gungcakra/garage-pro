@@ -7,46 +7,45 @@ use App\Models\ServiceOperational;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
+
 #[Layout('layouts.admin')]
 class ServiceDetail extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
     public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $status, $idToDelete, $tabService = true, $tabSparepart, $serviceAdd = [], $sparepartAdd = [], $totalServicePrice, $totalSparepartPrice, $subTotal = 0, $tax = 12000, $totalPrice = 0, $invoice, $invoiceId;
-    protected $listeners = ['loadDataService', 'loadDataSparepart'];
-    
+    protected $listeners = ['loadData', 'loadDataService', 'loadDataSparepart'];
+
     public $search = '', $searchService = '', $searchSparepart = '';
     public function render()
     {
-       if($this->ServiceOperationalId){
+        if ($this->ServiceOperationalId) {
 
-        $data = ServiceOperational::where('id', $this->ServiceOperationalId)->first();
-        return view('livewire.pages.admin.masterdata.operational.service-detail', [
-            'data' => $data,
-            'services' => Service::when($this->searchService, function ($query) {
-                $query->where('name', 'like', '%' . $this->searchService . '%');
-            })->paginate(10),
+            $data = ServiceOperational::where('id', $this->ServiceOperationalId)->first();
+            return view('livewire.pages.admin.masterdata.operational.service-detail', [
+                'data' => $data,
+                'services' => Service::when($this->searchService, function ($query) {
+                    $query->where('name', 'like', '%' . $this->searchService . '%');
+                })->paginate(10),
 
-            'spareparts' => \App\Models\SparePart::when($this->searchSparepart, function ($query) {
-                $query->where('name', 'like', '%' . $this->searchSparepart . '%');
-            })->paginate(10),
-        ]);
-       } else if ($this->invoice) {
-        $data = ServiceOperational::where('id', $this->invoiceId)->first();
-       
-        return view('livewire.pages.admin.masterdata.operational.invoice-service', [
-            'data' => $data,
-            
-        ]);
+                'spareparts' => \App\Models\SparePart::when($this->searchSparepart, function ($query) {
+                    $query->where('name', 'like', '%' . $this->searchSparepart . '%');
+                })->paginate(10),
+            ]);
+        } else if ($this->invoice) {
+            $data = ServiceOperational::where('id', $this->invoiceId)->first();
 
-       }
-       else{
-        return view('livewire.pages.admin.masterdata.operational.index',[
-            'data' => ServiceOperational::when($this->search, function ($query) {
-                $query->where('code', 'like', '%' . $this->search . '%');
-            })->paginate(10),
-        ]);
-       }
+            return view('livewire.pages.admin.masterdata.operational.invoice-service', [
+                'data' => $data,
+
+            ]);
+        } else {
+            return view('livewire.pages.admin.masterdata.operational.index', [
+                'data' => ServiceOperational::when($this->search, function ($query) {
+                    $query->where('code', 'like', '%' . $this->search . '%');
+                })->paginate(10),
+            ]);
+        }
     }
 
     public function invoiceService($id)
@@ -56,7 +55,7 @@ class ServiceDetail extends Component
     }
     public function finalize($id)
     {
-        $this->ServiceOperationalId = $id;   
+        $this->ServiceOperationalId = $id;
     }
     public function loadDataService()
     {
@@ -68,7 +67,7 @@ class ServiceDetail extends Component
         $this->tabService = false;
         $this->tabSparepart = true;
     }
-  
+
 
     public function addService($id)
     {
@@ -171,19 +170,19 @@ class ServiceDetail extends Component
             $this->dispatch('error', 'Service Operational ID is required.');
             return;
         }
-    
+
         $serviceOperational = ServiceOperational::find($this->ServiceOperationalId);
-    
+
         if (!$serviceOperational) {
             $this->dispatch('error', 'Service Operational not found.');
             return;
         }
-    
+
         // Simpan layanan (services) yang ditambahkan ke dalam tabel pivot
         foreach ($this->serviceAdd as $service) {
             $serviceOperational->services()->attach($service['id'], ['price' => $service['price']]);
         }
-    
+
         // Simpan suku cadang (spareparts) yang ditambahkan ke dalam tabel pivot
         foreach ($this->sparepartAdd as $sparepart) {
             $serviceOperational->spareparts()->attach($sparepart['id'], [
@@ -191,10 +190,10 @@ class ServiceDetail extends Component
                 'price' => $sparepart['price']
             ]);
         }
-    
+
         // Perbarui status transaksi menjadi "Completed" atau sesuai dengan kebutuhan
         $serviceOperational->update(['status' => 1]);
-    
+
         // Reset data setelah transaksi selesai
         $this->serviceAdd = [];
         $this->sparepartAdd = [];
@@ -202,15 +201,13 @@ class ServiceDetail extends Component
         $this->totalSparepartPrice = 0;
         $this->subTotal = 0;
         $this->totalPrice = 0;
-    
+
         // Kirim notifikasi bahwa transaksi berhasil
         $this->dispatch('success', 'Transaction saved successfully.');
         $this->invoiceId = $serviceOperational->id;
         $this->ServiceOperationalId = null;
         $this->invoice = true;
-    
+
         // Bisa ditambahkan kode untuk mencetak struk atau mengarahkan ke halaman cetak
     }
-   
-    
 }
