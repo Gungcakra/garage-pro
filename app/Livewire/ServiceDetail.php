@@ -32,16 +32,11 @@ class ServiceDetail extends Component
             })->paginate(10),
         ]);
        } else if ($this->invoice) {
-        $data = ServiceOperational::where('id', $this->ServiceOperationalId)->first();
+        $data = ServiceOperational::where('id', $this->invoiceId)->first();
+       
         return view('livewire.pages.admin.masterdata.operational.invoice-service', [
             'data' => $data,
-            'services' => Service::when($this->searchService, function ($query) {
-                $query->where('name', 'like', '%' . $this->searchService . '%');
-            })->paginate(10),
-
-            'spareparts' => \App\Models\SparePart::when($this->searchSparepart, function ($query) {
-                $query->where('name', 'like', '%' . $this->searchSparepart . '%');
-            })->paginate(10),
+            
         ]);
 
        }
@@ -170,6 +165,7 @@ class ServiceDetail extends Component
 
     public function printBill()
     {
+
         // Pastikan transaksi memiliki ID ServiceOperational yang valid
         if (!$this->ServiceOperationalId) {
             $this->dispatch('error', 'Service Operational ID is required.');
@@ -209,6 +205,9 @@ class ServiceDetail extends Component
     
         // Kirim notifikasi bahwa transaksi berhasil
         $this->dispatch('success', 'Transaction saved successfully.');
+        $this->invoiceId = $serviceOperational->id;
+        $this->ServiceOperationalId = null;
+        $this->invoice = true;
     
         // Bisa ditambahkan kode untuk mencetak struk atau mengarahkan ke halaman cetak
     }

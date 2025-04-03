@@ -109,7 +109,8 @@
                                 @endphp
                                 {{ implode(' - ', $completeness) }}
                             </td>
-                            <td><p class="text-black text-center rounded font-bold  bg-{{ $Service->status === 0 ? 'warning' : 'success' }}">{{ $Service->status === 0 ? 'Pending' : 'Complete' }}</p></td>
+                            <td><div class="badge badge-light-{{ $Service->status === 0 ? 'warning' : 'success' }}">{{ $Service->status === 0 ? 'Pending' : 'Complete' }}</div></td>
+                            
                         </tr>
                         @endforeach
                         @endif
@@ -154,6 +155,18 @@
 
         function handleSearch() {
             Livewire.dispatch('loadData')
+        }
+    </script>
+    <script>
+        function printMainContent() {
+            var printContents = document.querySelector('.main').innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+            document.title = "Invoice";
+            window.print();
+            document.body.innerHTML = originalContents;
+            window.location.reload();
         }
     </script>
 </div>
