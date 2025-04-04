@@ -1,5 +1,5 @@
 <div class="d-flex flex-column flex-column-fluid">
-    
+
     <x-slot:title>Operational Service Report</x-slot:title>
     <!--begin::Toolbar-->
     <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
@@ -31,7 +31,7 @@
             <div class="d-flex items-center">
                 <div class="mb-0">
                     {{-- <label class="form-label">Range Date</label> --}}
-                    <input class="form-control form-control-solid" placeholder="Pick date rage" id="kt_daterangepicker_1" name="rentang"/>
+                    <input class="form-control form-control-solid" placeholder="Pick date rage" id="range" name="range" wire:model="range" />
                 </div>
             </div>
             <!--end::Page title-->
@@ -66,6 +66,7 @@
                             <th>Check</th>
                             <th>Plate Number</th>
                             <th>Completeness</th>
+                            <th>Date</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -113,6 +114,7 @@
                                     @endphp
                                     {{ implode(' - ', $completeness) }}
                                 </td>
+                                <td>{{ $Service->updated_at }}</td>
                                 <td>
                                     <div class="badge badge-light-{{ $Service->status === 0 ? 'warning' : 'success' }}">{{ $Service->status === 0 ? 'Pending' : 'Complete' }}</div>
                                 </td>
@@ -135,23 +137,27 @@
     </div>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script>
-    $(function () {
-        $('input[name="rentang"]').daterangepicker({
-            opens: "left",
-        });
+        $(function() {
+            $('input[name="range"]').daterangepicker({
+                opens: "left"
+            , });
 
-        $("#rentang").on("apply.daterangepicker", function (event, picker) {
-            $(this).val(
-                picker.startDate.format("YYYY-MM-DD") +
-                " - " +
-                picker.endDate.format("YYYY-MM-DD")
-            );
-        });
+            $("#range").on("apply.daterangepicker", function(event, picker) {
+                $(this).val(
+                    picker.startDate.format("YYYY-MM-DD") +
+                    " - " +
+                    picker.endDate.format("YYYY-MM-DD")
+                );
+                Livewire.dispatch('loadData', {
+                    startDate: picker.startDate.format("YYYY-MM-DD"),
+                    endDate: picker.endDate.format("YYYY-MM-DD")
+                });
+            });
 
-        $("#rentang").on("cancel.daterangepicker", function () {
-            $(this).val('');
+            $("#range").on("cancel.daterangepicker", function() {
+                $(this).val('');
+            });
         });
-    });
 
         Livewire.on('show-modal', () => {
             var myModal = new bootstrap.Modal(document.getElementById('ServiceModal'), {});

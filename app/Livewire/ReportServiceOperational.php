@@ -13,10 +13,10 @@ class ReportServiceOperational extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
     
-    public $serviceOperational;
-    public $startDate = '';
-    public $endDate = '';
-    public $status = '';
+    public $serviceOperational, $startDate = '', $endDate = '', $status = '', $range;
+
+    protected $listeners = ['loadData'];
+    
     public function render()
     {
         return view('livewire.pages.admin.report.service.index', [
@@ -36,5 +36,14 @@ class ReportServiceOperational extends Component
             })->paginate(10)
         
         ]);
+    }
+
+    public function loadData($startDate, $endDate)
+    {
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+    
+    
+       
     }
 }
