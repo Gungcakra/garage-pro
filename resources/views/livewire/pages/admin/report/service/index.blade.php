@@ -1,4 +1,5 @@
 <div class="d-flex flex-column flex-column-fluid">
+    
     <x-slot:title>Operational Service Report</x-slot:title>
     <!--begin::Toolbar-->
     <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
@@ -30,7 +31,7 @@
             <div class="d-flex items-center">
                 <div class="mb-0">
                     {{-- <label class="form-label">Range Date</label> --}}
-                    <input class="form-control form-control-solid" placeholder="Pick date rage" id="kt_daterangepicker_1" />
+                    <input class="form-control form-control-solid" placeholder="Pick date rage" id="kt_daterangepicker_1" name="rentang"/>
                 </div>
             </div>
             <!--end::Page title-->
@@ -40,7 +41,8 @@
                 {{-- <a href="#" class="btn btn-sm fw-bold btn-secondary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Rollover</a> --}}
                 <!--end::Secondary button-->
                 <!--begin::Primary button-->
-                <button class="btn btn-sm fw-bold btn-primary" wire:click="create()">Add Service</button>
+                <button class="btn btn-sm fw-bold btn-success d-flex align-items-center justify-content-center" wire:click="create()"><i class="bi bi-file-earmark-excel-fill me-2"></i> Excel</button>
+                <button class="btn btn-sm fw-bold btn-danger d-flex align-items-center justify-content-center" wire:click="create()"><i class="bi bi-file-earmark-excel-fill me-2"></i> PDF</button>
                 <!--end::Primary button-->
             </div>
             <!--end::Actions-->
@@ -131,39 +133,25 @@
             {{-- MODAL --}}
         </div>
     </div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script>
-        document.addEventListener('livewire:load', function() {
-            initializeDateRangePicker();
+    $(function () {
+        $('input[name="rentang"]').daterangepicker({
+            opens: "left",
         });
 
-        document.addEventListener('livewire:navigated', function() {
-            initializeDateRangePicker();
+        $("#rentang").on("apply.daterangepicker", function (event, picker) {
+            $(this).val(
+                picker.startDate.format("YYYY-MM-DD") +
+                " - " +
+                picker.endDate.format("YYYY-MM-DD")
+            );
         });
 
-        function initializeDateRangePicker() {
-            let dateRangeInput = $('#kt_daterangepicker_1');
-
-            if (typeof $.fn.daterangepicker !== 'undefined') {
-                if (dateRangeInput.length) {
-                    if (dateRangeInput.data('daterangepicker')) {
-                        dateRangeInput.data('daterangepicker').remove();
-                    }
-
-                    dateRangeInput.daterangepicker({
-                        autoUpdateInput: false
-                        , locale: {
-                            cancelLabel: 'Clear'
-                        }
-                    });
-
-                    console.log('DateRangePicker initialized successfully.');
-                } else {
-                    console.warn('Element #kt_daterangepicker_1 not found.');
-                }
-            } else {
-                console.error('Date Range Picker library is not loaded.');
-            }
-        }
+        $("#rentang").on("cancel.daterangepicker", function () {
+            $(this).val('');
+        });
+    });
 
         Livewire.on('show-modal', () => {
             var myModal = new bootstrap.Modal(document.getElementById('ServiceModal'), {});

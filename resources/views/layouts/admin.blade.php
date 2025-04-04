@@ -27,7 +27,8 @@
     <link href="{{ asset('assets/plugins/global/plugins.bundle.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/style.bundle.css')}}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     @livewireStyles
 </head>
 <!--end::Head-->
@@ -140,10 +141,9 @@
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
     <script data-navigate-once src="{{ asset('assets/plugins/global/plugins.bundle.js')}}"></script>
     <script data-navigate-once src="{{ asset('assets/js/scripts.bundle.js')}}"></script>
-    <script src="{{ asset('assets/js/custom/pages/general/pos.js') }}"></script>
-    <script>
-       
-    </script>
+    <script data-navigate-once src="{{ asset('assets/js/custom/pages/general/pos.js') }}"></script>
+   
+    
 
     <!--end::Global Javascript Bundle-->
     <!--begin::Vendors Javascript(used for this page only)-->
