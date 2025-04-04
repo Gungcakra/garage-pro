@@ -109,14 +109,24 @@
     </div>
     <script>
         Livewire.on('show-modal', () => {
-            var myModal = new bootstrap.Modal(document.getElementById('ServiceModal'), {});
+            var modalEl = document.getElementById('ServiceModal');
+            var existingModal = bootstrap.Modal.getInstance(modalEl);
+            if (existingModal) {
+                existingModal.dispose();
+            }
+            var myModal = new bootstrap.Modal(modalEl, {});
             myModal.show();
         });
         Livewire.on('hide-modal', () => {
-        var modalEl = document.getElementById('ServiceModal');
-        var modal = bootstrap.Modal.getInstance(modalEl);
-        modal.hide();
-    });
+            var modalEl = document.getElementById('ServiceModal');
+            var modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) {
+                modal.hide();
+                modal.dispose();
+            }
+            document.body.classList.remove('modal-open'); 
+            document.body.style.overflow = ''; 
+        });
     Livewire.on('confirm-delete', (message) => {
             Swal.fire({
                 title: message

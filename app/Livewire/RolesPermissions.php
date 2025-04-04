@@ -43,11 +43,13 @@ class RolesPermissions extends Component
     {
         $this->reset(['name']);
         $this->dispatch('hide-modal');
+        $this->roleId = null;
     }
     public function closeModalPermission()
     {
         $this->reset(['permissionName']);
         $this->dispatch('hide-modal-permission');
+        $this->permissionId = null;
     }
     public function closeModalAsign()
     {

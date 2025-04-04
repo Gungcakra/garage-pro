@@ -57,6 +57,7 @@
                             <th>Action</th>
                             <th>Name</th>
                             <th>Brand</th>
+                            <th>Stock</th>
                             <th>Price</th>
                         </tr>
                     </thead>
@@ -89,6 +90,7 @@
                             </td>
                             <td>{{ $SparePart->name }}</td>
                             <td>{{ $SparePart->brand }}</td>
+                            <td>{{ $SparePart->stock }}</td>
                             <td>RP {{ number_format($SparePart->price, 0, ',', '.') }}</td>
 
                         </tr>
@@ -110,14 +112,24 @@
     </div>
     <script>
         Livewire.on('show-modal', () => {
-            var myModal = new bootstrap.Modal(document.getElementById('SparePartModal'), {});
+            var modalEl = document.getElementById('SparePartModal');
+            var existingModal = bootstrap.Modal.getInstance(modalEl);
+            if (existingModal) {
+                existingModal.dispose();
+            }
+            var myModal = new bootstrap.Modal(modalEl, {});
             myModal.show();
         });
         Livewire.on('hide-modal', () => {
-        var modalEl = document.getElementById('SparePartModal');
-        var modal = bootstrap.Modal.getInstance(modalEl);
-        modal.hide();
-    });
+            var modalEl = document.getElementById('SparePartModal');
+            var modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) {
+                modal.hide();
+                modal.dispose();
+            }
+            document.body.classList.remove('modal-open'); 
+            document.body.style.overflow = ''; 
+        });
     Livewire.on('confirm-delete', (message) => {
             Swal.fire({
                 title: message

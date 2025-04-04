@@ -64,7 +64,7 @@
                 <!--end::Input group-->
                 <!--begin::Input group-->
                 <div class="row g-9 mb-8">
-                    <div class="d-flex flex-column col-md-12 mb-8 fv-row">
+                    <div class="d-flex flex-column col-md-6 mb-8 fv-row">
                         <!--begin::Label-->
                         <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
                             <span class="required">Price(RP)</span>
@@ -84,6 +84,27 @@
 
                         @enderror
                         <input type="text" class="form-control form-control-solid" placeholder="Enter Price" autocomplete="off" id="price" wire:model="price" />
+                    </div>
+                    <div class="d-flex flex-column col-md-6 mb-8 fv-row">
+                        <!--begin::Label-->
+                        <label class="d-flex align-items-center fs-6 fw-semibold mb-2">
+                            <span class="required">Stock</span>
+                            <span class="ms-1" data-bs-toggle="tooltip" title="Specify a target Position for future usage and reference">
+                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                    <span class="path3"></span>
+                                </i>
+                            </span>
+                        </label>
+                        <!--end::Label-->
+                        @error('stock')
+                        <div class="alert alert-danger" role="alert">
+                            {{ $message }}
+                        </div>
+
+                        @enderror
+                        <input type="text" class="form-control form-control-solid" placeholder="Enter Price" autocomplete="off" id="price" wire:model="stock" />
                     </div>
                 </div>
                 <!--end::Input group-->

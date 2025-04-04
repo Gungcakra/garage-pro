@@ -172,35 +172,63 @@
     </div>
     <script>
         Livewire.on('show-modal', () => {
-            var myModal = new bootstrap.Modal(document.getElementById('roleModal'), {});
+            var modalEl = document.getElementById('roleModal');
+            var existingModal = bootstrap.Modal.getInstance(modalEl);
+            if (existingModal) {
+            existingModal.dispose();
+            }
+            var myModal = new bootstrap.Modal(modalEl, {});
             myModal.show();
-
         });
         Livewire.on('hide-modal', () => {
             var modalEl = document.getElementById('roleModal');
             var modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) {
             modal.hide();
+            modal.dispose();
+            }
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
         });
 
         Livewire.on('show-modal-permission', () => {
-            var myModal = new bootstrap.Modal(document.getElementById('permissionModal'), {});
+            var modalEl = document.getElementById('permissionModal');
+            var existingModal = bootstrap.Modal.getInstance(modalEl);
+            if (existingModal) {
+            existingModal.dispose();
+            }
+            var myModal = new bootstrap.Modal(modalEl, {});
             myModal.show();
-
-        });
-        Livewire.on('show-modal-asign', () => {
-            var myModal = new bootstrap.Modal(document.getElementById('asignModal'), {});
-            myModal.show();
-
         });
         Livewire.on('hide-modal-permission', () => {
             var modalEl = document.getElementById('permissionModal');
             var modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) {
             modal.hide();
+            modal.dispose();
+            }
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
+        });
+
+        Livewire.on('show-modal-asign', () => {
+            var modalEl = document.getElementById('asignModal');
+            var existingModal = bootstrap.Modal.getInstance(modalEl);
+            if (existingModal) {
+            existingModal.dispose();
+            }
+            var myModal = new bootstrap.Modal(modalEl, {});
+            myModal.show();
         });
         Livewire.on('hide-modal-asign', () => {
             var modalEl = document.getElementById('asignModal');
             var modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) {
             modal.hide();
+            modal.dispose();
+            }
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
         });
 
         Livewire.on('delete-role', (message) => {

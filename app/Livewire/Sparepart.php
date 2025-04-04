@@ -70,23 +70,25 @@ class Sparepart extends Component
     }
     public function update()
     {
-        $this->validate([
+        $validatedData = $this->validate([
             'name' => 'required',
             'brand' => 'required',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
         ]);
 
-        $sparePart = \App\Models\SparePart::find($this->SparePartId);
-        $sparePart->update([
+        if ($validatedData) {
+            $sparePart = \App\Models\SparePart::find($this->SparePartId);
+            $sparePart->update([
             'name' => $this->name,
             'brand' => $this->brand,
             'price' => $this->price,
             'stock' => $this->stock,
-        ]);
+            ]);
 
-        $this->dispatch('success', 'Spare part updated successfully.');
-        $this->closeModal();
+            $this->dispatch('success', 'Spare part updated successfully.');
+            $this->closeModal();
+        }
     }
     public function delete($id)
     {

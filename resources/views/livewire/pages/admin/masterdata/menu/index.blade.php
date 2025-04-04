@@ -124,24 +124,43 @@
     </div>
     <script>
         Livewire.on('show-modal', () => {
-            var myModal = new bootstrap.Modal(document.getElementById('menuModal'), {});
+            var modalEl = document.getElementById('menuModal');
+            var existingModal = bootstrap.Modal.getInstance(modalEl);
+            if (existingModal) {
+            existingModal.dispose();
+            }
+            var myModal = new bootstrap.Modal(modalEl, {});
             myModal.show();
         });
         Livewire.on('hide-modal', () => {
             var modalEl = document.getElementById('menuModal');
             var modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) {
             modal.hide();
+            modal.dispose();
+            }
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
         });
 
         Livewire.on('show-submenu-modal', () => {
-            var myModal = new bootstrap.Modal(document.getElementById('subMenuModal'), {});
+            var modalEl = document.getElementById('subMenuModal');
+            var existingModal = bootstrap.Modal.getInstance(modalEl);
+            if (existingModal) {
+            existingModal.dispose();
+            }
+            var myModal = new bootstrap.Modal(modalEl, {});
             myModal.show();
-
         });
         Livewire.on('hide-submenu-modal', () => {
             var modalEl = document.getElementById('subMenuModal');
             var modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) {
             modal.hide();
+            modal.dispose();
+            }
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
         });
 
         Livewire.on('delete-menu', (message) => {

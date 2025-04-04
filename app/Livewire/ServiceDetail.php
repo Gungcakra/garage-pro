@@ -164,7 +164,6 @@ class ServiceDetail extends Component
 
     public function printBill()
     {
-
         // Pastikan transaksi memiliki ID ServiceOperational yang valid
         if (!$this->ServiceOperationalId) {
             $this->dispatch('error', 'Service Operational ID is required.');
@@ -189,6 +188,13 @@ class ServiceDetail extends Component
                 'quantity' => $sparepart['qty'],
                 'price' => $sparepart['price']
             ]);
+
+            // Kurangi stok sparepart berdasarkan quantity yang digunakan
+            $sparepartModel = \App\Models\SparePart::find($sparepart['id']);
+            if ($sparepartModel) {
+                $sparepartModel->stock -= $sparepart['qty'];
+                $sparepartModel->save();
+            }
         }
 
         // Perbarui status transaksi menjadi "Completed" atau sesuai dengan kebutuhan

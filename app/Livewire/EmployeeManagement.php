@@ -48,7 +48,9 @@ class EmployeeManagement extends Component
     {
         $this->reset(['employeeId', 'name', 'position', 'phone', 'address']);
         $this->isModalOpen = false;
+        $this->employeeId = null;
         $this->dispatch(event: 'hide-modal');
+     
 
     }
     public function store()
