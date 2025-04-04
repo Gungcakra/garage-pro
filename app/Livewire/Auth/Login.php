@@ -21,6 +21,11 @@ class Login extends Component
     {
         $this->validate();
 
+        if (!\App\Models\User::where('email', $this->email)->exists()) {
+            $this->dispatch('error', 'Email is not registered.');
+            return;
+        }
+
         if (Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
             session()->regenerate();
 
@@ -28,7 +33,6 @@ class Login extends Component
 
             return $this->dispatch('success-login', 'Login successful.');
         } else {
-            
             $this->dispatch('error', 'Invalid email or password.');
         }
     }
