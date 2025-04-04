@@ -93,14 +93,14 @@ class Sparepart extends Component
     public function delete($id)
     {
         $this->idToDelete = $id;
-        $this->dispatch('confirm-delete');
+        $this->dispatch('confirm-delete', 'Are you sure you want to delete this spare part?');
     }
     public function deleteSparePart()
     {
         $sparePart = \App\Models\SparePart::find($this->idToDelete);
         $sparePart->delete();
 
-        $this->dispatch('success', 'Spare part deleted successfully.');
+        $this->dispatch('delete-success', 'Spare part deleted successfully.');
         $this->dispatch('hide-delete-modal');
     }
 }
