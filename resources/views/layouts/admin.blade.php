@@ -28,36 +28,7 @@
     <link href="{{ asset('assets/css/style.bundle.css')}}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-    <style>
-        [data-bs-theme="dark"] {
-            background-color: #121212 !important;
-            color: #ffffff !important;
-        }
-
-        [data-bs-theme="dark"] a {
-            color: #bb86fc !important;
-        }
-
-        [data-bs-theme="dark"] .modal-content {
-            background-color: #1e1e1e !important;
-            color: #ffffff !important;
-        }
-
-        [data-bs-theme="dark"] .btn {
-            background-color: #333333 !important;
-            color: #ffffff !important;
-        }
-
-        [data-bs-theme="dark"] .btn:hover {
-            background-color: #444444 !important;
-        }
-
-        [data-bs-theme="dark"] body {
-            background-color: #121212 !important;
-        }
-    </style>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
     @livewireStyles
 </head>
 <!--end::Head-->

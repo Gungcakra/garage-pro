@@ -29,9 +29,9 @@
                 <!--end::Breadcrumb-->
             </div>
             <div class="d-flex items-center">
-                <div class="mb-0">
-                    {{-- <label class="form-label">Range Date</label> --}}
-                    <input class="form-control form-control-solid" placeholder="Pick date rage" id="range" name="range" wire:model="range" />
+                <div class="form-group position-relative mb-0">
+                    <input type="text" class="form-control form-control-solid pe-10" placeholder="Pick date range" id="range" name="range" wire:model="range" />
+                    <i class="bi bi-calendar3 position-absolute top-50 end-0 translate-middle-y me-3 text-muted"></i>
                 </div>
             </div>
             <!--end::Page title-->
@@ -60,13 +60,14 @@
                     <thead>
                         <tr class="fw-semibold fs-6 text-muted">
                             <th>No</th>
-                            <th>Action</th>
+                            {{-- <th>Action</th> --}}
                             <th>Code</th>
                             <th>Customer</th>
                             <th>Check</th>
                             <th>Plate Number</th>
                             <th>Completeness</th>
                             <th>Date</th>
+                            <th>Total</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -80,7 +81,7 @@
 
                             <tr wire:key="Service-{{ $Service->id }}">
                                 <td>{{ $index + 1 }}</td>
-                                <td>
+                                {{-- <td>
                                     <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
                                         <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
                                     <!--begin::Menu-->
@@ -100,7 +101,7 @@
                                             <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $Service->id }})">Delete</a>
                                         </div>
                                         <!--end::Menu item-->
-                                </td>
+                                </td> --}}
                                 <td>{{ $Service->code }}</td>
                                 <td>{{ $Service->customer->name }}</td>
                                 <td>{{ $Service->check }}</td>
@@ -115,6 +116,7 @@
                                     {{ implode(' - ', $completeness) }}
                                 </td>
                                 <td>{{ $Service->updated_at }}</td>
+                                <td>RP {{ number_format($Service->price, 0, ',', '.') }}</td>
                                 <td>
                                     <div class="badge badge-light-{{ $Service->status === 0 ? 'warning' : 'success' }}">{{ $Service->status === 0 ? 'Pending' : 'Complete' }}</div>
                                 </td>
