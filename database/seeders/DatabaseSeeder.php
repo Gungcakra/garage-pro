@@ -107,7 +107,8 @@ class DatabaseSeeder extends Seeder
             'service',
             'sparepart',
             'serviceoperational',
-            'servicedetail'
+            'servicedetail',
+            'reportserviceoperational',
 
                     
         ];
@@ -118,7 +119,7 @@ class DatabaseSeeder extends Seeder
 
         // Assign permissions to roles
         $admin->syncPermissions(['dashboard','user', 'employee', 'customer',
-            'menu','role', 'menu', 'service', 'sparepart', 'serviceoperational','servicedetail']);
+            'menu','role', 'menu', 'service', 'sparepart', 'serviceoperational','servicedetail', 'reportserviceoperational']);
         $employee->syncPermissions(['employee']);
         $user =  User::factory()->create([
             'name' => 'admin',
@@ -214,8 +215,6 @@ class DatabaseSeeder extends Seeder
             'permission_id' => Permission::where('name', 'servicedetail')->first()->id
         ]);
 
-
-
         $operational = Menu::create([
             'name' => 'Operational',
             'icon' => 'fa-solid fa-gauge',
@@ -228,6 +227,21 @@ class DatabaseSeeder extends Seeder
             'route' => 'serviceoperational',
             'order' => 1,
             'permission_id' => Permission::where('name', 'serviceoperational')->first()->id
+        ]);
+
+
+        $report = Menu::create([
+            'name' => 'Report',
+            'icon' => 'fa-solid fa-file',
+            'route' => null,
+            'order' => 4
+        ]);
+        Submenu::create([
+            'menu_id' => $report->id,
+            'name' => 'Service Operational',
+            'route' => 'reportserviceoperational',
+            'order' => 1,
+            'permission_id' => Permission::where('name', operator: 'reportserviceoperational')->first()->id
         ]);
     }
 }

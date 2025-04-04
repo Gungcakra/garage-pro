@@ -28,7 +28,8 @@ class Login extends Component
 
             return $this->dispatch('success-login', 'Login successful.');
         } else {
-            $this->addError('email', 'Invalid email or password.');
+            
+            $this->dispatch('error', 'Invalid email or password.');
         }
     }
 
