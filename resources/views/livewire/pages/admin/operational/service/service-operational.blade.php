@@ -446,14 +446,23 @@
         });
     }
     Livewire.on('show-modal', () => {
-        var myModal = new bootstrap.Modal(document.getElementById('employeeModal'), {});
+        var modalEl = document.getElementById('employeeModal');
+        var existingModal = bootstrap.Modal.getInstance(modalEl);
+        if (existingModal) {
+            existingModal.dispose();
+        }
+        var myModal = new bootstrap.Modal(modalEl, {});
         myModal.show();
     });
     Livewire.on('hide-modal', () => {
         var modalEl = document.getElementById('employeeModal');
         var modal = bootstrap.Modal.getInstance(modalEl);
-        modal.hide();
-        modal.hide();
+        if (modal) {
+            modal.hide();
+            modal.dispose();
+        }
+        document.body.classList.remove('modal-open');
+        document.body.style.overflow = '';
     });
     Livewire.on('success', () => {
         var customerSelect = document.querySelector('select[name="customer_id"]');

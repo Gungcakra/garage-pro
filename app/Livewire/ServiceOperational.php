@@ -65,7 +65,7 @@ class ServiceOperational extends Component
         $this->dispatch('success', 'Service operational created successfully.');
         $this->reset([ 'customer_id', 'check', 'stnk', 'bpkb', 'kunci', 'plate_number', 'status']);
         $this->latestId = ModelsServiceOperational::where('code', $this->code)->first()->id;
-        $this->js("window.location.href = '" . route('serviceinvoice', ['id' => $this->latestId]) . "'");
+        $this->js("window.open('" . route('serviceinvoice', ['id' => $this->latestId]) . "', '_blank')");
 
     }
     public function mount()
