@@ -13,7 +13,7 @@ class ReportServiceOperational extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
     
-    public $serviceOperational, $startDate = '', $endDate = '', $status = '', $range;
+    public $serviceOperational, $startDate = '', $endDate = '', $status = '', $range, $tax = 12000;
 
     protected $listeners = ['loadData','loadStatus'];
     

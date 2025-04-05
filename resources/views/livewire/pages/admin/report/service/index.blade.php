@@ -124,7 +124,17 @@
                 {{ implode(' - ', $completeness) }}
             </td>
             <td>{{ $Service->updated_at }}</td>
-            <td>RP {{ number_format($Service->price, 0, ',', '.') }}</td>
+            @php
+                $servicesTotal = $Service->services->sum('pivot.price');
+                $sparepartsTotal = $Service->spareparts->sum('pivot.price');
+                if($sparepartsTotal || $servicesTotal > 0){
+                   
+                $total = $servicesTotal + $sparepartsTotal + $tax;
+                }else{
+                    $total = 0;
+                }
+            @endphp
+            <td>Rp {{ number_format($total, 0, ',', '.') }}</td>
             <td>
                 {{-- {{ $Service->status }} --}}
                 <div class="badge badge-light-{{ $Service->status === 0 ? 'warning' : 'success' }}">{{ $Service->status === 0 ? 'Pending' : 'Complete' }}</div>
@@ -132,6 +142,23 @@
 
             </tr>
             @endforeach
+            <tr>
+                <td colspan="7" class="text-center">Total</td>
+                @php
+                    $grandTotal = $data->reduce(function ($carry, $Service) use ($tax) {
+                        $servicesTotal = $Service->services->sum('pivot.price');
+                        $sparepartsTotal = $Service->spareparts->sum('pivot.price');
+
+                        if($sparepartsTotal || $servicesTotal > 0){
+                            return $carry + $servicesTotal + $sparepartsTotal + $tax;
+                        }else{
+                            return $carry;
+                        }
+                    }, 0);
+                @endphp
+                <td>Rp {{ number_format($grandTotal, 0, ',', '.') }}</td>
+                <td></td>
+            </tr>
             @endif
             </tbody>
 
