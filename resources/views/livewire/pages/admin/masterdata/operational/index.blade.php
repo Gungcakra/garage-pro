@@ -96,7 +96,7 @@
                                     </div>
                                     <!--end::Menu item-->
                             </td>
-                            <td>{{ $Service->code }}</td>
+                            <td class="fw-bold">{{ $Service->code }}</td>
                             <td>{{ $Service->customer->name }}</td>
                             <td>{{ $Service->check }}</td>
                             <td>{{ $Service->plate_number }}</td>

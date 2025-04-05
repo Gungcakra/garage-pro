@@ -90,6 +90,12 @@ class EmployeeManagement extends Component
 
     public function update()
     {
+        $this->validate([
+            'name' => 'required|string|max:255',
+            'position' => 'required|string|max:255',
+            'phone' => 'required|string|max:15',
+            'address' => 'required|string|max:255',
+        ]);
         $employee = Employee::findOrFail($this->employeeId);
         $employee->update([
             'name' => $this->name,

@@ -50,7 +50,7 @@
                 <!--end::Secondary button-->
                 <!--begin::Primary button-->
                 <button class="btn btn-sm fw-bold btn-success d-flex align-items-center justify-content-center" onclick="exportToExcel()"><i class="bi bi-file-earmark-excel-fill me-2"></i> Excel</button>
-                <button class="btn btn-sm fw-bold btn-danger d-flex align-items-center justify-content-center" wire:click="create()"><i class="bi bi-file-earmark-excel-fill me-2"></i> PDF</button>
+                <button class="btn btn-sm fw-bold btn-danger d-flex align-items-center justify-content-center" disabled><i class="bi bi-file-earmark-excel-fill me-2"></i> PDF</button>
                 <!--end::Primary button-->
             </div>
             <!--end::Actions-->
@@ -82,7 +82,7 @@
                     <tbody>
 
                         @if (count($data) < 1) <tr>
-                            <td colspan="6" class="text-center">No Data Found</td>
+                            <td colspan="10" class="text-center">No Data Found</td>
                             </tr>
                             @else
                             @foreach ( $data as $index => $Service)
@@ -110,7 +110,7 @@
             </div>
             <!--end::Menu item-->
             </td> --}}
-            <td>{{ $Service->code }}</td>
+            <td class="fw-bold">{{ $Service->code }}</td>
             <td>{{ $Service->customer->name }}</td>
             <td>{{ $Service->check }}</td>
             <td>{{ $Service->plate_number }}</td>
@@ -125,14 +125,14 @@
             </td>
             <td>{{ $Service->updated_at }}</td>
             @php
-                $servicesTotal = $Service->services->sum('pivot.price');
-                $sparepartsTotal = $Service->spareparts->sum('pivot.price');
-                if($sparepartsTotal || $servicesTotal > 0){
-                   
-                $total = $servicesTotal + $sparepartsTotal + $tax;
-                }else{
-                    $total = 0;
-                }
+            $servicesTotal = $Service->services->sum('pivot.price');
+            $sparepartsTotal = $Service->spareparts->sum('pivot.price');
+            if($sparepartsTotal || $servicesTotal > 0){
+
+            $total = $servicesTotal + $sparepartsTotal + $tax;
+            }else{
+            $total = 0;
+            }
             @endphp
             <td>Rp {{ number_format($total, 0, ',', '.') }}</td>
             <td>
@@ -145,16 +145,16 @@
             <tr>
                 <td colspan="7" class="text-center">Total</td>
                 @php
-                    $grandTotal = $data->reduce(function ($carry, $Service) use ($tax) {
-                        $servicesTotal = $Service->services->sum('pivot.price');
-                        $sparepartsTotal = $Service->spareparts->sum('pivot.price');
+                $grandTotal = $data->reduce(function ($carry, $Service) use ($tax) {
+                $servicesTotal = $Service->services->sum('pivot.price');
+                $sparepartsTotal = $Service->spareparts->sum('pivot.price');
 
-                        if($sparepartsTotal || $servicesTotal > 0){
-                            return $carry + $servicesTotal + $sparepartsTotal + $tax;
-                        }else{
-                            return $carry;
-                        }
-                    }, 0);
+                if($sparepartsTotal || $servicesTotal > 0){
+                return $carry + $servicesTotal + $sparepartsTotal + $tax;
+                }else{
+                return $carry;
+                }
+                }, 0);
                 @endphp
                 <td>Rp {{ number_format($grandTotal, 0, ',', '.') }}</td>
                 <td></td>
@@ -174,43 +174,56 @@
     </div>
 </div>
 <script data-navigate-once src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+{{-- <script data-navigate-once src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script> --}}
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script>
     function exportToExcel() {
-            var table = document.getElementById("kt_app_content");
-            var wb = XLSX.utils.table_to_book(table, { sheet: "Service Operational" });
+        var table = document.getElementById("kt_app_content");
+        var wb = XLSX.utils.table_to_book(table, {
+            sheet: "Service Operational"
+        });
 
-            
-            var ws = wb.Sheets["Service Operational"];
-            var cols = [];
-            var range = XLSX.utils.decode_range(ws["!ref"]);
-            for (var C = range.s.c; C <= range.e.c; ++C) {
+
+        var ws = wb.Sheets["Service Operational"];
+        var cols = [];
+        var range = XLSX.utils.decode_range(ws["!ref"]);
+        for (var C = range.s.c; C <= range.e.c; ++C) {
             var maxWidth = 10; // Minimum width
             for (var R = range.s.r; R <= range.e.r; ++R) {
-                var cell = ws[XLSX.utils.encode_cell({ r: R, c: C })];
+                var cell = ws[XLSX.utils.encode_cell({
+                    r: R
+                    , c: C
+                })];
                 if (cell && cell.v) {
-                maxWidth = Math.max(maxWidth, cell.v.toString().length);
+                    maxWidth = Math.max(maxWidth, cell.v.toString().length);
                 }
             }
-            cols.push({ wch: maxWidth });
-            }
-            ws["!cols"] = cols;
+            cols.push({
+                wch: maxWidth
+            });
+        }
+        ws["!cols"] = cols;
 
-            
-            for (var R = range.s.r; R <= range.e.r; ++R) {
+
+        for (var R = range.s.r; R <= range.e.r; ++R) {
             for (var C = range.s.c; C <= range.e.c; ++C) {
-                var cellAddress = XLSX.utils.encode_cell({ r: R, c: C });
+                var cellAddress = XLSX.utils.encode_cell({
+                    r: R
+                    , c: C
+                });
                 if (!ws[cellAddress]) continue;
                 if (!ws[cellAddress].s) ws[cellAddress].s = {};
-                ws[cellAddress].s.alignment = { horizontal: "center", vertical: "center" };
+                ws[cellAddress].s.alignment = {
+                    horizontal: "center"
+                    , vertical: "center"
+                };
             }
-            }
-
-            var dateRange = document.getElementById("range").value || "All Dates";
-            XLSX.writeFile(wb, `Service Operational - ${dateRange}.xlsx`);
         }
 
+        var dateRange = document.getElementById("range").value || "All Dates";
+        XLSX.writeFile(wb, `Service Operational - ${dateRange}.xlsx`);
+    }
     // Initialize the date range picker
     $(function() {
         $('input[name="range"]').daterangepicker({
@@ -234,7 +247,7 @@
         });
     });
 
-    
+
     // modal
     Livewire.on('show-modal', () => {
         var myModal = new bootstrap.Modal(document.getElementById('ServiceModal'), {});
@@ -273,8 +286,8 @@
     }
 
 
-// Print Excel
-function printMainContent() {
+    // Print Excel
+    function printMainContent() {
         var printContents = document.querySelector('.main').innerHTML;
         var originalContents = document.body.innerHTML;
 
@@ -284,6 +297,7 @@ function printMainContent() {
         document.body.innerHTML = originalContents;
         window.location.reload();
     }
+
 </script>
 
 </div>

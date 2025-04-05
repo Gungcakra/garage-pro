@@ -111,6 +111,9 @@
                     $('.modal').modal('hide');
                 }
             });
+           
+            
+           
             Livewire.on('delete-success', (message) => {
                 Swal.fire("Deleted!", message, "success");
             });
