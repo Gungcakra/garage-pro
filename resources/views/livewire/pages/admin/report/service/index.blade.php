@@ -28,10 +28,17 @@
                 </ul>
                 <!--end::Breadcrumb-->
             </div>
-            <div class="d-flex items-center">
+            <div class="d-flex items-center gap-5">
                 <div class="form-group position-relative mb-0">
                     <input type="text" class="form-control form-control-solid pe-10" placeholder="Pick date range" id="range" name="range" wire:model="range" />
                     <i class="bi bi-calendar3 position-absolute top-50 end-0 translate-middle-y me-3 text-muted"></i>
+                </div>
+                <div wire:ignore>
+                    <select class="form-select" data-placeholder="Select an option" wire:model="status"  name="status" id="status" onchange="@this.set('status', this.value)">
+                        <option value="">Select Status</option>
+                        <option >Pending</option>
+                        <option value="1">Completed</option>
+                    </select>
                 </div>
             </div>
             <!--end::Page title-->
@@ -41,7 +48,7 @@
                 {{-- <a href="#" class="btn btn-sm fw-bold btn-secondary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Rollover</a> --}}
                 <!--end::Secondary button-->
                 <!--begin::Primary button-->
-                <button class="btn btn-sm fw-bold btn-success d-flex align-items-center justify-content-center" wire:click="create()"><i class="bi bi-file-earmark-excel-fill me-2"></i> Excel</button>
+                <button class="btn btn-sm fw-bold btn-success d-flex align-items-center justify-content-center" onclick="exportToExcel()"><i class="bi bi-file-earmark-excel-fill me-2"></i> Excel</button>
                 <button class="btn btn-sm fw-bold btn-danger d-flex align-items-center justify-content-center" wire:click="create()"><i class="bi bi-file-earmark-excel-fill me-2"></i> PDF</button>
                 <!--end::Primary button-->
             </div>
@@ -118,6 +125,7 @@
                                 <td>{{ $Service->updated_at }}</td>
                                 <td>RP {{ number_format($Service->price, 0, ',', '.') }}</td>
                                 <td>
+                                    {{-- {{ $Service->status }} --}}
                                     <div class="badge badge-light-{{ $Service->status === 0 ? 'warning' : 'success' }}">{{ $Service->status === 0 ? 'Pending' : 'Complete' }}</div>
                                 </td>
 
@@ -134,9 +142,46 @@
                 </div>
             </div>
 
-            {{-- MODAL --}}
+            
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        function exportToExcel() {
+            var table = document.getElementById("kt_app_content");
+            var wb = XLSX.utils.table_to_book(table, { sheet: "Service Operational" });
+
+            
+            var ws = wb.Sheets["Service Operational"];
+            var cols = [];
+            var range = XLSX.utils.decode_range(ws["!ref"]);
+            for (var C = range.s.c; C <= range.e.c; ++C) {
+            var maxWidth = 10; // Minimum width
+            for (var R = range.s.r; R <= range.e.r; ++R) {
+                var cell = ws[XLSX.utils.encode_cell({ r: R, c: C })];
+                if (cell && cell.v) {
+                maxWidth = Math.max(maxWidth, cell.v.toString().length);
+                }
+            }
+            cols.push({ wch: maxWidth });
+            }
+            ws["!cols"] = cols;
+
+            
+            for (var R = range.s.r; R <= range.e.r; ++R) {
+            for (var C = range.s.c; C <= range.e.c; ++C) {
+                var cellAddress = XLSX.utils.encode_cell({ r: R, c: C });
+                if (!ws[cellAddress]) continue;
+                if (!ws[cellAddress].s) ws[cellAddress].s = {};
+                ws[cellAddress].s.alignment = { horizontal: "center", vertical: "center" };
+            }
+            }
+
+            var dateRange = document.getElementById("range").value || "All Dates";
+            XLSX.writeFile(wb, `Service Operational - ${dateRange}.xlsx`);
+        }
+        </script>
+        
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script>
         $(function() {
@@ -188,6 +233,10 @@
 
         function handleSearch() {
             Livewire.dispatch('loadData')
+        }
+        function handleStatus() {
+            var status = document.getElementById("status").value;
+            Livewire.dispatch('loadStatus', { status: status });
         }
 
     </script>

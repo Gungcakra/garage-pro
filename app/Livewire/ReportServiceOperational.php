@@ -15,7 +15,7 @@ class ReportServiceOperational extends Component
     
     public $serviceOperational, $startDate = '', $endDate = '', $status = '', $range;
 
-    protected $listeners = ['loadData'];
+    protected $listeners = ['loadData','loadStatus'];
     
     public function render()
     {
@@ -32,7 +32,7 @@ class ReportServiceOperational extends Component
             }
             }, function ($query) {
             // Default query when no filters are applied
-            $query->orderBy('created_at', 'desc');
+            $query->orderBy('created_at', 'asc');
             })->paginate(10)
         
         ]);
@@ -46,4 +46,9 @@ class ReportServiceOperational extends Component
     
        
     }
+    public function loadStatus($statusChange)
+    {
+        $this->status = $statusChange;
+    }
+  
 }
