@@ -1,6 +1,7 @@
 <div class="d-flex flex-column flex-column-fluid">
 
     <x-slot:title>Operational Service Report</x-slot:title>
+
     <!--begin::Toolbar-->
     <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
         <!--begin::Toolbar container-->
@@ -34,9 +35,9 @@
                     <i class="bi bi-calendar3 position-absolute top-50 end-0 translate-middle-y me-3 text-muted"></i>
                 </div>
                 <div wire:ignore>
-                    <select class="form-select" data-placeholder="Select an option" wire:model="status"  name="status" id="status" onchange="@this.set('status', this.value)">
+                    <select class="form-select" data-placeholder="Select an option" wire:model="status" name="status" id="status" onchange="@this.set('status', this.value)">
                         <option value="">Select Status</option>
-                        <option >Pending</option>
+                        <option>Pending</option>
                         <option value="1">Completed</option>
                     </select>
                 </div>
@@ -97,57 +98,59 @@
                                         <div class="menu-item px-3">
                                             @if($Service->status === 0)
                                             <a wire:click="finalize({{ $Service->id }})" class="menu-link px-3 w-100">Finalize</a>
-                                            @else
-                                            <a wire:click="invoiceService({{ $Service->id }})" class="menu-link px-3 w-100">Invoice</a>
+                                @else
+                                <a wire:click="invoiceService({{ $Service->id }})" class="menu-link px-3 w-100">Invoice</a>
 
-                                            @endif
-                                        </div>
-                                        <!--end::Menu item-->
-                                        <!--begin::Menu item-->
-                                        <div class="menu-item px-3">
-                                            <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $Service->id }})">Delete</a>
-                                        </div>
-                                        <!--end::Menu item-->
-                                </td> --}}
-                                <td>{{ $Service->code }}</td>
-                                <td>{{ $Service->customer->name }}</td>
-                                <td>{{ $Service->check }}</td>
-                                <td>{{ $Service->plate_number }}</td>
-                                <td>
-                                    @php
-                                    $completeness = [];
-                                    if ($Service->kunci) $completeness[] = 'Kunci';
-                                    if ($Service->bpkb) $completeness[] = 'BPKB';
-                                    if ($Service->stnk) $completeness[] = 'STNK';
-                                    @endphp
-                                    {{ implode(' - ', $completeness) }}
-                                </td>
-                                <td>{{ $Service->updated_at }}</td>
-                                <td>RP {{ number_format($Service->price, 0, ',', '.') }}</td>
-                                <td>
-                                    {{-- {{ $Service->status }} --}}
-                                    <div class="badge badge-light-{{ $Service->status === 0 ? 'warning' : 'success' }}">{{ $Service->status === 0 ? 'Pending' : 'Complete' }}</div>
-                                </td>
-
-                            </tr>
-                            @endforeach
-                            @endif
-                    </tbody>
-
-
-                </table>
-
-                <div class="mt-4 d-flex justify-content-center">
-                    {{-- {{ $data->onEachSide(1)->links() }} --}}
-                </div>
+                                @endif
             </div>
+            <!--end::Menu item-->
+            <!--begin::Menu item-->
+            <div class="menu-item px-3">
+                <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $Service->id }})">Delete</a>
+            </div>
+            <!--end::Menu item-->
+            </td> --}}
+            <td>{{ $Service->code }}</td>
+            <td>{{ $Service->customer->name }}</td>
+            <td>{{ $Service->check }}</td>
+            <td>{{ $Service->plate_number }}</td>
+            <td>
+                @php
+                $completeness = [];
+                if ($Service->kunci) $completeness[] = 'Kunci';
+                if ($Service->bpkb) $completeness[] = 'BPKB';
+                if ($Service->stnk) $completeness[] = 'STNK';
+                @endphp
+                {{ implode(' - ', $completeness) }}
+            </td>
+            <td>{{ $Service->updated_at }}</td>
+            <td>RP {{ number_format($Service->price, 0, ',', '.') }}</td>
+            <td>
+                {{-- {{ $Service->status }} --}}
+                <div class="badge badge-light-{{ $Service->status === 0 ? 'warning' : 'success' }}">{{ $Service->status === 0 ? 'Pending' : 'Complete' }}</div>
+            </td>
 
-            
+            </tr>
+            @endforeach
+            @endif
+            </tbody>
+
+
+            </table>
+
+            <div class="mt-4 d-flex justify-content-center">
+                {{-- {{ $data->onEachSide(1)->links() }} --}}
+            </div>
         </div>
+
+
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script>
-        function exportToExcel() {
+</div>
+<script data-navigate-once src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script>
+    function exportToExcel() {
             var table = document.getElementById("kt_app_content");
             var wb = XLSX.utils.table_to_book(table, { sheet: "Service Operational" });
 
@@ -180,77 +183,80 @@
             var dateRange = document.getElementById("range").value || "All Dates";
             XLSX.writeFile(wb, `Service Operational - ${dateRange}.xlsx`);
         }
-        </script>
-        
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-    <script>
-        $(function() {
-            $('input[name="range"]').daterangepicker({
-                opens: "left"
-            , });
 
-            $("#range").on("apply.daterangepicker", function(event, picker) {
-                $(this).val(
-                    picker.startDate.format("YYYY-MM-DD") +
-                    " - " +
-                    picker.endDate.format("YYYY-MM-DD")
-                );
-                Livewire.dispatch('loadData', {
-                    startDate: picker.startDate.format("YYYY-MM-DD"),
-                    endDate: picker.endDate.format("YYYY-MM-DD")
-                });
-            });
+    // Initialize the date range picker
+    $(function() {
+        $('input[name="range"]').daterangepicker({
+            opens: "left"
+        , });
 
-            $("#range").on("cancel.daterangepicker", function() {
-                $(this).val('');
+        $("#range").on("apply.daterangepicker", function(event, picker) {
+            $(this).val(
+                picker.startDate.format("YYYY-MM-DD") +
+                " - " +
+                picker.endDate.format("YYYY-MM-DD")
+            );
+            Livewire.dispatch('loadData', {
+                startDate: picker.startDate.format("YYYY-MM-DD")
+                , endDate: picker.endDate.format("YYYY-MM-DD")
             });
         });
 
-        Livewire.on('show-modal', () => {
-            var myModal = new bootstrap.Modal(document.getElementById('ServiceModal'), {});
-            myModal.show();
+        $("#range").on("cancel.daterangepicker", function() {
+            $(this).val('');
         });
-        Livewire.on('hide-modal', () => {
-            var modalEl = document.getElementById('ServiceModal');
-            var modal = bootstrap.Modal.getInstance(modalEl);
-            modal.hide();
+    });
+
+    
+    // modal
+    Livewire.on('show-modal', () => {
+        var myModal = new bootstrap.Modal(document.getElementById('ServiceModal'), {});
+        myModal.show();
+    });
+    Livewire.on('hide-modal', () => {
+        var modalEl = document.getElementById('ServiceModal');
+        var modal = bootstrap.Modal.getInstance(modalEl);
+        modal.hide();
+    });
+    Livewire.on('confirm-delete', (message) => {
+        Swal.fire({
+            title: message
+            , showCancelButton: true
+            , confirmButtonText: "Yes"
+            , cancelButtonText: "No"
+            , icon: "warning"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.dispatch('deleteService');
+            } else {
+                Swal.fire("Cancelled", "Delete Cancelled.", "info");
+            }
         });
-        Livewire.on('confirm-delete', (message) => {
-            Swal.fire({
-                title: message
-                , showCancelButton: true
-                , confirmButtonText: "Yes"
-                , cancelButtonText: "No"
-                , icon: "warning"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Livewire.dispatch('deleteService');
-                } else {
-                    Swal.fire("Cancelled", "Delete Cancelled.", "info");
-                }
-            });
+    });
+
+    function handleSearch() {
+        Livewire.dispatch('loadData')
+    }
+
+    function handleStatus() {
+        var status = document.getElementById("status").value;
+        Livewire.dispatch('loadStatus', {
+            status: status
         });
+    }
 
-        function handleSearch() {
-            Livewire.dispatch('loadData')
-        }
-        function handleStatus() {
-            var status = document.getElementById("status").value;
-            Livewire.dispatch('loadStatus', { status: status });
-        }
 
-    </script>
-    <script>
-        function printMainContent() {
-            var printContents = document.querySelector('.main').innerHTML;
-            var originalContents = document.body.innerHTML;
+// Print Excel
+function printMainContent() {
+        var printContents = document.querySelector('.main').innerHTML;
+        var originalContents = document.body.innerHTML;
 
-            document.body.innerHTML = printContents;
-            document.title = "Invoice";
-            window.print();
-            document.body.innerHTML = originalContents;
-            window.location.reload();
-        }
+        document.body.innerHTML = printContents;
+        document.title = "Invoice";
+        window.print();
+        document.body.innerHTML = originalContents;
+        window.location.reload();
+    }
+</script>
 
-    </script>
 </div>
