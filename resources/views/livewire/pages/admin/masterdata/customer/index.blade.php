@@ -125,8 +125,13 @@
                 modal.hide();
                 modal.dispose();
             }
-            document.body.classList.remove('modal-open');
+            modalEl.style.display = 'none';
+            modalEl.setAttribute('aria-hidden', 'true');
+            modalEl.removeAttribute('aria-modal');
+            modalEl.removeAttribute('role');
+            document.body.classList.remove('modal-open'); 
             document.body.style.overflow = ''; 
+            document.body.style.paddingRight = ''; 
         });
 
         Livewire.on('confirm-delete', (message) => {

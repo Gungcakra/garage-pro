@@ -1,4 +1,4 @@
-<div class="modal fade" tabindex="-1" id="ServiceModal" aria-hidden="true">
+<div class="modal fade" tabindex="-1" id="ServiceModal" aria-hidden="true" wire:ignore.self>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -31,13 +31,7 @@
                             </span>
                         </label>
                         <!--end::Label-->
-                        @error('name')
-                        <div class="alert alert-danger" role="alert">
-                            {{ $message }}
-                        </div>
-
-                        @enderror
-                        <input type="text" class="form-control form-control-solid" placeholder="Enter Name" id="name" autocomplete="off" wire:model="name" />
+                        <input type="text" class="form-control form-control-solid  @error('name') is-invalid @enderror" placeholder="Enter Name" id="name" autocomplete="off" wire:model="name" />
                     </div>
                     <div class="d-flex flex-column col-md-6 mb-8 fv-row">
                         <!--begin::Label-->
@@ -52,13 +46,8 @@
                             </span>
                         </label>
                         <!--end::Label-->
-                        @error('price')
-                        <div class="alert alert-danger" role="alert">
-                            {{ $message }}
-                        </div>
-
-                        @enderror
-                        <input type="text" class="form-control form-control-solid" placeholder="Enter Price" autocomplete="off" id="price" wire:model="price" />
+                      
+                        <input type="text" class="form-control form-control-solidc @error('price') is-invalid @enderror" placeholder="Enter Price" autocomplete="off" id="price" wire:model="price" />
                     </div>
                 </div>
                 <!--end::Input group-->

@@ -1,4 +1,4 @@
-<div class="modal fade" tabindex="-1" id="CustomerModal" aria-hidden="true">
+<div class="modal fade" tabindex="-1" id="CustomerModal" aria-hidden="true" wire:ignore.self>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -31,13 +31,8 @@
                             </span>
                         </label>
                         <!--end::Label-->
-                        @error('name')
-                        <div class="alert alert-danger" role="alert">
-                            {{ $message }}
-                        </div>
-
-                        @enderror
-                        <input type="text" class="form-control form-control-solid" placeholder="Enter Name" id="name" autocomplete="off" wire:model="name" />
+                      
+                        <input type="text" class="form-control form-control-solid  @error('name') is-invalid @enderror" placeholder="Enter Name" id="name" autocomplete="off" wire:model="name" />
                     </div>
                     <div class="d-flex flex-column col-md-6 mb-8 fv-row">
                         <!--begin::Label-->
@@ -52,13 +47,8 @@
                             </span>
                         </label>
                         <!--end::Label-->
-                        @error('email')
-                        <div class="alert alert-danger" role="alert">
-                            {{ $message }}
-                        </div>
-
-                        @enderror
-                        <input type="text" class="form-control form-control-solid" placeholder="Enter Position" autocomplete="off" id="position" wire:model="email" />
+                      
+                        <input type="text" class="form-control form-control-solid  @error('email') is-invalid @enderror" placeholder="Enter Position" autocomplete="off" id="position" wire:model="email" />
                     </div>
                 </div>
                 <!--end::Input group-->
@@ -78,13 +68,8 @@
                             </span>
                         </label>
                         <!--end::Label-->
-                        @error('phone')
-                        <div class="alert alert-danger" role="alert">
-                            {{ $message }}
-                        </div>
-
-                        @enderror
-                        <input type="text" class="form-control form-control-solid" placeholder="Enter Phone" id="phone" autocomplete="off" wire:model="phone" />
+                      
+                        <input type="text" class="form-control form-control-solid  @error('phone') is-invalid @enderror" placeholder="Enter Phone" id="phone" autocomplete="off" wire:model="phone" />
                     </div>
                     <div class="d-flex flex-column col-md-6 mb-8 fv-row">
                         <!--begin::Label-->
@@ -99,13 +84,8 @@
                             </span>
                         </label>
                         <!--end::Label-->
-                        @error('address')
-                        <div class="alert alert-danger" role="alert">
-                            {{ $message }}
-                        </div>
-
-                        @enderror
-                        <input type="text" class="form-control form-control-solid" placeholder="Enter Address" id="address" autocomplete="off" wire:model="address" />
+                       
+                        <input type="text" class="form-control form-control-solid  @error('address') is-invalid @enderror" placeholder="Enter Address" id="address" autocomplete="off" wire:model="address" />
 
                     </div>
                 </div>
