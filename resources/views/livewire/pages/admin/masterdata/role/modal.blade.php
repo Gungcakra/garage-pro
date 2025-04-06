@@ -1,5 +1,5 @@
 {{-- ROLE MODAL --}}
-<div class="modal fade" tabindex="-1" id="roleModal" aria-hidden="true">
+<div class="modal fade" tabindex="-1" id="roleModal" aria-hidden="true" wire:ignore.self>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -57,7 +57,7 @@
 </div>
 
 {{-- PERMISSION MODAL --}}
-<div class="modal fade" tabindex="-1" id="permissionModal" aria-hidden="true">
+<div class="modal fade" tabindex="-1" id="permissionModal" aria-hidden="true" wire:ignore.self>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -90,7 +90,7 @@
                             </span>
                         </label>
                         <!--end::Label-->
-                        @error('name')
+                        @error('permissionName')
                         <div class="alert alert-danger" role="alert">
                             {{ $message }}
                         </div>
@@ -117,7 +117,7 @@
 
 {{-- ASIGN MODAL --}}
 
-<div class="modal fade" tabindex="-1" id="asignModal" aria-hidden="true">
+<div class="modal fade" tabindex="-1" id="asignModal" aria-hidden="true" wire:wire:ignore.self>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

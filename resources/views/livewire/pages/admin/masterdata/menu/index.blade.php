@@ -88,6 +88,13 @@
                             <td>{{ $menu->route }}</td>
                             <td>{{ $menu->order }}</td>
                         </tr>
+                        <tr class="fw-semibold fs-6 text-muted">
+                            <th></th>
+                            <th>Action</th>
+                            <th>Name</th>
+                            <th>Route</th>
+                            <th>Permission</th>
+                        </tr>
                         @foreach($menu->submenus as $submenu)
                         <tr>
                             <td></td>
@@ -139,8 +146,13 @@
             modal.hide();
             modal.dispose();
             }
-            document.body.classList.remove('modal-open');
-            document.body.style.overflow = '';
+            modalEl.style.display = 'none';
+            modalEl.setAttribute('aria-hidden', 'true');
+            modalEl.removeAttribute('aria-modal');
+            modalEl.removeAttribute('role');
+            document.body.classList.remove('modal-open'); 
+            document.body.style.overflow = ''; 
+            document.body.style.paddingRight = ''; 
         });
 
         Livewire.on('show-submenu-modal', () => {
@@ -159,8 +171,13 @@
             modal.hide();
             modal.dispose();
             }
-            document.body.classList.remove('modal-open');
-            document.body.style.overflow = '';
+            modalEl.style.display = 'none';
+            modalEl.setAttribute('aria-hidden', 'true');
+            modalEl.removeAttribute('aria-modal');
+            modalEl.removeAttribute('role');
+            document.body.classList.remove('modal-open'); 
+            document.body.style.overflow = ''; 
+            document.body.style.paddingRight = ''; 
         });
 
         Livewire.on('delete-menu', (message) => {

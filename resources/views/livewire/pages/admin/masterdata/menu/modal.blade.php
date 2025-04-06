@@ -1,5 +1,5 @@
 {{-- MENU --}}
-<div class="modal fade" tabindex="-1" id="menuModal" aria-hidden="true">
+<div class="modal fade" tabindex="-1" id="menuModal" aria-hidden="true" wire:ignore.self>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -123,7 +123,7 @@
 
 
 {{-- SUBMENU --}}
-<div class="modal fade" tabindex="-1" id="subMenuModal" aria-hidden="true">
+<div class="modal fade" tabindex="-1" id="subMenuModal" aria-hidden="true" wire:ignore.self>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
