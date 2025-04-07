@@ -162,8 +162,8 @@
     {{-- <script data-navigate-once src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script> --}}
     
 
-    <script src="{{ asset('assets/js/widgets.bundle.js') }}"></script>
-    <script src="{{ asset('assets/js/custom/widgets.js') }}"></script>
+    <script data-navigate-once src="{{ asset('assets/js/widgets.bundle.js') }}"></script>
+    <script data-navigate-once src="{{ asset('assets/js/custom/widgets.js') }}"></script>
    
     <!--end::Global Javascript Bundle-->
     <!--begin::Vendors Javascript(used for this page only)-->

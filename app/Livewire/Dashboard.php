@@ -6,77 +6,85 @@ use App\Models\Menu;
 use Livewire\Component;
 use App\Models\ServiceOperational;
 use Livewire\Attributes\Layout;
+use Carbon\Carbon;
 
 #[Layout('layouts.admin')] 
 class Dashboard extends Component
 {
-    public $startDate, $endDate, $thisMonthIncome, $thisMonthServices, $incomePerformance;
+    public $startDate, $endDate, $thisMonthIncome, $thisMonthServices, $incomePerformance, $incomeChart;
         
     protected $listeners = ['loadData'];
+
     public function mount()
     {
+        $currentMonth = Carbon::now()->month;
+
         $this->thisMonthIncome = ServiceOperational::with(['services', 'spareparts'])
             ->where('status', 1)
-            ->whereMonth('created_at', now()->month)
+            ->whereMonth('created_at', $currentMonth)
             ->get()
             ->reduce(function ($carry, $item) {
-            $serviceIncome = $item->services->sum('pivot.price');
-            $sparepartIncome = $item->spareparts->sum('pivot.price');
-            return $carry + $serviceIncome + $sparepartIncome;
+                $serviceIncome = $item->services->sum('pivot.price');
+                $sparepartIncome = $item->spareparts->sum('pivot.price');
+                return $carry + $serviceIncome + $sparepartIncome;
             }, 0);
+
         $this->thisMonthServices = ServiceOperational::with(['services', 'spareparts'])
             ->where('status', 1)
-            ->whereMonth('created_at', now()->month)
+            ->whereMonth('created_at', $currentMonth)
             ->count();
-        
-        $this->startDate = $this->startDate ?? now()->startOfMonth();
-        $this->endDate = $this->endDate ?? now();
 
-        
-        $this->incomePerformance = ServiceOperational::with(['services', 'spareparts'])
-            ->where('status', 1)
-            ->whereBetween('created_at', [$this->startDate, $this->endDate])
-            ->get()
-            ->groupBy(function ($item) {
-                return $item->created_at->format('Y-m-d H:00'); 
-            })
-            ->map(function ($group) {
-                return $group->reduce(function ($carry, $item) {
-                    $serviceIncome = $item->services->sum('pivot.price');
-                    $sparepartIncome = $item->spareparts->sum('pivot.price');
-                    return $carry + $serviceIncome + $sparepartIncome;
-                }, 0);
-            });
+            
+         $this->startDate = Carbon::now()->startOfMonth();
+         $this->endDate = Carbon::now();
+ 
+         $this->loadIncomePerformance($this->startDate, $this->endDate);
+            
     }
 
     public function render()
     {
-        
-        $data = ServiceOperational::with(['services', 'spareparts'])
-            ->where('status', 1)
-            ->whereBetween('created_at', [$this->startDate, $this->endDate])
-            ->get();
-
         return view('livewire.pages.admin.dashboard')->with([
             'title' => 'Dashboard',
             'active' => 'dashboard',
             'menus' => Menu::with('submenus')->get(),
             'thisMonthIncome' => $this->thisMonthIncome,
             'thisMonthService' => $this->thisMonthServices,
-            'incomeChart' => $this->incomePerformance->map(function ($value, $key) {
-                return [
-                    'hour' => $key, 
-                    'income' => $value,
-                ];
-            })->values(), 
+            'incomeChart' => $this->incomeChart,
         ]);
     }
 
     public function loadData($startDate, $endDate)
     {
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-
+        $this->startDate = Carbon::parse($startDate);
+        $this->endDate = Carbon::parse($endDate);
+        $this->loadIncomePerformance($this->startDate, $this->endDate);
         
+    }
+    private function loadIncomePerformance($startDate, $endDate)
+    {
+        $data = ServiceOperational::with(['services', 'spareparts'])
+            ->where('status', 1)
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->get();
+
+        $this->incomePerformance = $data->groupBy(function ($item) {
+            return Carbon::parse($item->created_at)->format('Y-m-d H:00');
+        })->map(function ($group) {
+            return $group->reduce(function ($carry, $item) {
+                $serviceIncome = $item->services->sum('pivot.price');
+                $sparepartIncome = $item->spareparts->sum('pivot.price');
+                return $carry + $serviceIncome + $sparepartIncome;
+            }, 0);
+        });
+        $this->incomeChart = $this->incomePerformance->map(function ($value, $key) {
+            return [
+                'hour' => $key,
+                'income' => $value,
+            ];
+        })->values();
+        
+        // $this->dispatch('incomeChartUpdated');
+
     }
 }
