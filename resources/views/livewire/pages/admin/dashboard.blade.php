@@ -1192,7 +1192,7 @@
 			});
 		});
 
-		window.incomeChartData = @json($incomeChart);
+		// window.incomeChartData = @json($incomeChart);
 		
 
 
