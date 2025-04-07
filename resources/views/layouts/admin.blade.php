@@ -111,9 +111,9 @@
                     $('.modal').modal('hide');
                 }
             });
-           
-            
-           
+
+
+
             Livewire.on('delete-success', (message) => {
                 Swal.fire("Deleted!", message, "success");
             });
@@ -159,8 +159,12 @@
     <script data-navigate-once src="{{ asset('assets/js/scripts.bundle.js')}}"></script>
     {{-- <script data-navigate-once src="{{ asset('assets/js/custom/pages/general/pos.js') }}"></script> --}}
 
+    {{-- <script data-navigate-once src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script> --}}
+    
 
-
+    <script src="{{ asset('assets/js/widgets.bundle.js') }}"></script>
+    <script src="{{ asset('assets/js/custom/widgets.js') }}"></script>
+   
     <!--end::Global Javascript Bundle-->
     <!--begin::Vendors Javascript(used for this page only)-->
     {{-- <script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js')}}"></script>
