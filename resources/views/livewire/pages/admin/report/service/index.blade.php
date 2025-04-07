@@ -224,7 +224,7 @@
         var dateRange = document.getElementById("range").value || "All Dates";
         XLSX.writeFile(wb, `Service Operational - ${dateRange}.xlsx`);
     }
-    // Initialize the date range picker
+    
     $(function() {
         $('input[name="range"]').daterangepicker({
             opens: "left"

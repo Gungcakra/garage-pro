@@ -31,7 +31,7 @@ class ReportServiceOperational extends Component
                 $query->where('status', $this->status);
             }
             }, function ($query) {
-            // Default query when no filters are applied
+                
             $query->orderBy('created_at', 'asc');
             })->paginate(10)
         

@@ -148,13 +148,13 @@
 							<!--begin::Title-->
 							<h3 class="card-title align-items-start flex-column">
 								<span class="card-label fw-bold text-dark">Performance</span>
-								<span class="text-gray-400 mt-1 fw-semibold fs-6">1,046 Inbound Calls today</span>
+								<span class="text-gray-400 mt-1 fw-semibold fs-6"> today</span>
 							</h3>
 							<!--end::Title-->
 							<!--begin::Toolbar-->
 							<div class="card-toolbar">
 								<!--begin::Daterangepicker(defined in src/js/layout/app.js)-->
-								<div data-kt-daterangepicker="true" data-kt-daterangepicker-opens="left" data-kt-daterangepicker-range="today" class="btn btn-sm btn-light d-flex align-items-center px-4">
+								{{-- <div class="btn btn-sm btn-light d-flex align-items-center px-4" onchange="loadData()">
 									<!--begin::Display range-->
 									<div class="text-gray-600 fw-bold">Loading date range...</div>
 									<!--end::Display range-->
@@ -166,7 +166,16 @@
 										<span class="path5"></span>
 										<span class="path6"></span>
 									</i>
-								</div>
+								</div> --}}
+								<input type="text" data-kt-daterangepicker="true" data-kt-daterangepicker-opens="left" data-kt-daterangepicker-range="today" class="btn btn-sm btn-light d-flex align-items-center px-4"  onchange="loadData()" id="range">
+								<i class="ki-duotone ki-calendar-8 fs-1 ms-2 me-0">
+									<span class="path1"></span>
+									<span class="path2"></span>
+									<span class="path3"></span>
+									<span class="path4"></span>
+									<span class="path5"></span>
+									<span class="path6"></span>
+								</i>	
 								<!--end::Daterangepicker-->
 							</div>
 							<!--end::Toolbar-->
@@ -187,7 +196,7 @@
 			</div>
 			<!--end::Row-->
 			<!--begin::Row-->
-			<div class="row g-5 g-xl-10 mb-5 mb-xl-10">
+			{{-- <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
 				<!--begin::Col-->
 				<div class="col-xl-6">
 					<!--begin::Card widget 19-->
@@ -369,7 +378,7 @@
 					<!--end::Engage widget 9-->
 				</div>
 				<!--end::Col-->
-			</div>
+			</div> --}}
 			<!--end::Row-->
 			<!--begin::Row-->
 			<div class="row g-5 g-xl-10 mb-5 mb-xl-10">
@@ -1155,6 +1164,14 @@
 		<!--end::Content container-->
 	</div>
 	<script>
+		function loadData(){
+			let range = document.getElementById('range').value.split(' - ');
+			Livewire.dispatch('loadData', {
+				startDate: range[0],
+				endDate: range[1]
+			});
+			
+		}
 		window.incomeChartData = @json($incomeChart);
 	</script>
 	

@@ -10,12 +10,24 @@ use Livewire\Attributes\Layout;
 #[Layout('layouts.admin')] 
 class Dashboard extends Component
 {
-    public $startDate;
-    public $endDate;
-    public $incomePerformance;
-
+    public $startDate, $endDate, $thisMonthIncome, $thisMonthServices, $incomePerformance;
+        
+    protected $listeners = ['loadData'];
     public function mount()
     {
+        $this->thisMonthIncome = ServiceOperational::with(['services', 'spareparts'])
+            ->where('status', 1)
+            ->whereMonth('created_at', now()->month)
+            ->get()
+            ->reduce(function ($carry, $item) {
+            $serviceIncome = $item->services->sum('pivot.price');
+            $sparepartIncome = $item->spareparts->sum('pivot.price');
+            return $carry + $serviceIncome + $sparepartIncome;
+            }, 0);
+        $this->thisMonthServices = ServiceOperational::with(['services', 'spareparts'])
+            ->where('status', 1)
+            ->whereMonth('created_at', now()->month)
+            ->count();
         
         $this->startDate = $this->startDate ?? now()->startOfMonth();
         $this->endDate = $this->endDate ?? now();
@@ -49,12 +61,8 @@ class Dashboard extends Component
             'title' => 'Dashboard',
             'active' => 'dashboard',
             'menus' => Menu::with('submenus')->get(),
-            'thisMonthIncome' => $data->reduce(function ($carry, $item) {
-                $serviceIncome = $item->services->sum('pivot.price');
-                $sparepartIncome = $item->spareparts->sum('pivot.price');
-                return $carry + $serviceIncome + $sparepartIncome;
-            }, 0),
-            'thisMonthService' => $data->count(),
+            'thisMonthIncome' => $this->thisMonthIncome,
+            'thisMonthService' => $this->thisMonthServices,
             'incomeChart' => $this->incomePerformance->map(function ($value, $key) {
                 return [
                     'hour' => $key, 
@@ -62,5 +70,13 @@ class Dashboard extends Component
                 ];
             })->values(), 
         ]);
+    }
+
+    public function loadData($startDate, $endDate)
+    {
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+
+        
     }
 }
