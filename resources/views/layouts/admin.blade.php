@@ -95,6 +95,8 @@
     <!--begin::Javascript-->
     <script data-navigate-once src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script data-navigate-once src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script data-navigate-once src="https://unpkg.com/qr-scanner@1.4.2/qr-scanner.legacy.min.js"></script>
+
     <script>
         // Livewire.hook("morphed", () => {
         //     if (typeof KTMenu !== 'undefined' && typeof KTMenu.createInstances === 'function') {
@@ -156,6 +158,46 @@
 
         function backOperational() {
             window.Livewire.navigate('serviceoperational');
+        }
+
+        function scanQr() {
+            console.log("scanQr started");
+            const videoElem = document.getElementById('qr-video');
+
+            const qrScanner = new QrScanner(
+                videoElem
+                , result => {
+                    console.log('Scanned QR:', result);
+                    qrScanner.stop();
+
+                    // Extracting the ID from the scanned data
+                    const id = result.data.split('#')[1]?.trim();
+                    if (id) {
+                        Livewire.dispatch('getInvoiceFromQr', {
+                            code: id
+                        });
+                    } else {
+                        console.error('Invalid QR data format');
+                    }
+                }
+                }, {
+                    returnDetailedScanResult: true
+                }
+            );
+
+            qrScanner.start().catch(e => {
+                alert("Camera access denied or not found.");
+                console.error(e);
+            });
+        }
+        function closeCamera()
+        {
+            const videoElem = document.getElementById('qr-video');
+            const qrScanner = new QrScanner(videoElem, result => {
+                console.log('Scanned QR:', result);
+                qrScanner.stop();
+            });
+            qrScanner.stop();
         }
 
     </script>

@@ -37,7 +37,9 @@
                 {{-- <a href="#" class="btn btn-sm fw-bold btn-secondary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Rollover</a> --}}
                 <!--end::Secondary button-->
                 <!--begin::Primary button-->
-                <button class="btn btn-sm fw-bold btn-primary" wire:click="create()">Add Service</button>
+                <button class="btn btn-sm btn-light-success" onclick="scanQr()" data-bs-toggle="modal" data-bs-target="#scanQr">Scan QrCode</button>
+
+                {{-- <button class="btn btn-sm fw-bold btn-primary" wire:click="create()">Add Service</button> --}}
                 <!--end::Primary button-->
             </div>
             <!--end::Actions-->
@@ -66,54 +68,55 @@
                     </thead>
                     <tbody>
 
-                        @if (count($data) < 1)
-                        <tr>
+                        @if (count($data) < 1) <tr>
                             <td colspan="6" class="text-center">No Data Found</td>
-                        </tr>
-                        @else
-                        @foreach ( $data as $index => $Service)
+                            </tr>
+                            @else
+                            @foreach ( $data as $index => $Service)
 
-                        <tr wire:key="Service-{{ $Service->id }}">
-                            <td>{{ $index + 1 }}</td>
-                            <td>
-                                <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                    <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                                <!--begin::Menu-->
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                       @if($Service->status === 0)
-                                        <a wire:click="finalize({{ $Service->id }})" class="menu-link px-3 w-100">Finalize</a>
-                                        @else
-                                        <a wire:click="invoiceService({{ $Service->id }})" class="menu-link px-3 w-100">Invoice</a>
-                                        
-                                       @endif                                    
-                                    </div>
-                                    <!--end::Menu item-->
-                                    <!--begin::Menu item-->
+                            <tr wire:key="Service-{{ $Service->id }}">
+                                <td>{{ $index + 1 }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+                                        <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+                                    <!--begin::Menu-->
+                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+                                        <!--begin::Menu item-->
+                                        <div class="menu-item px-3">
+                                            @if($Service->status === 0)
+                                            <a wire:click="finalize({{ $Service->id }})" class="menu-link px-3 w-100">Finalize</a>
+                                            @else
+                                            <a wire:click="invoiceService({{ $Service->id }})" class="menu-link px-3 w-100">Invoice</a>
+
+                                            @endif
+                                        </div>
+                                        <!--end::Menu item-->
+                                        <!--begin::Menu item-->
                                         {{-- <div class="menu-item px-3">
                                             <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $Service->id }})">Delete</a>
-                                        </div> --}}
+                                    </div> --}}
                                     <!--end::Menu item-->
-                            </td>
-                            <td class="fw-bold">{{ $Service->code }}</td>
-                            <td>{{ $Service->customer->name }}</td>
-                            <td>{{ $Service->check }}</td>
-                            <td>{{ $Service->plate_number }}</td>
-                            <td>
-                                @php
+                                </td>
+                                <td class="fw-bold">{{ $Service->code }}</td>
+                                <td>{{ $Service->customer->name }}</td>
+                                <td>{{ $Service->check }}</td>
+                                <td>{{ $Service->plate_number }}</td>
+                                <td>
+                                    @php
                                     $completeness = [];
                                     if ($Service->kunci) $completeness[] = 'Kunci';
                                     if ($Service->bpkb) $completeness[] = 'BPKB';
                                     if ($Service->stnk) $completeness[] = 'STNK';
-                                @endphp
-                                {{ implode(' - ', $completeness) }}
-                            </td>
-                            <td><div class="badge badge-light-{{ $Service->status === 0 ? 'warning' : 'success' }}">{{ $Service->status === 0 ? 'Pending' : 'Complete' }}</div></td>
-                            
-                        </tr>
-                        @endforeach
-                        @endif
+                                    @endphp
+                                    {{ implode(' - ', $completeness) }}
+                                </td>
+                                <td>
+                                    <div class="badge badge-light-{{ $Service->status === 0 ? 'warning' : 'success' }}">{{ $Service->status === 0 ? 'Pending' : 'Complete' }}</div>
+                                </td>
+
+                            </tr>
+                            @endforeach
+                            @endif
                     </tbody>
 
 
@@ -125,19 +128,45 @@
             </div>
 
             {{-- MODAL --}}
+            <div class="modal fade" tabindex="-1" id="scanQr">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Scan QrCode</h3>
+
+                            <!--begin::Close-->
+                            <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                                <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                            </div>
+                            <!--end::Close-->
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="d-flex w-100 justify-content-center">
+                                <video id="qr-video" style="width: 100%; max-width: 400px;"></video>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal" onclick="closeCamera()">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
     <script>
         Livewire.on('show-modal', () => {
             var myModal = new bootstrap.Modal(document.getElementById('ServiceModal'), {});
             myModal.show();
         });
         Livewire.on('hide-modal', () => {
-        var modalEl = document.getElementById('ServiceModal');
-        var modal = bootstrap.Modal.getInstance(modalEl);
-        modal.hide();
-    });
-    Livewire.on('confirm-delete', (message) => {
+            var modalEl = document.getElementById('ServiceModal');
+            var modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+        });
+        Livewire.on('confirm-delete', (message) => {
             Swal.fire({
                 title: message
                 , showCancelButton: true
@@ -156,6 +185,9 @@
         function handleSearch() {
             Livewire.dispatch('loadData')
         }
+
+       
+
     </script>
     <script>
         function printMainContent() {
@@ -176,11 +208,12 @@
             window.print();
             document.body.innerHTML = originalContents;
             document.head.removeChild(printStyle);
-            
+
         }
-        function back()
-        {
+
+        function back() {
             window.Livewire.navigate('servicedetail');
         }
+
     </script>
 </div>

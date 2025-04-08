@@ -15,7 +15,7 @@ class ServiceDetail extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
     public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $status, $idToDelete, $tabService = true, $tabSparepart, $serviceAdd = [], $sparepartAdd = [], $totalServicePrice, $totalSparepartPrice, $subTotal = 0, $tax = 12000, $totalPrice = 0, $invoice, $invoiceId, $qrCode,$writer, $result, $dataUri;
-    protected $listeners = ['loadData', 'loadDataService', 'loadDataSparepart'];
+    protected $listeners = ['loadData', 'loadDataService', 'loadDataSparepart','getInvoiceFromQr'];
 
     public $search = '', $searchService = '', $searchSparepart = '';
     public function render()
@@ -221,6 +221,7 @@ class ServiceDetail extends Component
         $this->invoiceId = $serviceOperational->id;
         $this->ServiceOperationalId = null;
         $this->invoice = true;
+        $this->invoiceService($this->invoiceId);
 
         
     }
@@ -229,5 +230,19 @@ class ServiceDetail extends Component
     {
         $this->invoice = false;
         $this->invoiceId = null;
+    }
+
+    
+    public function getInvoiceFromQr($code)
+    {
+        dd($code);
+        $this->invoice = true;
+        $this->invoiceId = ServiceOperational::where('code', $code)->first()->id;
+        $this->code = $code;
+        $qrCode = new QrCode($this->code);
+        $writer = new \Endroid\QrCode\Writer\PngWriter();
+        $result = $writer->write($qrCode);
+        $this->dataUri = $result->getDataUri();
+        
     }
 }
