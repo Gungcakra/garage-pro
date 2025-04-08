@@ -28,7 +28,7 @@
                 <!--end::Breadcrumb-->
             </div>
             <div class="d-flex items-center">
-                <input type="text" class="form-control form-control-solid w-250px ps-14" placeholder="Search Customer" wire:model="search" onkeydown="handleSearch()" />
+                <input type="text" class="form-control form-control-solid w-250px ps-14" placeholder="Search Customer" wire:model.live.debounce.300ms="search" />
             </div>
             <!--end::Page title-->
             <!--begin::Actions-->
@@ -37,7 +37,7 @@
                 {{-- <a href="#" class="btn btn-sm fw-bold btn-secondary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Rollover</a> --}}
                 <!--end::Secondary button-->
                 <!--begin::Primary button-->
-                <button class="btn btn-sm fw-bold btn-primary" wire:click="create()">Add Customer</button>
+                <button class="btn btn-sm fw-bold btn-primary" wire:click="create">Add Customer</button>
                 <!--end::Primary button-->
             </div>
             <!--end::Actions-->
@@ -104,11 +104,14 @@
                 </div>
             </div>
 
-           @include('livewire.pages.admin.masterdata.customer.modal')
+            @include('livewire.pages.admin.masterdata.customer.modal')
 
         </div>
     </div>
-    <script>
+</div>
+@push('scripts')
+<script>
+    $(function() {
         Livewire.on('show-modal', () => {
             var modalEl = document.getElementById('CustomerModal');
             var existingModal = bootstrap.Modal.getInstance(modalEl);
@@ -129,9 +132,9 @@
             modalEl.setAttribute('aria-hidden', 'true');
             modalEl.removeAttribute('aria-modal');
             modalEl.removeAttribute('role');
-            document.body.classList.remove('modal-open'); 
-            document.body.style.overflow = ''; 
-            document.body.style.paddingRight = ''; 
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
         });
 
         Livewire.on('confirm-delete', (message) => {
@@ -150,10 +153,8 @@
             });
         });
 
-        function handleSearch() {
-            
-            Livewire.dispatch('loadData');
-        }
+       
+    });
 
-    </script>
-</div>
+</script>
+@endpush

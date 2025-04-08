@@ -114,7 +114,8 @@
                             <!--begin::Wrapper-->
                             <div class="d-flex flex-column d-grid gap-5 gap-xxl-9 ">
                                 <div class="d-flex items-center">
-                                    <input type="text" class="form-control form-control-solid" placeholder="Search Service Name" id="search" autocomplete="off" wire:model="searchService" onkeydown="handleSearchService()" />
+                               
+                                    <input type="text" class="form-control form-control-solid" placeholder="Search Service Name" id="search" autocomplete="off" wire:model="searchService" onkeydown="handleSearchServices()" />
                                 </div>
                                 <div class="table-responsive">
                                     <table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5 table-hover">

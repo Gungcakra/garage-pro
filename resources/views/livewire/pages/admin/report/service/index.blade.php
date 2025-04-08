@@ -173,6 +173,11 @@
 
     </div>
 </div>
+
+
+</div>
+
+@push('scripts')
 <script data-navigate-once src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 {{-- <script data-navigate-once src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script> --}}
 
@@ -245,11 +250,9 @@
         $("#range").on("cancel.daterangepicker", function() {
             $(this).val('');
         });
-    });
 
 
-    // modal
-    Livewire.on('show-modal', () => {
+        Livewire.on('show-modal', () => {
         var myModal = new bootstrap.Modal(document.getElementById('ServiceModal'), {});
         myModal.show();
     });
@@ -284,8 +287,7 @@
             status: status
         });
     }
-
-
+    });
     // Print Excel
     function printMainContent() {
         var printContents = document.querySelector('.main').innerHTML;
@@ -299,5 +301,4 @@
     }
 
 </script>
-
-</div>
+@endpush

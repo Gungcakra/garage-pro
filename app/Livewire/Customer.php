@@ -14,7 +14,7 @@ class Customer extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $CustomerId, $name, $email, $phone, $address, $idToDelete;
-    protected $listeners = ['deleteCustomer','loadData'];
+    protected $listeners = ['deleteCustomer'];
     public $search = '';
 
    
@@ -67,10 +67,11 @@ class Customer extends Component
     {
         $this->CustomerId = $id;
         $customer = ModelsCustomer::find($id);
-        $this->name = $customer->name;
-        $this->email = $customer->email;
-        $this->phone = $customer->phone;
-        $this->address = $customer->address;
+        // $this->name = $customer->name;
+        // $this->email = $customer->email;
+        // $this->phone = $customer->phone;
+        // $this->address = $customer->address;
+        $this->fill($customer->only(['name', 'email', 'phone', 'address']));
         $this->openModal();
     }
 

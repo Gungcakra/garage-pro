@@ -93,12 +93,15 @@
     <!--end::App-->
 
     <!--begin::Javascript-->
+
     <script data-navigate-once src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script data-navigate-once src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="https://unpkg.com/qr-scanner@1.4.2/qr-scanner.legacy.min.js"></script>
+    <script data-navigate-once src="https://unpkg.com/qr-scanner@1.4.2/qr-scanner.legacy.min.js"></script>
 
-    <script>
+    <script data-navigate-once>
         document.addEventListener('livewire:init', function() {
+            KTMenu.createInstances();
+
             Livewire.on('success', (message, isClose = true, type = 'success') => {
                 toastr[type](message);
 
@@ -110,17 +113,15 @@
             Livewire.on('delete-success', (message) => {
                 Swal.fire("Deleted!", message, "success");
             });
-        });
-
-        Livewire.hook('morphed', () => {
-            if (typeof KTMenu !== 'undefined' && typeof KTMenu.createInstances === 'function') {
+            Livewire.hook('morphed', () => {
                 KTMenu.createInstances();
-            } else {
-                console.error("KTMenu or KTMenu.createInstances is not defined.");
-            }
+            });
         });
 
-        function handleSearchService() {
+
+
+        $(function(){
+            function handleSearchService() {
             Livewire.dispatch('loadDataService');
         }
 
@@ -153,63 +154,18 @@
         function backOperational() {
             window.Livewire.navigate('serviceoperational');
         }
+        });
 
-        function scanQr() {
-            console.log("scanQr started");
-            const videoElem = document.getElementById('qr-video');
-
-            if (!videoElem) {
-                console.error("QR video element not found");
-                return;
-            }
-
-            const qrScanner = new QrScanner(
-                videoElem,
-                result => {
-                    console.log('Scanned QR:', result);
-                    qrScanner.stop();
-
-                    const id = result?.data?.split('#')[1]?.trim();
-                    if (id) {
-                        Livewire.dispatch('getInvoiceFromQr', {
-                            code: `#${id}`
-                        });
-                        const modalEl = document.getElementById('scanQr');
-                        const modal = bootstrap.Modal.getInstance(modalEl);
-                        if (modal) {
-                            modal.hide();
-                            modal.dispose();
-                        }
-                        modalEl.style.display = 'none';
-                        modalEl.setAttribute('aria-hidden', 'true');
-                        modalEl.removeAttribute('aria-modal');
-                        modalEl.removeAttribute('role');
-                        document.body.classList.remove('modal-open');
-                        document.body.style.overflow = '';
-                        document.body.style.paddingRight = '';
-                    } else {
-                        console.error('Invalid QR data format');
-                        alert('Invalid QR code format. Please try again.');
-                    }
-                },
-                {
-                    returnDetailedScanResult: true
-                }
-            );
-
-            qrScanner.start().catch(e => {
-                alert("Camera access denied or not found.");
-                console.error("Error starting QR scanner:", e);
-            });
-        }
-
-        function closeCamera() {
-            const videoElem = document.getElementById('qr-video');
-            const qrScanner = new QrScanner(videoElem, () => {});
-            qrScanner.stop();
-        }
     </script>
+    <script>
+        var hostUrl = "{{ asset('assets/')}}";
 
+    </script>
+    <!--begin::Global Javascript Bundle(mandatory for all pages)-->
+    <script data-navigate-once src="{{ asset('assets/plugins/global/plugins.bundle.js')}}"></script>
+    <script data-navigate-once src="{{ asset('assets/js/scripts.bundle.js')}}"></script>
+
+    @stack('scripts')
     {{-- <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/laravel-echo@2.0.2/dist/echo.iife.min.js"></script>
     <script>
@@ -227,13 +183,7 @@
     });
 
     </script> --}}
-    <script>
-        var hostUrl = "{{ asset('assets/')}}";
 
-    </script>
-    <!--begin::Global Javascript Bundle(mandatory for all pages)-->
-    <script data-navigate-once src="{{ asset('assets/plugins/global/plugins.bundle.js')}}"></script>
-    <script data-navigate-once src="{{ asset('assets/js/scripts.bundle.js')}}"></script>
     {{-- <script data-navigate-once src="{{ asset('assets/js/custom/pages/general/pos.js') }}"></script> --}}
 
     {{-- <script data-navigate-once src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script> --}}

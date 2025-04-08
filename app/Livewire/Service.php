@@ -13,7 +13,7 @@ class Service extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
     public $ServiceId, $name, $price, $idToDelete;
-    protected $listeners = ['deleteService', 'loadData'];
+    protected $listeners = ['deleteService'];
     public $search = '';
     public function render()
     {

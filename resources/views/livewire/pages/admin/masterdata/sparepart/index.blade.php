@@ -27,7 +27,7 @@
                 <!--end::Breadcrumb-->
             </div>
             <div class="d-flex items-center">
-                <input type="text" class="form-control form-control-solid" placeholder="Search Spare Part Name" id="search" autocomplete="off" wire:model="search" onkeydown="handleSearch()" />
+                <input type="text" class="form-control form-control-solid" placeholder="Search Spare Part Name" id="search" autocomplete="off" wire:model.live.debounce.300="search" />
             </div>
             <!--end::Page title-->
             <!--begin::Actions-->
@@ -63,39 +63,38 @@
                     </thead>
                     <tbody>
 
-                        @if (count($data) < 1)
-                        <tr>
+                        @if (count($data) < 1) <tr>
                             <td colspan="6" class="text-center">No Data Found</td>
-                        </tr>
-                        @else
-                        @foreach ( $data as $index => $SparePart)
+                            </tr>
+                            @else
+                            @foreach ( $data as $index => $SparePart)
 
-                        <tr wire:key="SparePart-{{ $SparePart->id }}">
-                            <td>{{ $index + 1 }}</td>
-                            <td>
-                                <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                    <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                                <!--begin::Menu-->
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <a wire:click="edit({{ $SparePart->id }})" class="menu-link px-3 w-100">Edit</a>
-                                    </div>
-                                    <!--end::Menu item-->
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $SparePart->id }})">Delete</a>
-                                    </div>
-                                    <!--end::Menu item-->
-                            </td>
-                            <td>{{ $SparePart->name }}</td>
-                            <td>{{ $SparePart->brand }}</td>
-                            <td>{{ $SparePart->stock }}</td>
-                            <td>RP {{ number_format($SparePart->price, 0, ',', '.') }}</td>
+                            <tr wire:key="SparePart-{{ $SparePart->id }}">
+                                <td>{{ $index + 1 }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+                                        <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+                                    <!--begin::Menu-->
+                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+                                        <!--begin::Menu item-->
+                                        <div class="menu-item px-3">
+                                            <a wire:click="edit({{ $SparePart->id }})" class="menu-link px-3 w-100">Edit</a>
+                                        </div>
+                                        <!--end::Menu item-->
+                                        <!--begin::Menu item-->
+                                        <div class="menu-item px-3">
+                                            <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $SparePart->id }})">Delete</a>
+                                        </div>
+                                        <!--end::Menu item-->
+                                </td>
+                                <td>{{ $SparePart->name }}</td>
+                                <td>{{ $SparePart->brand }}</td>
+                                <td>{{ $SparePart->stock }}</td>
+                                <td>RP {{ number_format($SparePart->price, 0, ',', '.') }}</td>
 
-                        </tr>
-                        @endforeach
-                        @endif
+                            </tr>
+                            @endforeach
+                            @endif
                     </tbody>
 
 
@@ -110,9 +109,12 @@
             @include('livewire.pages.admin.masterdata.sparepart.modal')
         </div>
     </div>
-    <script>
+</div>
+@push('scripts')
+<script>
+    $(function() {
         Livewire.on('show-modal', () => {
-            var modalEl = document.getElementById('SparePartModal');
+            var modalEl = document.getElementById('ServiceModal');
             var existingModal = bootstrap.Modal.getInstance(modalEl);
             if (existingModal) {
                 existingModal.dispose();
@@ -121,7 +123,7 @@
             myModal.show();
         });
         Livewire.on('hide-modal', () => {
-            var modalEl = document.getElementById('SparePartModal');
+            var modalEl = document.getElementById('ServiceModal');
             var modal = bootstrap.Modal.getInstance(modalEl);
             if (modal) {
                 modal.hide();
@@ -131,11 +133,11 @@
             modalEl.setAttribute('aria-hidden', 'true');
             modalEl.removeAttribute('aria-modal');
             modalEl.removeAttribute('role');
-            document.body.classList.remove('modal-open'); 
-            document.body.style.overflow = ''; 
-            document.body.style.paddingRight = ''; 
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
         });
-    Livewire.on('confirm-delete', (message) => {
+        Livewire.on('confirm-delete', (message) => {
             Swal.fire({
                 title: message
                 , showCancelButton: true
@@ -144,15 +146,14 @@
                 , icon: "warning"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Livewire.dispatch('deleteSparePart');
+                    Livewire.dispatch('deleteService');
                 } else {
                     Swal.fire("Cancelled", "Delete Cancelled.", "info");
                 }
             });
         });
 
-        function handleSearch() {
-            Livewire.dispatch('loadData')
-        }
-    </script>
-</div>
+    });
+
+</script>
+@endpush

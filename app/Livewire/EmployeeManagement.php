@@ -17,7 +17,7 @@ class EmployeeManagement extends Component
      protected $paginationTheme = 'bootstrap';
     public $employeeId, $name, $position, $phone, $address, $idToDelete;
     public $isModalOpen = false;
-    protected $listeners = ['deleteEmployee', 'loadData'];
+    protected $listeners = ['deleteEmployee'];
 
     public $search = '';
     #[On('echo:data-refresh,.table-employee')]

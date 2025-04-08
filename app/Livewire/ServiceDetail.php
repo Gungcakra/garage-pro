@@ -51,6 +51,7 @@ class ServiceDetail extends Component
 
     public function invoiceService($id)
     {
+        $this->resetPage();
         $this->invoiceId = $id;
 
         $this->invoice = true;
@@ -64,6 +65,8 @@ class ServiceDetail extends Component
     public function finalize($id)
     {
         $this->ServiceOperationalId = $id;
+        $this->resetPage();
+
     }
     public function loadDataService()
     {

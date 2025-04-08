@@ -28,7 +28,7 @@
                 <!--end::Breadcrumb-->
             </div>
             <div class="d-flex items-center">
-                <input type="text" class="form-control form-control-solid" placeholder="Search Service Name" id="search" autocomplete="off" wire:model="search" onkeydown="handleSearch()" />
+                <input type="text" class="form-control form-control-solid" placeholder="Search Service Name" id="search" autocomplete="off" wire:model.live.debounce.300ms="search" />
             </div>
             <!--end::Page title-->
             <!--begin::Actions-->
@@ -107,49 +107,55 @@
             @include('livewire.pages.admin.masterdata.service.modal')
         </div>
     </div>
-    <script>
-        Livewire.on('show-modal', () => {
-            var modalEl = document.getElementById('ServiceModal');
-            var existingModal = bootstrap.Modal.getInstance(modalEl);
-            if (existingModal) {
-                existingModal.dispose();
-            }
-            var myModal = new bootstrap.Modal(modalEl, {});
-            myModal.show();
-        });
-        Livewire.on('hide-modal', () => {
-            var modalEl = document.getElementById('ServiceModal');
-            var modal = bootstrap.Modal.getInstance(modalEl);
-            if (modal) {
-                modal.hide();
-                modal.dispose();
-            }
-            modalEl.style.display = 'none';
-            modalEl.setAttribute('aria-hidden', 'true');
-            modalEl.removeAttribute('aria-modal');
-            modalEl.removeAttribute('role');
-            document.body.classList.remove('modal-open'); 
-            document.body.style.overflow = ''; 
-            document.body.style.paddingRight = ''; 
-        });
-    Livewire.on('confirm-delete', (message) => {
-            Swal.fire({
-                title: message
-                , showCancelButton: true
-                , confirmButtonText: "Yes"
-                , cancelButtonText: "No"
-                , icon: "warning"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Livewire.dispatch('deleteService');
-                } else {
-                    Swal.fire("Cancelled", "Delete Cancelled.", "info");
-                }
-            });
-        });
 
-        function handleSearch() {
-            Livewire.dispatch('loadData')
-        }
-    </script>
+    
 </div>
+
+@push('scripts')
+<script>
+    $(function () { 
+        
+    Livewire.on('show-modal', () => {
+        var modalEl = document.getElementById('ServiceModal');
+        var existingModal = bootstrap.Modal.getInstance(modalEl);
+        if (existingModal) {
+            existingModal.dispose();
+        }
+        var myModal = new bootstrap.Modal(modalEl, {});
+        myModal.show();
+    });
+    Livewire.on('hide-modal', () => {
+        var modalEl = document.getElementById('ServiceModal');
+        var modal = bootstrap.Modal.getInstance(modalEl);
+        if (modal) {
+            modal.hide();
+            modal.dispose();
+        }
+        modalEl.style.display = 'none';
+        modalEl.setAttribute('aria-hidden', 'true');
+        modalEl.removeAttribute('aria-modal');
+        modalEl.removeAttribute('role');
+        document.body.classList.remove('modal-open'); 
+        document.body.style.overflow = ''; 
+        document.body.style.paddingRight = ''; 
+    });
+Livewire.on('confirm-delete', (message) => {
+        Swal.fire({
+            title: message
+            , showCancelButton: true
+            , confirmButtonText: "Yes"
+            , cancelButtonText: "No"
+            , icon: "warning"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Livewire.dispatch('deleteService');
+            } else {
+                Swal.fire("Cancelled", "Delete Cancelled.", "info");
+            }
+        });
+    });
+
+  
+     });
+</script>
+@endpush

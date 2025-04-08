@@ -135,7 +135,7 @@
                             <h3 class="modal-title">Scan QrCode</h3>
 
                             <!--begin::Close-->
-                            <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                            <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close" onclick="closeCamera()">
                                 <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
                             </div>
                             <!--end::Close-->
@@ -156,7 +156,11 @@
         </div>
     </div>
 
-    <script>
+
+</div>
+@push('scripts')
+<script>
+    $(function() {
         Livewire.on('show-modal', () => {
             var myModal = new bootstrap.Modal(document.getElementById('ServiceModal'), {});
             myModal.show();
@@ -186,10 +190,6 @@
             Livewire.dispatch('loadData')
         }
 
-       
-
-    </script>
-    <script>
         function printMainContent() {
             var printContents = document.querySelector('.main').innerHTML;
             var originalContents = document.body.innerHTML;
@@ -215,5 +215,79 @@
             window.Livewire.navigate('servicedetail');
         }
 
-    </script>
-</div>
+
+
+    });
+
+let qrScanner = null; 
+
+function scanQr() {
+    console.log("scanQr started");
+    const videoElem = document.getElementById('qr-video');
+
+    if (!videoElem) {
+        console.error("QR video element not found");
+        return;
+    }
+
+    qrScanner = new QrScanner(
+        videoElem,
+        result => {
+            console.log('Scanned QR:', result);
+            qrScanner.stop();
+
+            const id = result?.data?.split('#')[1]?.trim();
+            if (id) {
+                Livewire.dispatch('getInvoiceFromQr', {
+                    code: `#${id}`
+                });
+
+                const modalEl = document.getElementById('scanQr');
+                const modal = bootstrap.Modal.getInstance(modalEl);
+                if (modal) {
+                    modal.hide();
+                    modal.dispose();
+                }
+                modalEl.style.display = 'none';
+                modalEl.setAttribute('aria-hidden', 'true');
+                modalEl.removeAttribute('aria-modal');
+                modalEl.removeAttribute('role');
+                document.body.classList.remove('modal-open');
+                document.body.style.overflow = '';
+                document.body.style.paddingRight = '';
+                closeCamera();
+            } else {
+                console.error('Invalid QR data format');
+                alert('Invalid QR code format. Please try again.');
+            }
+        },
+        {
+            returnDetailedScanResult: true
+        }
+    );
+
+    qrScanner.start().catch(e => {
+        alert("Camera access denied or not found.");
+        console.error("Error starting QR scanner:", e);
+    });
+}
+
+
+
+function closeCamera() {
+    if (qrScanner) {
+        qrScanner.stop();
+        qrScanner.destroy();
+        qrScanner = null;
+    }
+
+    const videoElem = document.getElementById('qr-video');
+    if (videoElem && videoElem.srcObject) {
+        videoElem.srcObject.getTracks().forEach(track => track.stop());
+        videoElem.srcObject = null;
+    }
+}
+
+
+</script>
+@endpush

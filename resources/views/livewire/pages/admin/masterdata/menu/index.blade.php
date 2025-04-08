@@ -129,7 +129,10 @@
 
         </div>
     </div>
+</div>
+@push('scripts')
     <script>
+       $(function(){
         Livewire.on('show-modal', () => {
             var modalEl = document.getElementById('menuModal');
             var existingModal = bootstrap.Modal.getInstance(modalEl);
@@ -211,6 +214,7 @@
                 }
             });
         });
+       });
 
     </script>
-</div>
+@endpush

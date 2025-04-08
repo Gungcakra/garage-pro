@@ -170,8 +170,11 @@
         @include('livewire.pages.admin.masterdata.role.modal')
 
     </div>
+</div>
+@push('scripts')    
     <script>
-        Livewire.on('show-modal', () => {
+        $(function () { 
+            Livewire.on('show-modal', () => {
             var modalEl = document.getElementById('roleModal');
             var existingModal = bootstrap.Modal.getInstance(modalEl);
             if (existingModal) {
@@ -277,6 +280,6 @@
                 }
             });
         });
-
+         });
     </script>
-</div>
+@endpush

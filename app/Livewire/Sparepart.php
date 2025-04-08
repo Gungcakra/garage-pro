@@ -12,7 +12,7 @@ class Sparepart extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
     public $SparePartId, $name, $brand, $price, $stock, $idToDelete;
-    protected $listeners = ['deleteSparePart', 'loadData'];
+    protected $listeners = ['deleteSparePart'];
     public $search = '';
 
     public function render()
