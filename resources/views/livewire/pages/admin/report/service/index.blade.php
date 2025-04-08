@@ -231,10 +231,7 @@
     }
     
     $(function() {
-        $('input[name="range"]').daterangepicker({
-            opens: "left"
-        , });
-
+        $("#range").daterangepicker();
         $("#range").on("apply.daterangepicker", function(event, picker) {
             $(this).val(
                 picker.startDate.format("YYYY-MM-DD") +
@@ -246,12 +243,7 @@
                 , endDate: picker.endDate.format("YYYY-MM-DD")
             });
         });
-
-        $("#range").on("cancel.daterangepicker", function() {
-            $(this).val('');
-        });
-
-
+        
         Livewire.on('show-modal', () => {
         var myModal = new bootstrap.Modal(document.getElementById('ServiceModal'), {});
         myModal.show();
