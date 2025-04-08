@@ -33,7 +33,7 @@ class ReportServiceOperational extends Component
             }, function ($query) {
                 
             $query->orderBy('created_at', 'asc');
-            })->paginate(10)
+            })->get()
         
         ]);
     }

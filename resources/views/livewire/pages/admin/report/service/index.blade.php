@@ -50,7 +50,7 @@
                 <!--end::Secondary button-->
                 <!--begin::Primary button-->
                 <button class="btn btn-sm fw-bold btn-success d-flex align-items-center justify-content-center" onclick="exportToExcel()"><i class="bi bi-file-earmark-excel-fill me-2"></i> Excel</button>
-                <button class="btn btn-sm fw-bold btn-danger d-flex align-items-center justify-content-center" disabled><i class="bi bi-file-earmark-excel-fill me-2"></i> PDF</button>
+                {{-- <button class="btn btn-sm fw-bold btn-danger d-flex align-items-center justify-content-center" disabled><i class="bi bi-file-earmark-excel-fill me-2"></i> PDF</button> --}}
                 <!--end::Primary button-->
             </div>
             <!--end::Actions-->

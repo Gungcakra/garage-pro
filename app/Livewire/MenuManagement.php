@@ -80,8 +80,8 @@ class MenuManagement extends Component
     {
         $this->validate([
             'name' => 'required|string|max:255',
-            'route' => 'required|string|max:255',
-            'order' => 'required|integer',
+            'route' => 'nullable|string|max:255',
+            'order' => 'nullable|integer',
             'icon' => 'required|string|max:255',
         ]);
 

@@ -42,7 +42,7 @@
             <!--begin::Row-->
             <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
                 <!--begin::Col-->
-                <div class="col-xl-3">
+                <div class="col-xl-6">
                     <!--begin::Card widget 3-->
                     <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #F1416C;background-image:url('assets/media/svg/shapes/wave-bg-red.svg')">
                         <!--begin::Header-->
@@ -91,7 +91,7 @@
                 </div>
                 <!--end::Col-->
                 <!--begin::Col-->
-                <div class="col-xl-3">
+                <div class="col-xl-6">
                     <!--begin::Card widget 3-->
                     <div class="card card-flush bgi-no-repeat bgi-size-contain bgi-position-x-end h-xl-100" style="background-color: #7239EA;background-image:url('assets/media/svg/shapes/wave-bg-purple.svg')">
                         <!--begin::Header-->

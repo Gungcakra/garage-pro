@@ -91,9 +91,9 @@
                                     </div>
                                     <!--end::Menu item-->
                                     <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $Service->id }})">Delete</a>
-                                    </div>
+                                        {{-- <div class="menu-item px-3">
+                                            <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $Service->id }})">Delete</a>
+                                        </div> --}}
                                     <!--end::Menu item-->
                             </td>
                             <td class="fw-bold">{{ $Service->code }}</td>

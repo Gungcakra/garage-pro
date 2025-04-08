@@ -5,6 +5,11 @@
         <div class="card-body py-20">
             <!-- begin::Wrapper-->
             <div class="mw-lg-950px mx-auto w-100">
+                <a href="{{ route('servicedetail') }}" class="btn btn-light-success my-4" wire:navigate>Back</a>
+                @php
+                    $invoiceId = null;
+                @endphp
+
                 <div class="main">
                     <!-- begin::Header-->
                     <div class="d-flex justify-content-between flex-column flex-sm-row mb-19">
@@ -187,7 +192,6 @@
 
                         <!-- end::Pint-->
                         <!-- begin::Download-->
-                        <button type="button" class="btn btn-light-success my-1">Download</button>
                         <!-- end::Download-->
                     </div>
                     <!-- end::Actions-->

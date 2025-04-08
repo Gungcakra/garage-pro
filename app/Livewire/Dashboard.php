@@ -38,7 +38,7 @@ class Dashboard extends Component
          $this->startDate = Carbon::now()->startOfMonth();
          $this->endDate = Carbon::now();
  
-        //  $this->loadIncomePerformance($this->startDate, $this->endDate);
+        //  $this->loadIncomePerform    ance($this->startDate, $this->endDate);
             
     }
 
