@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Service;
 use App\Models\ServiceOperational;
+use Endroid\QrCode\QrCode;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -13,7 +14,7 @@ class ServiceDetail extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-    public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $status, $idToDelete, $tabService = true, $tabSparepart, $serviceAdd = [], $sparepartAdd = [], $totalServicePrice, $totalSparepartPrice, $subTotal = 0, $tax = 12000, $totalPrice = 0, $invoice, $invoiceId;
+    public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $status, $idToDelete, $tabService = true, $tabSparepart, $serviceAdd = [], $sparepartAdd = [], $totalServicePrice, $totalSparepartPrice, $subTotal = 0, $tax = 12000, $totalPrice = 0, $invoice, $invoiceId, $qrCode,$writer, $result, $dataUri;
     protected $listeners = ['loadData', 'loadDataService', 'loadDataSparepart'];
 
     public $search = '', $searchService = '', $searchSparepart = '';
@@ -51,7 +52,14 @@ class ServiceDetail extends Component
     public function invoiceService($id)
     {
         $this->invoiceId = $id;
+
         $this->invoice = true;
+        $code = ServiceOperational::where('id', $this->invoiceId)->first();
+        $this->code = $code->code;
+        $qrCode = new QrCode($this->code);
+        $writer = new \Endroid\QrCode\Writer\PngWriter();
+        $result = $writer->write($qrCode);
+        $this->dataUri = $result->getDataUri();
     }
     public function finalize($id)
     {
@@ -164,7 +172,7 @@ class ServiceDetail extends Component
 
     public function printBill()
     {
-        // Pastikan transaksi memiliki ID ServiceOperational yang valid
+        
         if (!$this->ServiceOperationalId) {
             $this->dispatch('error', 'Service Operational ID is required.');
             return;
@@ -177,19 +185,19 @@ class ServiceDetail extends Component
             return;
         }
 
-        // Simpan layanan (services) yang ditambahkan ke dalam tabel pivot
+        
         foreach ($this->serviceAdd as $service) {
             $serviceOperational->services()->attach($service['id'], ['price' => $service['price']]);
         }
 
-        // Simpan suku cadang (spareparts) yang ditambahkan ke dalam tabel pivot
+        
         foreach ($this->sparepartAdd as $sparepart) {
             $serviceOperational->spareparts()->attach($sparepart['id'], [
                 'quantity' => $sparepart['qty'],
                 'price' => $sparepart['price']
             ]);
 
-            // Kurangi stok sparepart berdasarkan quantity yang digunakan
+            
             $sparepartModel = \App\Models\SparePart::find($sparepart['id']);
             if ($sparepartModel) {
                 $sparepartModel->stock -= $sparepart['qty'];
@@ -197,10 +205,10 @@ class ServiceDetail extends Component
             }
         }
 
-        // Perbarui status transaksi menjadi "Completed" atau sesuai dengan kebutuhan
+        
         $serviceOperational->update(['status' => 1]);
 
-        // Reset data setelah transaksi selesai
+        
         $this->serviceAdd = [];
         $this->sparepartAdd = [];
         $this->totalServicePrice = 0;
@@ -208,12 +216,18 @@ class ServiceDetail extends Component
         $this->subTotal = 0;
         $this->totalPrice = 0;
 
-        // Kirim notifikasi bahwa transaksi berhasil
+        
         $this->dispatch('success', 'Transaction saved successfully.');
         $this->invoiceId = $serviceOperational->id;
         $this->ServiceOperationalId = null;
         $this->invoice = true;
 
-        // Bisa ditambahkan kode untuk mencetak struk atau mengarahkan ke halaman cetak
+        
+    }
+
+    public function removeInvoice()
+    {
+        $this->invoice = false;
+        $this->invoiceId = null;
     }
 }

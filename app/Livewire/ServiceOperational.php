@@ -10,7 +10,7 @@ use Livewire\Component;
 #[Layout('layouts.admin')]
 class ServiceOperational extends Component
 {
-    public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $status, $idToDelete, $name, $email, $phone, $address, $latestId;
+    public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $status, $idToDelete, $name, $email, $phone, $address, $latestId, $invoice, $invoiceId, $qrCode, $writer, $result, $dataUri;
 
     public function openModal()
     {
@@ -65,7 +65,7 @@ class ServiceOperational extends Component
         $this->dispatch('success', 'Service operational created successfully.');
         $this->reset([ 'customer_id', 'check', 'stnk', 'bpkb', 'kunci', 'plate_number', 'status']);
         $this->latestId = ModelsServiceOperational::where('code', $this->code)->first()->id;
-        $this->js("window.open('" . route('serviceinvoice', ['id' => $this->latestId]) . "', '_blank')");
+        $this->getInvoice($this->latestId);
 
     }
     public function mount()
@@ -76,18 +76,35 @@ class ServiceOperational extends Component
 
     public function getInvoice($id)
     {
-        
-        $data = ModelsServiceOperational::where('id', $id)->first();
-        return view('livewire.pages.admin.operational.service.service-invoice', [
-            'data' => $data,
-        ]);
+        $this->invoiceId = $id;
+        $this->invoice = true;
+        $code = ModelsServiceOperational::where('id', $this->invoiceId)->first();
+        $this->code = $code->code;
+        $qrCode = new \Endroid\QrCode\QrCode($this->code);
+        $writer = new \Endroid\QrCode\Writer\PngWriter();
+        $result = $writer->write($qrCode);
+        $this->dataUri = $result->getDataUri();
+       
+    }
+    public function removeInvoice()
+    {
+        $this->invoiceId = null;
+        $this->invoice = false;
     }
     public function render()
     {
-        return view('livewire.pages.admin.operational.service.service-operational', [
-            'customers' => Customer::orderBy('id', 'desc')->get(),
+        if($this->invoiceId){
+            $data = ModelsServiceOperational::where('id', $this->invoiceId)->first();
 
-        ]);
+            return view('livewire.pages.admin.operational.service.service-invoice', [
+                'data' => $data,
+            ]);
+        }else{     
+            return view('livewire.pages.admin.operational.service.service-operational', [
+                'customers' => Customer::orderBy('id', 'desc')->get(),
+    
+            ]);
+        }
     }
 
 

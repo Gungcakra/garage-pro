@@ -1,157 +1,237 @@
-<!DOCTYPE html>
-
-<html lang="en">
-<!--begin::Head-->
-<head>
-    <base href="" />
-    <title>Invoice {{ $data->code }}</title>
-    <meta charset="utf-8" />
-    <meta name="description" content="The most advanced Bootstrap 5 Admin Theme with 40 unique prebuilt layouts on Themeforest trusted by 100,000 beginners and professionals. Multi-demo, Dark Mode, RTL support and complete React, Angular, Vue, Asp.Net Core, Rails, Spring, Blazor, Django, Express.js, Node.js, Flask, Symfony & Laravel versions. Grab your copy now and get life-time updates for free." />
-    <meta name="keywords" content="metronic, bootstrap, bootstrap 5, angular, VueJs, React, Asp.Net Core, Rails, Spring, Blazor, Django, Express.js, Node.js, Flask, Symfony & Laravel starter kits, admin themes, web design, figma, web development, free templates, free admin themes, bootstrap theme, bootstrap template, bootstrap dashboard, bootstrap dak mode, bootstrap button, bootstrap datepicker, bootstrap timepicker, fullcalendar, datatables, flaticon" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta property="og:locale" content="en_US" />
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content="Metronic - Bootstrap Admin Template, HTML, VueJS, React, Angular. Laravel, Asp.Net Core, Ruby on Rails, Spring Boot, Blazor, Django, Express.js, Node.js, Flask Admin Dashboard Theme & Template" />
-    <meta property="og:url" content="https://keenthemes.com/metronic" />
-    <meta property="og:site_name" content="Keenthemes | Metronic" />
-    <link rel="canonical" href="https://preview.keenthemes.com/metronic8" />
-    <link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon.ico')}}" />
-    <!--begin::Fonts(mandatory for all pages)-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
-    <!--end::Fonts-->
-    <!--begin::Vendor Stylesheets(used for this page only)-->
-    <link href="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
-    <!--end::Vendor Stylesheets-->
-    <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
-    <link href="{{ asset('assets/plugins/global/plugins.bundle.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/css/style.bundle.css')}}" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-
-    @livewireStyles
-</head>
-<!--end::Head-->
-<!--begin::Body-->
-<body id="kt_app_body" data-kt-app-layout="dark-sidebar" data-kt-app-header-fixed="true" data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true" data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true" data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
-    <!--begin::Theme mode setup on page load-->
-    <script>
-        var defaultThemeMode = "light";
-        var themeMode;
-        if (document.documentElement) {
-            if (document.documentElement.hasAttribute("data-bs-theme-mode")) {
-                themeMode = document.documentElement.getAttribute("data-bs-theme-mode");
-            } else {
-                if (localStorage.getItem("data-bs-theme") !== null) {
-                    themeMode = localStorage.getItem("data-bs-theme");
-                } else {
-                    themeMode = defaultThemeMode;
-                }
-            }
-            if (themeMode === "system") {
-                themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-            }
-            document.documentElement.setAttribute("data-bs-theme", themeMode);
+<div class="d-flex flex-column flex-column-fluid">
+    <x-slot:title>Invoice Service</x-slot:title>
+    <style>
+        body .select2-container--bootstrap-5 .select2-selection {
+            color: var(--bs-body-color);
+            background-color: var(--bs-body-bg);
+            border: var(--bs-border-width) solid var(--bs-border-color);
         }
 
-    </script>
-    <!--end::Theme mode setup on page load-->
-    <!--begin::App-->
-    <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
-        <!--begin::Page-->
-        <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
-            <!--begin::Header-->
-            {{-- @include('layouts.partials.admin.navbar') --}}
-            <!--end::Header-->
-            <!--begin::Wrapper-->
-            <div class="container-fluid d-flex justify-content-center m-4" id="kt_app_wrapper">
-                <!--begin::Sidebar-->
-                {{-- @include('layouts.partials.admin.sidebar') --}}
-                <!--end::Sidebar-->
-                <!--begin::Main-->
-                <div class="container d-flex flex-column align-items-center" id="kt_app_main">
-                   <div class="flex container d-flex justify-content-start">
+        body .select2-container--bootstrap-5.select2-container--focus .select2-selection,
+        body .select2-container--bootstrap-5.select2-container--open .select2-selection {
+            border-color: var(--bs-link-hover-color);
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+        body .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__clear,
+        body .select2-container--bootstrap-5 .select2-selection--single .select2-selection__clear {
+            background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23676a6d'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") 50%/0.75rem auto no-repeat;
+        }
+
+        body .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__clear:hover,
+        body .select2-container--bootstrap-5 .select2-selection--single .select2-selection__clear:hover {
+            background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") 50%/0.75rem auto no-repeat;
+        }
+
+        body .select2-container--bootstrap-5 .select2-dropdown {
+            color: var(--bs-body-color);
+            background-color: var(--bs-body-bg);
+            border-color: var(--bs-link-hover-color);
+        }
+
+        body .select2-container--bootstrap-5 .select2-dropdown .select2-search .select2-search__field {
+            color: var(--bs-body-color);
+            background-color: var(--bs-body-bg);
+            background-clip: padding-box;
+            border: var(--bs-border-width) solid var(--bs-border-color);
+        }
+
+        body .select2-container--bootstrap-5 .select2-dropdown .select2-search .select2-search__field:focus {
+            border-color: var(--bs-link-hover-color);
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+
+        body .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option.select2-results__message {
+            color: #6c757d;
+        }
+
+        body .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option.select2-results__option--highlighted {
+            color: var(--bs-body-color);
+            background-color: var(--bs-light-bg-subtle) !important;
+        }
+
+        body .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option.select2-results__option--selected,
+        body .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option[aria-selected="true"]:not(.select2-results__option--highlighted) {
+            color: var(--bs-body-color);
+            background-color: var(--bs-dark-bg-subtle);
+        }
+
+        body .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option.select2-results__option--disabled,
+        body .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option[aria-disabled="true"] {
+            color: #6c757d;
+        }
+
+        body .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option[role="group"] .select2-results__group {
+            color: #6c757d;
+        }
+
+        body .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
+            color: var(--bs-body-color);
+        }
+
+        body .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered .select2-selection__placeholder {
+            color: #6c757d;
+        }
+
+        body .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
+            color: var(--bs-body-color);
+            border: var(--bs-border-width) solid var(--bs-border-color);
+        }
+
+        body .select2-container--bootstrap-5.select2-container--disabled .select2-selection,
+        body .select2-container--bootstrap-5.select2-container--disabled.select2-container--focus .select2-selection {
+            color: #6c757d;
+            background-color: var(--bs-light-bg-subtle);
+            border-color: var(--bs-dark-bg-subtle);
+        }
+
+        .is-valid+body .select2-container--bootstrap-5 .select2-selection,
+        .was-validated select:valid+body .select2-container--bootstrap-5 .select2-selection {
+            border-color: #198754;
+        }
+
+        .is-valid+body .select2-container--bootstrap-5.select2-container--focus .select2-selection,
+        .is-valid+body .select2-container--bootstrap-5.select2-container--open .select2-selection,
+        .was-validated select:valid+body .select2-container--bootstrap-5.select2-container--focus .select2-selection,
+        .was-validated select:valid+body .select2-container--bootstrap-5.select2-container--open .select2-selection {
+            border-color: #198754;
+            box-shadow: 0 0 0 0.25rem rgba(25, 135, 84, 0.25);
+        }
+
+        .is-invalid+body .select2-container--bootstrap-5 .select2-selection,
+        .was-validated select:invalid+body .select2-container--bootstrap-5 .select2-selection {
+            border-color: #dc3545;
+        }
+
+        .is-invalid+body .select2-container--bootstrap-5.select2-container--focus .select2-selection,
+        .is-invalid+body .select2-container--bootstrap-5.select2-container--open .select2-selection,
+        .was-validated select:invalid+body .select2-container--bootstrap-5.select2-container--focus .select2-selection,
+        .was-validated select:invalid+body .select2-container--bootstrap-5.select2-container--open .select2-selection {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+        }
+
+    </style>
+
+    <!--begin::Toolbar-->
+    <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+        <!--begin::Toolbar container-->
+        <div id="kt_app_toolbar_container" class="app-container container-xxl d-flex flex-stack">
+            <!--begin::Page title-->
+            <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+                <!--begin::Title-->
+                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Invoice</h1>
+                <!--end::Title-->
+                <!--begin::Breadcrumb-->
+
+                <!--end::Breadcrumb-->
+            </div>
+            <!--end::Page title-->
+            <!--begin::Actions-->
+            <div class="d-flex align-items-center gap-2 gap-lg-3">
+                <!--begin::Filter menu-->
+
+                <!--end::Filter menu-->
+                <!--begin::Secondary button-->
+                <!--end::Secondary button-->
+                <!--begin::Primary button-->
+                <button  class="btn btn-sm fw-bold btn-light-primary" onclick="backOperational()" wire:click="removeInvoice">Back</button>
+                <button class="btn btn-sm fw-bold btn-light-primary" onclick="printInvoice()">Print Invoice</button>
+                <!--end::Primary button-->
+            </div>
+            <!--end::Actions-->
+        </div>
+        <!--end::Toolbar container-->
+    </div>
+    <!--end::Toolbar-->
+    <!--begin::Content-->
+    <div id="kt_app_content" class="app-content flex-column-fluid">
+        <!--begin::Content container-->
+        <div id="kt_app_content_container" class="app-container container-xxl">
+            <div class="container d-flex flex-column align-items-center">
+                <div class="flex container d-flex justify-content-start">
                     {{-- <a id="back" href="{{ route('serviceoperational') }}" class="btn btn-secondary mb-3" wire.navigate>Back</a> --}}
-                   </div>
-                    <!--begin::Content wrapper-->
-                    <div class="container">
-                        <div class="card-body">
-                          <div class="container mb-5 mt-3">
+                </div>
+                <!--begin::Content wrapper-->
+                <div class="container main">
+                    <div class="card-body">
+                        <div class="container mb-5 mt-3">
                             <div class="row d-flex align-items-baseline">
-                              <div class="col-xl-9">
-                                <p style="color: #7e8d9f;font-size: 20px;">Invoice >> <strong>{{ $data->code }}</strong></p>
-                              </div>
-                              <div class="col-xl-3 float-end">
-                                {{-- <a data-mdb-ripple-init class="btn btn-light text-capitalize border-0" data-mdb-ripple-color="dark"><i
+                                <div class="col-xl-9 d-flex flex-column justify-content-center align-items-start">
+                                    <p style="color: #7e8d9f;font-size: 20px;">Invoice >> <strong>{{ $data->code }}</strong></p>
+                                    <a href="#" class="d-block mw-150px">
+                                        <img alt="QrCode" src="{{ $dataUri }}" class="w-100" />
+                                    </a>
+                                </div>
+                                <div class="col-xl-3 float-end">
+                                    {{-- <a data-mdb-ripple-init class="btn btn-light text-capitalize border-0" data-mdb-ripple-color="dark"><i
                                     class="fas fa-print text-primary"></i> Print</a>
                                 <a data-mdb-ripple-init class="btn btn-light text-capitalize" data-mdb-ripple-color="dark"><i
                                     class="far fa-file-pdf text-danger"></i> Export</a> --}}
-                              </div>
-                              <hr>
+                                </div>
+                                <hr>
                             </div>
-                      
+
                             <div class="container">
-                              {{-- <div class="col-md-12">
+                                {{-- <div class="col-md-12">
                                 <div class="text-center">
-                                  <i class="fab fa-mdb fa-4x ms-0" style="color:#5d9fc5 ;"></i>
+                                  <i class="fab fa-mdb fa-4x ms-0" class="text-primary"></i>
                                   <p class="pt-0">MDBootstrap.com</p>
                                 </div>
                       
                               </div> --}}
-                      
-                      
-                              <div class="row">
-                                <div class="col-xl-8">
-                                  <ul class="list-unstyled">
-                                    <li class="text-muted"><span style="color:#5d9fc5 ;">{{ $data->customer->name }}</span></li>
-                                    <li class="text-muted">{{ $data->customer->address }}</li>
-                                    <li class="text-muted">{{ $data->customer->email }}</li>
-                                    <li class="text-muted"><i class="fas fa-phone"></i> {{$data->customer->phone}}</li>
-                                  </ul>
+
+
+                                <div class="row">
+                                    <div class="col-xl-8">
+                                        <ul class="list-unstyled">
+                                            <li class="text-muted"><span class="text-primary">{{ $data->customer->name }}</span></li>
+                                            <li class="text-muted">{{ $data->customer->address }}</li>
+                                            <li class="text-muted">{{ $data->customer->email }}</li>
+                                            <li class="text-muted"><i class="fas fa-phone"></i> {{$data->customer->phone}}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <p class="text-muted">Invoice</p>
+                                        <ul class="list-unstyled">
+                                            <li class="text-muted"><i class="fas fa-circle text-primary"></i> <span class="fw-bold">{{ $data->code }}</li>
+                                            <li class="text-muted"><i class="fas fa-circle text-primary"></i> <span class="fw-bold">{{ $data->created_at->format('Y-m-d H:i:s') }}</li>
+                                            <li class="text-muted"><i class="fas fa-circle text-primary"></i> <span class="me-1 fw-bold"></span><span class="badge bg-warning text-black fw-bold">
+                                                    {{ $data->status === 0 ? 'Pending' : 'Process' }}</span></li>
+                                        </ul>
+                                    </div>
                                 </div>
-                                <div class="col-xl-4">
-                                  <p class="text-muted">Invoice</p>
-                                  <ul class="list-unstyled">
-                                    <li class="text-muted"><i class="fas fa-circle" style="color:#84B0CA ;"></i> <span
-                                        class="fw-bold">{{ $data->code }}</li>
-                                    <li class="text-muted"><i class="fas fa-circle" style="color:#84B0CA ;"></i> <span
-                                        class="fw-bold">{{ $data->created_at->format('Y-m-d H:i:s') }}</li>
-                                    <li class="text-muted"><i class="fas fa-circle" style="color:#84B0CA ;"></i> <span
-                                        class="me-1 fw-bold"></span><span class="badge bg-warning text-black fw-bold">
-                                        {{ $data->status === 0 ? 'Pending' : 'Process' }}</span></li>
-                                  </ul>
+
+                                <div class="row my-2 mx-1 justify-content-center p-3">
+                                    <table class="table table-striped table-borderless">
+                                        <thead class="text-white bg-primary">
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Plate Number</th>
+                                                <th scope="col">Check</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">1</th>
+                                                <td>{{ $data->plate_number }}</td>
+                                                <td>{{ $data->check }}</td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
                                 </div>
-                              </div>
-                      
-                              <div class="row my-2 mx-1 justify-content-center">
-                                <table class="table table-striped table-borderless">
-                                  <thead style="background-color:#84B0CA ;" class="text-white">
-                                    <tr>
-                                      <th scope="col">#</th>
-                                      <th scope="col">Plate Number</th>
-                                      <th scope="col">Check</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <th scope="row">1</th>
-                                      <td>{{ $data->plate_number }}</td>
-                                      <td>{{ $data->check }}</td>
-                                    </tr>
-                                  </tbody>
-                      
-                                </table>
-                              </div>
-                              <div class="row">
-                                <div class="col-xl-8">
-                                    <ul>
-                                        <li>STNK {{ $data->stnk === 1 ? 'V' : 'X' }}</li>
-                                        <li>KUNCI {{ $data->kunci === 1 ? 'V' : 'X' }}</li>
-                                        <li>BPKB {{ $data->bpkb === 1 ? 'V' : 'X' }}</li>
-                                    </ul>
-                                  {{-- <p class="ms-3">Add additional notes and payment information</p> --}}
-                      
-                                </div>
-                                {{-- <div class="col-xl-3">
+                                <div class="row">
+                                    <div class="col-xl-8">
+                                        <ul>
+                                            <li>STNK {{ $data->stnk === 1 ? 'V' : 'X' }}</li>
+                                            <li>KUNCI {{ $data->kunci === 1 ? 'V' : 'X' }}</li>
+                                            <li>BPKB {{ $data->bpkb === 1 ? 'V' : 'X' }}</li>
+                                        </ul>
+                                        {{-- <p class="ms-3">Add additional notes and payment information</p> --}}
+
+                                    </div>
+                                    {{-- <div class="col-xl-3">
                                   <ul class="list-unstyled">
                                     <li class="text-muted ms-3"><span class="text-black me-4">SubTotal</span>$1110</li>
                                     <li class="text-muted ms-3 mt-2"><span class="text-black me-4">Tax(15%)</span>$111</li>
@@ -159,9 +239,9 @@
                                   <p class="text-black float-start"><span class="text-black me-3"> Total Amount</span><span
                                       style="font-size: 25px;">$1221</span></p>
                                 </div> --}}
-                              </div>
-                              <hr>
-                              {{-- <div class="row">
+                                </div>
+                                <hr>
+                                {{-- <div class="row">
                                 <div class="col-xl-10">
                                   <p>Thank you for your purchase</p>
                                 </div>
@@ -170,116 +250,20 @@
                                     style="background-color:#60bdf3 ;">Pay Now</button>
                                 </div>
                               </div> --}}
-                      
+
                             </div>
-                          </div>
                         </div>
-                      </div>
-
-
-                    <!--end::Content wrapper-->
-                    <!--begin::Footer-->
-                    {{-- @include('layouts.partials.admin.footer') --}}
-                    <!--end::Footer-->
+                    </div>
                 </div>
-                <!--end:::Main-->
+
+
+                <!--end::Content wrapper-->
+                <!--begin::Footer-->
+                {{-- @include('layouts.partials.admin.footer') --}}
+                <!--end::Footer-->
             </div>
-            <!--end::Wrapper-->
         </div>
-        <!--end::Page-->
+        <!--end::Content container-->
     </div>
-    <!--end::App-->
-
-    <!--begin::Javascript-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    {{-- <script>
-        document.addEventListener('livewire:init', function() {
-            Livewire.on('success', (message, isClose = true, type = 'success') => {
-                toastr[type](message);
-
-                if (isClose) {
-                    $('.modal').modal('hide');
-                }
-            });
-            Livewire.on('delete-success', (message) => {
-                Swal.fire("Deleted!", message, "success");
-            });
-        });
-        Livewire.hook('morphed', () => {
-            KTMenu.createInstances();
-        });
-
-    </script> --}}
-    {{-- <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/laravel-echo@2.0.2/dist/echo.iife.min.js"></script>
-    <script>
-        window.Pusher = Pusher;
-        window.Echo = new Echo({
-            broadcaster: 'pusher'
-            , key: "{{ env('PUSHER_APP_KEY') }}"
-    , cluster: "{{ env('PUSHER_APP_CLUSTER', 'mt1') }}"
-    , wsHost: "{{ env('PUSHER_HOST', 'ws-mt1.pusher.com') }}"
-    , wsPort: 443
-    , wssPort: 443
-    , forceTLS: true
-    , disableStats: true
-    , encrypted: true
-    });
-
-    </script> --}}
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Hide the back button before printing
-            const backButton = document.getElementById('back');
-            if (backButton) {
-                backButton.style.display = 'none';
-            }
-
-            window.print();
-            
-            // Show the back button again after printing
-            // window.location.href = "{{ route('serviceoperational') }}";
-            if (backButton) {
-                backButton.style.display = '';
-            }
-        });
-
-        const style = document.createElement('style');
-        style.type = 'text/css';
-        style.media = 'print';
-        style.innerHTML = `
-            @page {
-                size: A5 landscape;
-                margin: 10mm;
-            }
-            body {
-                overflow: hidden;
-            }
-        `;
-        document.head.appendChild(style);
-    </script>
-    <script>
-        var hostUrl = "{{ asset('assets/')}}";
-
-    </script>
-    <!--begin::Global Javascript Bundle(mandatory for all pages)-->
-    <script data-navigate-once src="{{ asset('assets/plugins/global/plugins.bundle.js')}}"></script>
-    <script data-navigate-once src="{{ asset('assets/js/scripts.bundle.js')}}"></script>
-    <!--end::Global Javascript Bundle-->
-    <!--begin::Vendors Javascript(used for this page only)-->
-    {{-- <script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js')}}"></script>
-    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-    <script src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script> --}}
-    <!--end::Vendors Javascript-->
-    <!--begin::Custom Javascript(used for this page only)-->
-    {{-- <script src="{{ asset('assets/js/widgets.bundle.js')}}"></script>
-    <script src="{{ asset('assets/js/custom/widgets.js')}}"></script> --}}
-
-    @livewireScripts
-    <!--end::Custom Javascript-->
-    <!--end::Javascript-->
-</body>
-<!--end::Body-->
-</html>
+    <!--end::Content-->
+</div>

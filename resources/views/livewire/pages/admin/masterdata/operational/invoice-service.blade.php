@@ -5,21 +5,23 @@
         <div class="card-body py-20">
             <!-- begin::Wrapper-->
             <div class="mw-lg-950px mx-auto w-100">
-                <a href="{{ route('servicedetail') }}" class="btn btn-light-success my-4" wire:navigate>Back</a>
-                @php
-                    $invoiceId = null;
-                @endphp
+                <div class="d-flex justify-content-between w-100">
+                    <button wire:click="removeInvoice" class="btn btn-light-success my-4" onclick="back()">Back</button>
+                    <button type="button" class="btn btn-light-primary my-4" onclick="printMainContent();">Print Invoice</button>
+                </div>
+              
 
                 <div class="main">
                     <!-- begin::Header-->
                     <div class="d-flex justify-content-between flex-column flex-sm-row mb-19">
                         <h4 class="fw-bolder text-gray-800 fs-2qx pe-5 pb-7">INVOICE</h4>
+                        
                         <!--end::Logo-->
                         <div class="text-sm-end">
                             <!--begin::Logo-->
                             <a href="#" class="d-block mw-150px ms-sm-auto">
-                                <img alt="Logo" src="assets/media/svg/brand-logos/lloyds-of-london-logo.svg" class="w-100" />
-                            </a>
+                                <img alt="Invoice-QR" src="{{ $dataUri }}" class="w-100" />
+                            </a> 
                             <!--end::Logo-->
                             <!--begin::Text-->
                             <div class="text-sm-end fw-semibold fs-4 text-muted mt-7">
@@ -35,7 +37,7 @@
                         <!--begin::Wrapper-->
                         <div class="d-flex flex-column gap-7 gap-md-10">
                             <!--begin::Message-->
-                            <div class="fw-bold fs-2">Dear {{ $data->customer->name }}
+                            <div class="fw-bold fs-2">{{ $data->customer->name }}
                                 <span class="fs-6">({{ $data->customer->email }})</span>,
                                 <br />
                                 <span class="text-muted fs-5">Here are your order details. We thank you for your purchase.</span></div>
@@ -196,7 +198,7 @@
                     </div>
                     <!-- end::Actions-->
                     <!-- begin::Action-->
-                    <a href="../../demo1/dist/apps/invoices/create.html" class="btn btn-primary my-1">Create Invoice</a>
+                    {{-- <a href="../../demo1/dist/apps/invoices/create.html" class="btn btn-primary my-1">Create Invoice</a> --}}
                     <!-- end::Action-->
                 </div>
                 <!-- end::Footer-->

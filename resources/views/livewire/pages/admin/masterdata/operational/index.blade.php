@@ -162,11 +162,25 @@
             var printContents = document.querySelector('.main').innerHTML;
             var originalContents = document.body.innerHTML;
 
+            var printStyle = document.createElement('style');
+            printStyle.innerHTML = `
+            @page {
+                size: A4 portrait;
+                margin: 20mm;
+            }
+            `;
+            document.head.appendChild(printStyle);
+
             document.body.innerHTML = printContents;
             document.title = "Invoice";
             window.print();
             document.body.innerHTML = originalContents;
-            window.location.reload();
+            document.head.removeChild(printStyle);
+            
+        }
+        function back()
+        {
+            window.Livewire.navigate('servicedetail');
         }
     </script>
 </div>

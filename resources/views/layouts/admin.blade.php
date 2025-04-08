@@ -131,8 +131,35 @@
             Livewire.dispatch('loadDataSparepart')
 
         }
+        function printInvoice() {
+          console.log('Print Invoice clicked!');
+          
+            var printContents = document.querySelector('.main').innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            var printStyle = document.createElement('style');
+            printStyle.innerHTML = `
+            @page {
+                size: A4 portrait;
+                margin: 20mm;
+            }
+            `;
+            document.head.appendChild(printStyle);
+
+            document.body.innerHTML = printContents;
+            document.title = "Invoice";
+            window.print();
+            document.body.innerHTML = originalContents;
+            document.head.removeChild(printStyle);
+
+        }
+
+        function backOperational() {
+            window.Livewire.navigate('serviceoperational');
+        }
 
     </script>
+    
     {{-- <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/laravel-echo@2.0.2/dist/echo.iife.min.js"></script>
     <script>
