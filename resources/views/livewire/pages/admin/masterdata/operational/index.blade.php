@@ -186,7 +186,11 @@
             });
         });
 
-        function handleSearch() {
+      
+
+
+    });
+    function handleSearch() {
             Livewire.dispatch('loadData')
         }
 
@@ -215,9 +219,6 @@
             window.Livewire.navigate('servicedetail');
         }
 
-
-
-    });
 
 let qrScanner = null; 
 
