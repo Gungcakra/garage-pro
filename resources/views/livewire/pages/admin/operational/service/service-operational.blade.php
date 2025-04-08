@@ -91,7 +91,7 @@
                                 <!--begin:: 2-->
                                 <div wire:ignore>
                                   
-                                    <select class="form-select" wire:model="customer_id" data-control="select2" data-placeholder="Select Customer" name="customer_id" id="customer_id">
+                                    <select class="form-select" wire:model="customer_id" data-control="select2" data-placeholder="Select Customer" name="customer_id" id="customer_id" onchange="@this.set('customer_id', this.value)">
                                         <option>Select Customer</option>
                                         @forelse($customers as $item)
                                         <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -342,8 +342,13 @@
                 modal.hide();
                 modal.dispose();
             }
-            document.body.classList.remove('modal-open');
-            document.body.style.overflow = '';
+            modalEl.style.display = 'none';
+            modalEl.setAttribute('aria-hidden', 'true');
+            modalEl.removeAttribute('aria-modal');
+            modalEl.removeAttribute('role');
+            document.body.classList.remove('modal-open'); 
+            document.body.style.overflow = ''; 
+            document.body.style.paddingRight = ''; 
         });
         Livewire.on('success', () => {
             var customerSelect = document.querySelector('select[name="customer_id"]');

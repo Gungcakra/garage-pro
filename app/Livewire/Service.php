@@ -33,11 +33,9 @@ class Service extends Component
     {
         $this->ServiceId = null;
         $this->reset(['name','price']);
-        $this->dispatch('hide-modal');
     }
     public function create()
     {
-        $this->openModal();
     }
 
     public function store()
@@ -53,7 +51,6 @@ class Service extends Component
         ]);
 
         $this->dispatch('success', 'Service created successfully.');
-        $this->closeModal();
     }
 
     public function edit($id)
@@ -62,7 +59,6 @@ class Service extends Component
         $service = ModelsService::find($id);
         $this->name = $service->name;
         $this->price = $service->price;
-        $this->openModal();
     }
 
     public function update()
