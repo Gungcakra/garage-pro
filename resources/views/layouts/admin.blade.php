@@ -98,13 +98,6 @@
     <script data-navigate-once src="https://unpkg.com/qr-scanner@1.4.2/qr-scanner.legacy.min.js"></script>
 
     <script>
-        // Livewire.hook("morphed", () => {
-        //     if (typeof KTMenu !== 'undefined' && typeof KTMenu.createInstances === 'function') {
-        //         KTMenu.createInstances();
-        //     } else {
-        //         console.error("KTMenu or KTMenu.createInstances is not defined.");
-        //     }
-        // });
         document.addEventListener('livewire:init', function() {
             Livewire.on('success', (message, isClose = true, type = 'success') => {
                 toastr[type](message);
@@ -114,37 +107,39 @@
                 }
             });
 
-
-
             Livewire.on('delete-success', (message) => {
                 Swal.fire("Deleted!", message, "success");
             });
         });
+
         Livewire.hook('morphed', () => {
-            KTMenu.createInstances();
+            if (typeof KTMenu !== 'undefined' && typeof KTMenu.createInstances === 'function') {
+                KTMenu.createInstances();
+            } else {
+                console.error("KTMenu or KTMenu.createInstances is not defined.");
+            }
         });
 
         function handleSearchService() {
-            Livewire.dispatch('loadDataService')
-
+            Livewire.dispatch('loadDataService');
         }
 
         function handleSearchSparepart() {
-            Livewire.dispatch('loadDataSparepart')
-
+            Livewire.dispatch('loadDataSparepart');
         }
-        function printInvoice() {
-          console.log('Print Invoice clicked!');
-          
-            var printContents = document.querySelector('.main').innerHTML;
-            var originalContents = document.body.innerHTML;
 
-            var printStyle = document.createElement('style');
+        function printInvoice() {
+            console.log('Print Invoice clicked!');
+
+            const printContents = document.querySelector('.main').innerHTML;
+            const originalContents = document.body.innerHTML;
+
+            const printStyle = document.createElement('style');
             printStyle.innerHTML = `
-            @page {
-                size: A4 portrait;
-                margin: 20mm;
-            }
+                @page {
+                    size: A4 portrait;
+                    margin: 20mm;
+                }
             `;
             document.head.appendChild(printStyle);
 
@@ -153,7 +148,6 @@
             window.print();
             document.body.innerHTML = originalContents;
             document.head.removeChild(printStyle);
-
         }
 
         function backOperational() {
@@ -164,44 +158,58 @@
             console.log("scanQr started");
             const videoElem = document.getElementById('qr-video');
 
+            if (!videoElem) {
+                console.error("QR video element not found");
+                return;
+            }
+
             const qrScanner = new QrScanner(
-                videoElem
-                , result => {
+                videoElem,
+                result => {
                     console.log('Scanned QR:', result);
                     qrScanner.stop();
 
-                    // Extracting the ID from the scanned data
-                    const id = result.data.split('#')[1]?.trim();
+                    const id = result?.data?.split('#')[1]?.trim();
                     if (id) {
                         Livewire.dispatch('getInvoiceFromQr', {
-                            code: id
+                            code: `#${id}`
                         });
+                        const modalEl = document.getElementById('scanQr');
+                        const modal = bootstrap.Modal.getInstance(modalEl);
+                        if (modal) {
+                            modal.hide();
+                            modal.dispose();
+                        }
+                        modalEl.style.display = 'none';
+                        modalEl.setAttribute('aria-hidden', 'true');
+                        modalEl.removeAttribute('aria-modal');
+                        modalEl.removeAttribute('role');
+                        document.body.classList.remove('modal-open');
+                        document.body.style.overflow = '';
+                        document.body.style.paddingRight = '';
                     } else {
                         console.error('Invalid QR data format');
+                        alert('Invalid QR code format. Please try again.');
                     }
-                }
-                }, {
+                },
+                {
                     returnDetailedScanResult: true
                 }
             );
 
             qrScanner.start().catch(e => {
                 alert("Camera access denied or not found.");
-                console.error(e);
+                console.error("Error starting QR scanner:", e);
             });
-        }
-        function closeCamera()
-        {
-            const videoElem = document.getElementById('qr-video');
-            const qrScanner = new QrScanner(videoElem, result => {
-                console.log('Scanned QR:', result);
-                qrScanner.stop();
-            });
-            qrScanner.stop();
         }
 
+        function closeCamera() {
+            const videoElem = document.getElementById('qr-video');
+            const qrScanner = new QrScanner(videoElem, () => {});
+            qrScanner.stop();
+        }
     </script>
-    
+
     {{-- <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/laravel-echo@2.0.2/dist/echo.iife.min.js"></script>
     <script>
@@ -229,11 +237,11 @@
     {{-- <script data-navigate-once src="{{ asset('assets/js/custom/pages/general/pos.js') }}"></script> --}}
 
     {{-- <script data-navigate-once src="{{ asset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script> --}}
-    
+
 
     {{-- <script data-navigate-once src="{{ asset('assets/js/widgets.bundle.js') }}"></script> --}}
     {{-- <script data-navigate-once src="{{ asset('assets/js/custom/widgets.js') }}"></script> --}}
-   
+
     <!--end::Global Javascript Bundle-->
     <!--begin::Vendors Javascript(used for this page only)-->
     {{-- <script src="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js')}}"></script>

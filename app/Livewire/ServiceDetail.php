@@ -14,8 +14,8 @@ class ServiceDetail extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-    public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $status, $idToDelete, $tabService = true, $tabSparepart, $serviceAdd = [], $sparepartAdd = [], $totalServicePrice, $totalSparepartPrice, $subTotal = 0, $tax = 12000, $totalPrice = 0, $invoice, $invoiceId, $qrCode,$writer, $result, $dataUri;
-    protected $listeners = ['loadData', 'loadDataService', 'loadDataSparepart','getInvoiceFromQr'];
+    public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $status, $idToDelete, $tabService = true, $tabSparepart, $serviceAdd = [], $sparepartAdd = [], $totalServicePrice, $totalSparepartPrice, $subTotal = 0, $tax = 12000, $totalPrice = 0, $invoice, $invoiceId, $qrCode, $writer, $result, $dataUri;
+    protected $listeners = ['loadData', 'loadDataService', 'loadDataSparepart', 'getInvoiceFromQr'];
 
     public $search = '', $searchService = '', $searchSparepart = '';
     public function render()
@@ -172,7 +172,7 @@ class ServiceDetail extends Component
 
     public function printBill()
     {
-        
+
         if (!$this->ServiceOperationalId) {
             $this->dispatch('error', 'Service Operational ID is required.');
             return;
@@ -185,19 +185,19 @@ class ServiceDetail extends Component
             return;
         }
 
-        
+
         foreach ($this->serviceAdd as $service) {
             $serviceOperational->services()->attach($service['id'], ['price' => $service['price']]);
         }
 
-        
+
         foreach ($this->sparepartAdd as $sparepart) {
             $serviceOperational->spareparts()->attach($sparepart['id'], [
                 'quantity' => $sparepart['qty'],
                 'price' => $sparepart['price']
             ]);
 
-            
+
             $sparepartModel = \App\Models\SparePart::find($sparepart['id']);
             if ($sparepartModel) {
                 $sparepartModel->stock -= $sparepart['qty'];
@@ -205,10 +205,10 @@ class ServiceDetail extends Component
             }
         }
 
-        
+
         $serviceOperational->update(['status' => 1]);
 
-        
+
         $this->serviceAdd = [];
         $this->sparepartAdd = [];
         $this->totalServicePrice = 0;
@@ -216,14 +216,12 @@ class ServiceDetail extends Component
         $this->subTotal = 0;
         $this->totalPrice = 0;
 
-        
+
         $this->dispatch('success', 'Transaction saved successfully.');
         $this->invoiceId = $serviceOperational->id;
         $this->ServiceOperationalId = null;
         $this->invoice = true;
         $this->invoiceService($this->invoiceId);
-
-        
     }
 
     public function removeInvoice()
@@ -232,17 +230,21 @@ class ServiceDetail extends Component
         $this->invoiceId = null;
     }
 
-    
+
     public function getInvoiceFromQr($code)
     {
-        dd($code);
-        $this->invoice = true;
+
         $this->invoiceId = ServiceOperational::where('code', $code)->first()->id;
-        $this->code = $code;
-        $qrCode = new QrCode($this->code);
-        $writer = new \Endroid\QrCode\Writer\PngWriter();
-        $result = $writer->write($qrCode);
-        $this->dataUri = $result->getDataUri();
-        
+        $data = ServiceOperational::where('id', $this->invoiceId)->first();
+        if ($data->status == 0) {
+            $this->ServiceOperationalId = $this->invoiceId;
+        } else {
+            $this->invoice = true;
+            $this->code = $code;
+            $qrCode = new QrCode($this->code);
+            $writer = new \Endroid\QrCode\Writer\PngWriter();
+            $result = $writer->write($qrCode);
+            $this->dataUri = $result->getDataUri();
+        }
     }
 }
