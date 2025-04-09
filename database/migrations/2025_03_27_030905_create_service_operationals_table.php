@@ -16,9 +16,11 @@ return new class extends Migration
             $table->string('code');
             $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
             $table->string('check');
+            $table->string('vehicle_type');
             $table->string('plate_number');
             $table->boolean('stnk')->default(false)->nullable();
             $table->boolean('kunci')->default(false)->nullable();
+            $table->integer('payment_method')->nullable();
             $table->boolean('status')->default(false);
             $table->timestamps();
         });

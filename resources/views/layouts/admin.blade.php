@@ -116,14 +116,14 @@
 
 
 
-        $(function(){
-            function handleSearchService() {
-            Livewire.dispatch('loadDataService');
-        }
+    function handleSearchServices() {
+    Livewire.dispatch('loadDataService');
+    }
 
-        function handleSearchSparepart() {
-            Livewire.dispatch('loadDataSparepart');
-        }
+    function handleSearchSparepart() {
+        Livewire.dispatch('loadDataSparepart');
+    }
+        $(function(){
 
     });
     function printInvoice() {

@@ -72,9 +72,11 @@
                             <th>Code</th>
                             <th>Customer</th>
                             <th>Check</th>
+                            <th>Vehicle Type</th>
                             <th>Plate Number</th>
                             <th>Completeness</th>
                             <th>Date</th>
+                            <th>Payment</th>
                             <th>Total</th>
                             <th>Status</th>
                         </tr>
@@ -113,6 +115,7 @@
             <td class="fw-bold">{{ $Service->code }}</td>
             <td>{{ $Service->customer->name }}</td>
             <td>{{ $Service->check }}</td>
+            <td>{{ $Service->vehicle_type }}</td>
             <td>{{ $Service->plate_number }}</td>
             <td>
                 @php
@@ -123,6 +126,11 @@
                 {{ implode(' - ', $completeness) }}
             </td>
             <td>{{ $Service->updated_at }}</td>
+            <td>
+                <div class="badge badge-light-{{ $Service->payment_method == 0 ? 'success' : ($Service->payment_method == 1 ? 'primary' : 'info') }}">
+                    {{ $Service->payment_method == 0 ? 'Cash' : ($Service->payment_method == 1 ? 'Card' : 'QRIS') }}
+                </div>
+            </td>
             @php
             $servicesTotal = $Service->services->sum('pivot.price');
             $sparepartsTotal = $Service->spareparts->sum('pivot.price');
@@ -142,7 +150,7 @@
             </tr>
             @endforeach
             <tr>
-                <td colspan="7" class="text-center">Total</td>
+                <td colspan="8" class="text-center">Total</td>
                 @php
                 $grandTotal = $data->reduce(function ($carry, $Service) use ($tax) {
                 $servicesTotal = $Service->services->sum('pivot.price');
@@ -228,7 +236,7 @@
         var dateRange = document.getElementById("range").value || "All Dates";
         XLSX.writeFile(wb, `Service Operational - ${dateRange}.xlsx`);
     }
-    
+
     $(function() {
         $("#range").daterangepicker();
         $("#range").on("apply.daterangepicker", function(event, picker) {
@@ -242,42 +250,42 @@
                 , endDate: picker.endDate.format("YYYY-MM-DD")
             });
         });
-        
+
         Livewire.on('show-modal', () => {
-        var myModal = new bootstrap.Modal(document.getElementById('ServiceModal'), {});
-        myModal.show();
-    });
-    Livewire.on('hide-modal', () => {
-        var modalEl = document.getElementById('ServiceModal');
-        var modal = bootstrap.Modal.getInstance(modalEl);
-        modal.hide();
-    });
-    Livewire.on('confirm-delete', (message) => {
-        Swal.fire({
-            title: message
-            , showCancelButton: true
-            , confirmButtonText: "Yes"
-            , cancelButtonText: "No"
-            , icon: "warning"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Livewire.dispatch('deleteService');
-            } else {
-                Swal.fire("Cancelled", "Delete Cancelled.", "info");
-            }
+            var myModal = new bootstrap.Modal(document.getElementById('ServiceModal'), {});
+            myModal.show();
         });
-    });
-
-    function handleSearch() {
-        Livewire.dispatch('loadData')
-    }
-
-    function handleStatus() {
-        var status = document.getElementById("status").value;
-        Livewire.dispatch('loadStatus', {
-            status: status
+        Livewire.on('hide-modal', () => {
+            var modalEl = document.getElementById('ServiceModal');
+            var modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
         });
-    }
+        Livewire.on('confirm-delete', (message) => {
+            Swal.fire({
+                title: message
+                , showCancelButton: true
+                , confirmButtonText: "Yes"
+                , cancelButtonText: "No"
+                , icon: "warning"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.dispatch('deleteService');
+                } else {
+                    Swal.fire("Cancelled", "Delete Cancelled.", "info");
+                }
+            });
+        });
+
+        function handleSearch() {
+            Livewire.dispatch('loadData')
+        }
+
+        function handleStatus() {
+            var status = document.getElementById("status").value;
+            Livewire.dispatch('loadStatus', {
+                status: status
+            });
+        }
     });
     // Print Excel
     function printMainContent() {

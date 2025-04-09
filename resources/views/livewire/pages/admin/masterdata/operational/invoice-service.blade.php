@@ -55,6 +55,10 @@
                                     <span class="text-muted">Date</span>
                                     <span class="fs-5">{{ $data->updated_at->format('Y-m-d') }}</span>
                                 </div>
+                                <div class="flex-root d-flex flex-column">
+                                    <span class="text-muted">Vehicle Type</span>
+                                    <span class="fs-5">{{ $data->vehicle_type }}</span>
+                                </div>
                                 {{-- <div class="flex-root d-flex flex-column">
                                 <span class="text-muted">Invoice ID</span>
                                 <span class="fs-5">#INV-000414</span>
@@ -173,6 +177,11 @@
                                             <tr>
                                                 <td colspan="3" class="fs-3 text-dark fw-bold text-end">Grand Total</td>
                                                 <td class="text-dark fs-3 fw-bolder text-end">RP {{ number_format($data->spareparts->sum(fn($sparepart) => $sparepart->pivot->price) + $data->services->sum('price') + $tax, 0, ',', '.') }}</td>
+                                               
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3" class="fs-3 text-dark fw-bold text-end">Payment Method</td>
+                                                <td class="text-dark fs-3 fw-bolder text-end">{{ $data->payment_method == 0 ? 'Cash' : ($data->payment_method == 1 ? 'Card' : 'QRIS') }}</td>
                                             </tr>
                                         </tbody>
                                     </table>

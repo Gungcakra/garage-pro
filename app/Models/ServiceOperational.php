@@ -10,9 +10,11 @@ class ServiceOperational extends Model
         'code',
         'customer_id',
         'check',
+        'vehicle_type',
         'stnk',
         'kunci',
         'plate_number',
+        'payment_method',
         'status'
     ];
 

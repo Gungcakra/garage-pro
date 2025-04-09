@@ -61,6 +61,7 @@
                             <th>Code</th>
                             <th>Customer</th>
                             <th>Check</th>
+                            <th>Vehicle Type</th>
                             <th>Plate Number</th>
                             <th>Completeness</th>
                             <th>Status</th>
@@ -100,6 +101,7 @@
                                 <td class="fw-bold">{{ $Service->code }}</td>
                                 <td>{{ $Service->customer->name }}</td>
                                 <td>{{ $Service->check }}</td>
+                                <td>{{ $Service->vehicle_type }}</td>
                                 <td>{{ $Service->plate_number }}</td>
                                 <td>
                                     @php

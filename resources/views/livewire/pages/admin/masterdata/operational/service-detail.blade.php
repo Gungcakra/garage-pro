@@ -114,7 +114,7 @@
                             <!--begin::Wrapper-->
                             <div class="d-flex flex-column d-grid gap-5 gap-xxl-9 ">
                                 <div class="d-flex items-center">
-                               
+
                                     <input type="text" class="form-control form-control-solid" placeholder="Search Service Name" id="search" autocomplete="off" wire:model="searchService" onkeydown="handleSearchServices()" />
                                 </div>
                                 <div class="table-responsive">
@@ -180,7 +180,7 @@
                                                 @else
                                                 @foreach ( $spareparts as $index => $sparepart)
 
-                                                <tr wire:key="SparePart-{{ $sparepart->id }}" wire:click="addSparepart({{ $sparepart->id }})" style="cursor: pointer;"  >
+                                                <tr wire:key="SparePart-{{ $sparepart->id }}" wire:click="addSparepart({{ $sparepart->id }})" style="cursor: pointer;">
                                                     <td>{{ $index + 1 }}</td>
 
                                                     <td>{{ $sparepart->name }}</td>
@@ -228,6 +228,11 @@
                 <!--end::Header-->
                 <!--begin::Body-->
                 <div class="card-body pt-0">
+                    <span class="fs-2 text-white">Check</span>
+                    <p class="fs-3 text-white">
+                        {{ $data->check }}
+                    </p>
+
                     <span class="fs-2 text-white">Services</span>
                     <!--begin::Table container-->
                     <div class="table-responsive mb-8">
@@ -322,96 +327,112 @@
                             </tbody>
                         </table>
                     </div>
-                                @empty
+                    @empty
 
-                                @endforelse
-                                <!--end::Table container-->
-                                <!--begin::Summary-->
-                                <div class="d-flex flex-stack bg-success rounded-3 p-6 mb-11">
-                                    <!--begin::Content-->
-                                    <div class="fs-6 fw-bold text-white">
-                                        <span class="d-block lh-1 mb-2">Subtotal</span>
-                                        {{-- <span class="d-block mb-2">Discounts</span> --}}
-                                        <span class="d-block mb-9">Tax</span>
-                                        <span class="d-block fs-2qx lh-1">Total</span>
-                                    </div>
-                                    <!--end::Content-->
-                                    <!--begin::Content-->
-                                    <div class="fs-6 fw-bold text-white text-end">
-                                        <span class="d-block lh-1 mb-2" data-kt-pos-element="total">RP {{ number_format($subTotal, 0, ',', '.') }}</span>
-                                        {{-- <span class="d-block mb-2" data-kt-pos-element="discount">-$8.00</span> --}}
-                                        <span class="d-block mb-9" data-kt-pos-element="tax">RP {{ number_format($tax, 0, ',', '.') }}</span>
-                                        <span class="d-block fs-2qx lh-1" data-kt-pos-element="grant-total">RP {{ number_format($totalPrice, 0, ',', '.') }}</span>
-                                    </div>
-                                    <!--end::Content-->
-                                </div>
-                                <!--end::Summary-->
-                                <!--begin::Payment Method-->
-                                <div class="m-0">
-                                    <!--begin::Title-->
-                                    <h1 class="fw-bold text-gray-800 mb-5">Payment Method</h1>
-                                    <!--end::Title-->
-                                    <!--begin::Radio group-->
-                                    <div class="d-flex flex-equal gap-5 gap-xxl-9 px-0 mb-12" data-kt-buttons="true" data-kt-buttons-target="[data-kt-button]">
-                                        <!--begin::Radio-->
-                                        <label class="btn bg-light btn-color-gray-600 btn-active-text-gray-800 border border-3 border-gray-100 border-active-primary btn-active-light-primary w-100 px-4" data-kt-button="true">
-                                            <!--begin::Input-->
-                                            <input class="btn-check" type="radio" name="method" value="0" />
-                                            <!--end::Input-->
-                                            <!--begin::Icon-->
-                                            <i class="ki-duotone ki-dollar fs-2hx mb-2 pe-0">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                                <span class="path3"></span>
-                                            </i>
-                                            <!--end::Icon-->
-                                            <!--begin::Title-->
-                                            <span class="fs-7 fw-bold d-block">Cash</span>
-                                            <!--end::Title-->
-                                        </label>
-                                        <!--end::Radio-->
-                                        <!--begin::Radio-->
-                                        <label class="btn bg-light btn-color-gray-600 btn-active-text-gray-800 border border-3 border-gray-100 border-active-primary btn-active-light-primary w-100 px-4" data-kt-button="true">
-                                            <!--begin::Input-->
-                                            <input class="btn-check" type="radio" name="method" value="1" />
-                                            <!--end::Input-->
-                                            <!--begin::Icon-->
-                                            <i class="ki-duotone ki-credit-cart fs-2hx mb-2 pe-0">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>
-                                            <!--end::Icon-->
-                                            <!--begin::Title-->
-                                            <span class="fs-7 fw-bold d-block">Card</span>
-                                            <!--end::Title-->
-                                        </label>
-                                        <!--end::Radio-->
-                                        <!--begin::Radio-->
-                                        <label class="btn bg-light btn-color-gray-600 btn-active-text-gray-800 border border-3 border-gray-100 border-active-primary btn-active-light-primary w-100 px-4" data-kt-button="true">
-                                            <!--begin::Input-->
-                                            <input class="btn-check" type="radio" name="method" value="2" />
-                                            <!--end::Input-->
-                                            <!--begin::Icon-->
-                                            <i class="fa fa-qrcode fs-2hx mb-2 pe-0" aria-hidden="true"></i>
-                                            <!--end::Icon-->
-                                            <!--begin::Title-->
-                                            <span class="fs-7 fw-bold d-block">QRIS</span>
-                                            <!--end::Title-->
-                                        </label>
-                                        <!--end::Radio-->
-                                    </div>
-                                    <!--end::Radio group-->
-                                    <!--begin::Actions-->
-                                    <button wire:click="printBill" class="btn btn-primary fs-1 w-100 py-4" {{ $totalPrice ? '' : 'disabled' }}>Print Bills</button>
-                                    <!--end::Actions-->
-                                </div>
-                                <!--end::Payment Method-->
+                    @endforelse
+                    <!--end::Table container-->
+                    <!--begin::Summary-->
+                    <div class="d-flex flex-stack bg-success rounded-3 p-6 mb-11">
+                        <!--begin::Content-->
+                        <div class="fs-6 fw-bold text-white">
+                            <span class="d-block lh-1 mb-2">Subtotal</span>
+                            {{-- <span class="d-block mb-2">Discounts</span> --}}
+                            <span class="d-block mb-9">Tax</span>
+                            <span class="d-block fs-2qx lh-1">Total</span>
+                        </div>
+                        <!--end::Content-->
+                        <!--begin::Content-->
+                        <div class="fs-6 fw-bold text-white text-end">
+                            <span class="d-block lh-1 mb-2" data-kt-pos-element="total">RP {{ number_format($subTotal, 0, ',', '.') }}</span>
+                            {{-- <span class="d-block mb-2" data-kt-pos-element="discount">-$8.00</span> --}}
+                            <span class="d-block mb-9" data-kt-pos-element="tax">RP {{ number_format($tax, 0, ',', '.') }}</span>
+                            <span class="d-block fs-2qx lh-1" data-kt-pos-element="grant-total">RP {{ number_format($totalPrice, 0, ',', '.') }}</span>
+                        </div>
+                        <!--end::Content-->
                     </div>
-                    <!--end: Card Body-->
+                    <!--end::Summary-->
+                    <!--begin::Payment Method-->
+                    <div class="m-0">
+                        <!--begin::Title-->
+                        <h1 class="fw-bold text-gray-800 mb-5">Payment Method</h1>
+                        <!--end::Title-->
+                        <!--begin::Radio group-->
+                        <div class="d-flex flex-equal gap-5 gap-xxl-9 px-0 mb-12" data-kt-buttons="true" data-kt-buttons-target="[data-kt-button]">
+                            <!--begin::Radio-->
+                            <label class="btn bg-light btn-color-gray-600 btn-active-text-gray-800 border border-3 border-gray-100 border-active-primary btn-active-light-primary w-100 px-4 {{ $payment === 0 ? 'active' : '' }}" data-kt-button="true">
+                                <!--begin::Input-->
+                                <input class="btn-check" type="radio" name="method" wire:click="setPayment(0)" value="0" wire:model="payment" />
+                                <!--end::Input-->
+                                <!--begin::Icon-->
+                                <i class="ki-duotone ki-dollar fs-2hx mb-2 pe-0">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                    <span class="path3"></span>
+                                </i>
+                                <!--end::Icon-->
+                                <!--begin::Title-->
+                                <span class="fs-7 fw-bold d-block">Cash</span>
+                                <!--end::Title-->
+                            </label>
+                            <!--end::Radio-->
+                            <!--begin::Radio-->
+                            <label class="btn bg-light btn-color-gray-600 btn-active-text-gray-800 border border-3 border-gray-100 border-active-primary btn-active-light-primary w-100 px-4 {{ $payment === 1 ? 'active' : '' }}" data-kt-button="true">
+                                <!--begin::Input-->
+                                <input class="btn-check" type="radio" name="method" wire:click="setPayment(1)" value="1" wire:model="payment" />
+                                <!--end::Input-->
+                                <!--begin::Icon-->
+                                <i class="ki-duotone ki-credit-cart fs-2hx mb-2 pe-0">
+                                    <span class="path1"></span>
+                                    <span class="path2"></span>
+                                </i>
+                                <!--end::Icon-->
+                                <!--begin::Title-->
+                                <span class="fs-7 fw-bold d-block">Card</span>
+                                <!--end::Title-->
+                            </label>
+                            <!--end::Radio-->
+                            <!--begin::Radio-->
+                            <label class="btn bg-light btn-color-gray-600 btn-active-text-gray-800 border border-3 border-gray-100 border-active-primary btn-active-light-primary w-100 px-4 {{ $payment === 2 ? 'active' : '' }}" data-kt-button="true">
+                                <!--begin::Input-->
+                                <input class="btn-check" type="radio" name="method" wire:click="setPayment(2)" value="2" wire:model="payment" />
+                                <!--end::Input-->
+                                <!--begin::Icon-->
+                                <i class="fa fa-qrcode fs-2hx mb-2 pe-0" aria-hidden="true"></i>
+                                <!--end::Icon-->
+                                <!--begin::Title-->
+                                <span class="fs-7 fw-bold d-block">QRIS</span>
+                                <!--end::Title-->
+                            </label>
+                            <!--end::Radio-->
+                        </div>
+                        <!--end::Radio group-->
+                        <!--begin::Actions-->
+                        <button wire:click="printBill" class="btn btn-primary fs-1 w-100 py-4" {{ $totalPrice ? '' : 'disabled' }}>Print Bills</button>
+                        <!--end::Actions-->
+                    </div>
+                    <!--end::Payment Method-->
                 </div>
-                <!--end::Pos order-->
+                <!--end: Card Body-->
             </div>
-            <!--end::Sidebar-->
+            <!--end::Pos order-->
         </div>
-
+        <!--end::Sidebar-->
     </div>
+  
+
+</div>
+{{-- @push('scripts')
+<script>
+    function handleSearchService() {
+        Livewire.dispatch('loadDataService');
+    }
+
+    function handleSearchSparepart() {
+        Livewire.dispatch('loadDataSparepart');
+    }
+    $(function() {
+
+    });
+
+</script>
+@endpush --}}

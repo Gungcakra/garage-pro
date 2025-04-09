@@ -108,10 +108,18 @@
                             </div>
                             <div class="fv-row">
                                 <!--begin::Label-->
+                                <label class="required form-label">Vehicle Type</label>
+                                <!--end::Label-->
+                                <!--begin::Select2-->
+                                <input type="text" class="form-control" name="billing_order_address_1" placeholder="Vehicle Type" wire:model="vehicle_type" autocomplete="off" />
+                                <!--end::Description-->
+                            </div>
+                            <div class="fv-row">
+                                <!--begin::Label-->
                                 <label class="required form-label">Plate Number</label>
                                 <!--end::Label-->
                                 <!--begin::Select2-->
-                                <input type="text" class="form-control" name="billing_order_address_1" placeholder="Plate Number" wire:model="plate_number" />
+                                <input type="text" class="form-control" name="billing_order_address_1" placeholder="Plate Number" wire:model="plate_number" autocomplete="off" />
                                 <!--end::Description-->
                             </div>
                             <!--end::Input group-->

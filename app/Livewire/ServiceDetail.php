@@ -14,7 +14,7 @@ class ServiceDetail extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-    public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $status, $idToDelete, $tabService = true, $tabSparepart, $serviceAdd = [], $sparepartAdd = [], $totalServicePrice, $totalSparepartPrice, $subTotal = 0, $tax = 12000, $totalPrice = 0, $invoice, $invoiceId, $qrCode, $writer, $result, $dataUri;
+    public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $payment, $status, $idToDelete, $tabService = true, $tabSparepart, $serviceAdd = [], $sparepartAdd = [], $totalServicePrice, $totalSparepartPrice, $subTotal = 0, $tax = 12000, $totalPrice = 0, $invoice, $invoiceId, $qrCode, $writer, $result, $dataUri;
     protected $listeners = ['loadData', 'loadDataService', 'loadDataSparepart', 'getInvoiceFromQr'];
 
     public $search = '', $searchService = '', $searchSparepart = '';
@@ -173,6 +173,12 @@ class ServiceDetail extends Component
         $this->totalPrice = $this->subTotal + $this->tax;
     }
 
+    public function setPayment($payment)
+    {
+        $this->payment = $payment;
+        
+    }
+
     public function printBill()
     {
 
@@ -209,7 +215,12 @@ class ServiceDetail extends Component
         }
 
 
-        $serviceOperational->update(['status' => 1]);
+        if ($this->payment) {
+            $serviceOperational->update(['payment_method' => $this->payment, 'status' => 1]);
+        } else {
+            $this->dispatch('error', 'Payment method is required.');
+            return;
+        }
 
 
         $this->serviceAdd = [];

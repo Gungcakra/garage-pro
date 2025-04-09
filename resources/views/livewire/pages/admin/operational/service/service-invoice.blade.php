@@ -96,6 +96,7 @@
                                         <thead class="text-white bg-primary">
                                             <tr>
                                                 <th scope="col">#</th>
+                                                <th scope="col">Vehicle Type</th>
                                                 <th scope="col">Plate Number</th>
                                                 <th scope="col">Check</th>
                                             </tr>
@@ -103,6 +104,7 @@
                                         <tbody>
                                             <tr>
                                                 <th scope="row">1</th>
+                                                <td>{{ $data->vehicle_type }}</td>
                                                 <td>{{ $data->plate_number }}</td>
                                                 <td>{{ $data->check }}</td>
                                             </tr>
@@ -115,7 +117,6 @@
                                         <ul>
                                             <li>STNK {{ $data->stnk === 1 ? 'V' : 'X' }}</li>
                                             <li>KUNCI {{ $data->kunci === 1 ? 'V' : 'X' }}</li>
-                                            <li>BPKB {{ $data->bpkb === 1 ? 'V' : 'X' }}</li>
                                         </ul>
                                         {{-- <p class="ms-3">Add additional notes and payment information</p> --}}
 
