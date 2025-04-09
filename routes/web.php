@@ -37,3 +37,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/report-service-operational', ReportServiceOperational::class)->name('report-serviceoperational');
     Route::get('/test', MenuManagement::class)->name('test');
 });
+Route::fallback(function () {
+    return response()->view('errors.404', [], 404);
+});
