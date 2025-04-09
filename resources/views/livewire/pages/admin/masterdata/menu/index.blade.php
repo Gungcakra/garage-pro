@@ -136,11 +136,12 @@
         Livewire.on('show-modal', () => {
             var modalEl = document.getElementById('menuModal');
             var existingModal = bootstrap.Modal.getInstance(modalEl);
-            if (existingModal) {
-            existingModal.dispose();
-            }
+            if (!existingModal) {
             var myModal = new bootstrap.Modal(modalEl, {});
             myModal.show();
+        } else {
+            existingModal.show();
+        }
         });
         Livewire.on('hide-modal', () => {
             var modalEl = document.getElementById('menuModal');
@@ -149,6 +150,7 @@
             modal.hide();
             modal.dispose();
             }
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
             modalEl.style.display = 'none';
             modalEl.setAttribute('aria-hidden', 'true');
             modalEl.removeAttribute('aria-modal');
@@ -161,11 +163,12 @@
         Livewire.on('show-submenu-modal', () => {
             var modalEl = document.getElementById('subMenuModal');
             var existingModal = bootstrap.Modal.getInstance(modalEl);
-            if (existingModal) {
-            existingModal.dispose();
-            }
+            if (!existingModal) {
             var myModal = new bootstrap.Modal(modalEl, {});
             myModal.show();
+            } else {
+                existingModal.show();
+            }
         });
         Livewire.on('hide-submenu-modal', () => {
             var modalEl = document.getElementById('subMenuModal');
@@ -174,6 +177,7 @@
             modal.hide();
             modal.dispose();
             }
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
             modalEl.style.display = 'none';
             modalEl.setAttribute('aria-hidden', 'true');
             modalEl.removeAttribute('aria-modal');

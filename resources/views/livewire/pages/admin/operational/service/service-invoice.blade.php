@@ -24,7 +24,7 @@
                 <!--begin::Secondary button-->
                 <!--end::Secondary button-->
                 <!--begin::Primary button-->
-                <button  class="btn btn-sm fw-bold btn-light-primary" onclick="backOperational()" wire:click="removeInvoice">Back</button>
+                <button  class="btn btn-sm fw-bold btn-light-primary"" wire:click="removeInvoice">Back</button>
                 <button class="btn btn-sm fw-bold btn-light-primary" onclick="printInvoice()">Print Invoice</button>
                 <!--end::Primary button-->
             </div>
@@ -156,3 +156,7 @@
     </div>
     <!--end::Content-->
 </div>
+@push('scripts')
+    <script>
+    </script>
+@endpush

@@ -11,7 +11,6 @@ class ServiceOperational extends Model
         'customer_id',
         'check',
         'stnk',
-        'bpkb',
         'kunci',
         'plate_number',
         'status'

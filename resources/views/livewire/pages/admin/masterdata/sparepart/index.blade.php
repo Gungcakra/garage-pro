@@ -36,7 +36,7 @@
                 {{-- <a href="#" class="btn btn-sm fw-bold btn-secondary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Rollover</a> --}}
                 <!--end::Secondary button-->
                 <!--begin::Primary button-->
-                <button class="btn btn-sm fw-bold btn-primary" wire:click="create()">Add Spare Part</button>
+                <button class="btn btn-sm fw-bold btn-primary" wire:click="create">Add Spare Part</button>
                 <!--end::Primary button-->
             </div>
             <!--end::Actions-->
@@ -114,28 +114,31 @@
 <script>
     $(function() {
         Livewire.on('show-modal', () => {
-            var modalEl = document.getElementById('ServiceModal');
+            var modalEl = document.getElementById('SparePartModal');
             var existingModal = bootstrap.Modal.getInstance(modalEl);
-            if (existingModal) {
-                existingModal.dispose();
-            }
+            var existingModal = bootstrap.Modal.getInstance(modalEl);
+            if (!existingModal) {
             var myModal = new bootstrap.Modal(modalEl, {});
             myModal.show();
+        } else {
+            existingModal.show();
+        }
         });
         Livewire.on('hide-modal', () => {
-            var modalEl = document.getElementById('ServiceModal');
+            var modalEl = document.getElementById('SparePartModal');
             var modal = bootstrap.Modal.getInstance(modalEl);
             if (modal) {
                 modal.hide();
                 modal.dispose();
             }
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
             modalEl.style.display = 'none';
             modalEl.setAttribute('aria-hidden', 'true');
             modalEl.removeAttribute('aria-modal');
             modalEl.removeAttribute('role');
-            document.body.classList.remove('modal-open');
-            document.body.style.overflow = '';
-            document.body.style.paddingRight = '';
+            document.body.classList.remove('modal-open'); 
+            document.body.style.overflow = ''; 
+            document.body.style.paddingRight = ''; 
         });
         Livewire.on('confirm-delete', (message) => {
             Swal.fire({

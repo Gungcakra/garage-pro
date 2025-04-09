@@ -40,7 +40,7 @@ class Customer extends Component
     }
     public function create()
     {
-        
+        $this->openModal();
     }
 
     public function store()
@@ -60,17 +60,15 @@ class Customer extends Component
         ]);
 
         $this->dispatch('success', 'Customer created successfully.');
+        $this->closeModal();
     }
 
     public function edit($id)
     {
         $this->CustomerId = $id;
         $customer = ModelsCustomer::find($id);
-        // $this->name = $customer->name;
-        // $this->email = $customer->email;
-        // $this->phone = $customer->phone;
-        // $this->address = $customer->address;
         $this->fill($customer->only(['name', 'email', 'phone', 'address']));
+        $this->openModal();
     }
 
     public function update(){
@@ -88,6 +86,7 @@ class Customer extends Component
             'address' => $this->address,
         ]);
         $this->dispatch('success', 'Customer updated successfully.');
+        $this->closeModal();
     }
 
     public function delete($id)

@@ -37,7 +37,7 @@
                 {{-- <a href="#" class="btn btn-sm fw-bold btn-secondary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Rollover</a> --}}
                 <!--end::Secondary button-->
                 <!--begin::Primary button-->
-                <button class="btn btn-sm fw-bold btn-primary" wire:click="create" data-bs-toggle="modal" data-bs-target="#CustomerModal">Add Customer</button>
+                <button class="btn btn-sm fw-bold btn-primary" wire:click="create">Add Customer</button>
                 <!--end::Primary button-->
             </div>
             <!--end::Actions-->
@@ -78,7 +78,7 @@
                                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-3">
-                                            <a wire:click="edit({{ $Customer->id }})" class="menu-link px-3 w-100" data-bs-toggle="modal" data-bs-target="#CustomerModal">Edit</a>
+                                            <a wire:click="edit({{ $Customer->id }})" class="menu-link px-3 w-100">Edit</a>
                                         </div>
                                         <!--end::Menu item-->
                                         <!--begin::Menu item-->
@@ -112,30 +112,30 @@
 @push('scripts')
 <script>
     $(function() {
-        // Livewire.on('show-modal', () => {
-        //     var modalEl = document.getElementById('CustomerModal');
-        //     var existingModal = bootstrap.Modal.getInstance(modalEl);
-        //     if (existingModal) {
-        //         existingModal.dispose();
-        //     }
-        //     var myModal = new bootstrap.Modal(modalEl, {});
-        //     myModal.show();
-        // });
-        // Livewire.on('hide-modal', () => {
-        //     var modalEl = document.getElementById('CustomerModal');
-        //     var modal = bootstrap.Modal.getInstance(modalEl);
-        //     if (modal) {
-        //         modal.hide();
-        //         modal.dispose();
-        //     }
-        //     modalEl.style.display = 'none';
-        //     modalEl.setAttribute('aria-hidden', 'true');
-        //     modalEl.removeAttribute('aria-modal');
-        //     modalEl.removeAttribute('role');
-        //     document.body.classList.remove('modal-open');
-        //     document.body.style.overflow = '';
-        //     document.body.style.paddingRight = '';
-        // });
+        Livewire.on('show-modal', () => {
+            var modalEl = document.getElementById('CustomerModal');
+            var existingModal = bootstrap.Modal.getInstance(modalEl);
+            if (existingModal) {
+                existingModal.dispose();
+            }
+            var myModal = new bootstrap.Modal(modalEl, {});
+            myModal.show();
+        });
+        Livewire.on('hide-modal', () => {
+            var modalEl = document.getElementById('CustomerModal');
+            var modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) {
+                modal.hide();
+                modal.dispose();
+            }
+            modalEl.style.display = 'none';
+            modalEl.setAttribute('aria-hidden', 'true');
+            modalEl.removeAttribute('aria-modal');
+            modalEl.removeAttribute('role');
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
+        });
 
         Livewire.on('confirm-delete', (message) => {
             Swal.fire({

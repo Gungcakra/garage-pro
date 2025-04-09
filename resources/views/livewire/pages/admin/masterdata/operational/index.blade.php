@@ -105,7 +105,6 @@
                                     @php
                                     $completeness = [];
                                     if ($Service->kunci) $completeness[] = 'Kunci';
-                                    if ($Service->bpkb) $completeness[] = 'BPKB';
                                     if ($Service->stnk) $completeness[] = 'STNK';
                                     @endphp
                                     {{ implode(' - ', $completeness) }}
@@ -163,12 +162,28 @@
     $(function() {
         Livewire.on('show-modal', () => {
             var myModal = new bootstrap.Modal(document.getElementById('ServiceModal'), {});
+            if (!existingModal) {
+            var myModal = new bootstrap.Modal(modalEl, {});
             myModal.show();
+        } else {
+            existingModal.show();
+        }
         });
         Livewire.on('hide-modal', () => {
             var modalEl = document.getElementById('ServiceModal');
             var modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) {
             modal.hide();
+            modal.dispose();
+            }
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+            modalEl.style.display = 'none';
+            modalEl.setAttribute('aria-hidden', 'true');
+            modalEl.removeAttribute('aria-modal');
+            modalEl.removeAttribute('role');
+            document.body.classList.remove('modal-open'); 
+            document.body.style.overflow = ''; 
+            document.body.style.paddingRight = ''; 
         });
         Livewire.on('confirm-delete', (message) => {
             Swal.fire({

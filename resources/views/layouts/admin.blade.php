@@ -125,32 +125,31 @@
             Livewire.dispatch('loadDataSparepart');
         }
 
-        function printInvoice() {
-            console.log('Print Invoice clicked!');
+    });
+    function printInvoice() {
 
-            const printContents = document.querySelector('.main').innerHTML;
-            const originalContents = document.body.innerHTML;
+        const printContents = document.querySelector('.main').innerHTML;
+        const originalContents = document.body.innerHTML;
 
-            const printStyle = document.createElement('style');
-            printStyle.innerHTML = `
-                @page {
-                    size: A4 portrait;
-                    margin: 20mm;
-                }
-            `;
-            document.head.appendChild(printStyle);
+        const printStyle = document.createElement('style');
+        printStyle.innerHTML = `
+            @page {
+                size: A4 portrait;
+                margin: 20mm;
+            }
+        `;
+        document.head.appendChild(printStyle);
 
-            document.body.innerHTML = printContents;
-            document.title = "Invoice";
-            window.print();
-            document.body.innerHTML = originalContents;
-            document.head.removeChild(printStyle);
-        }
+        document.body.innerHTML = printContents;
+        document.title = "Invoice";
+        window.print();
+        document.body.innerHTML = originalContents;
+        document.head.removeChild(printStyle);
+    }
 
-        function backOperational() {
-            window.Livewire.navigate('serviceoperational');
-        }
-        });
+    function backOperational() {
+        window.Livewire.navigate('serviceoperational');
+    }
 
     </script>
     <script>

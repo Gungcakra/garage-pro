@@ -36,6 +36,7 @@ class Service extends Component
     }
     public function create()
     {
+        $this->openModal();
     }
 
     public function store()
@@ -59,6 +60,8 @@ class Service extends Component
         $service = ModelsService::find($id);
         $this->name = $service->name;
         $this->price = $service->price;
+        $this->openModal();
+
     }
 
     public function update()

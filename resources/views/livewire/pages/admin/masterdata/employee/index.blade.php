@@ -118,11 +118,12 @@
         Livewire.on('show-modal', () => {
         var modalEl = document.getElementById('employeeModal');
         var existingModal = bootstrap.Modal.getInstance(modalEl);
-        if (existingModal) {
-            existingModal.dispose();
+        if (!existingModal) {
+            var myModal = new bootstrap.Modal(modalEl, {});
+            myModal.show();
+        } else {
+            existingModal.show();
         }
-        var myModal = new bootstrap.Modal(modalEl, {});
-        myModal.show();
     });
     Livewire.on('hide-modal', () => {
         var modalEl = document.getElementById('employeeModal');
@@ -131,6 +132,7 @@
             modal.hide();
             modal.dispose();
         }
+        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
         modalEl.style.display = 'none';
         modalEl.setAttribute('aria-hidden', 'true');
         modalEl.removeAttribute('aria-modal');

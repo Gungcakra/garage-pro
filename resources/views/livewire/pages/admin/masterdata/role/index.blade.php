@@ -177,11 +177,12 @@
             Livewire.on('show-modal', () => {
             var modalEl = document.getElementById('roleModal');
             var existingModal = bootstrap.Modal.getInstance(modalEl);
-            if (existingModal) {
-            existingModal.dispose();
-            }
+            if (!existingModal) {
             var myModal = new bootstrap.Modal(modalEl, {});
             myModal.show();
+        } else {
+            existingModal.show();
+        }
         });
         Livewire.on('hide-modal', () => {
             var modalEl = document.getElementById('roleModal');
@@ -190,6 +191,7 @@
             modal.hide();
             modal.dispose();
             }
+             document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
             modalEl.style.display = 'none';
             modalEl.setAttribute('aria-hidden', 'true');
             modalEl.removeAttribute('aria-modal');
@@ -201,12 +203,13 @@
 
         Livewire.on('show-modal-permission', () => {
             var modalEl = document.getElementById('permissionModal');
-            var existingModal = bootstrap.Modal.getInstance(modalEl);
-            if (existingModal) {
-            existingModal.dispose();
-            }
+                       var existingModal = bootstrap.Modal.getInstance(modalEl);
+            if (!existingModal) {
             var myModal = new bootstrap.Modal(modalEl, {});
             myModal.show();
+        } else {
+            existingModal.show();
+        }
         });
         Livewire.on('hide-modal-permission', () => {
             var modalEl = document.getElementById('permissionModal');
@@ -215,6 +218,7 @@
             modal.hide();
             modal.dispose();
             }
+             document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
             modalEl.style.display = 'none';
             modalEl.setAttribute('aria-hidden', 'true');
             modalEl.removeAttribute('aria-modal');
@@ -226,12 +230,13 @@
 
         Livewire.on('show-modal-asign', () => {
             var modalEl = document.getElementById('asignModal');
-            var existingModal = bootstrap.Modal.getInstance(modalEl);
-            if (existingModal) {
-            existingModal.dispose();
-            }
+                       var existingModal = bootstrap.Modal.getInstance(modalEl);
+            if (!existingModal) {
             var myModal = new bootstrap.Modal(modalEl, {});
             myModal.show();
+        } else {
+            existingModal.show();
+        }
         });
         Livewire.on('hide-modal-asign', () => {
             var modalEl = document.getElementById('asignModal');
@@ -240,6 +245,7 @@
             modal.hide();
             modal.dispose();
             }
+             document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
             modalEl.style.display = 'none';
             modalEl.setAttribute('aria-hidden', 'true');
             modalEl.removeAttribute('aria-modal');

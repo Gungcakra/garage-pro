@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('check');
             $table->string('plate_number');
             $table->boolean('stnk')->default(false)->nullable();
-            $table->boolean('bpkb')->default(false)->nullable();
             $table->boolean('kunci')->default(false)->nullable();
             $table->boolean('status')->default(false);
             $table->timestamps();

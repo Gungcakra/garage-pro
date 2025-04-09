@@ -118,7 +118,6 @@
                 @php
                 $completeness = [];
                 if ($Service->kunci) $completeness[] = 'Kunci';
-                if ($Service->bpkb) $completeness[] = 'BPKB';
                 if ($Service->stnk) $completeness[] = 'STNK';
                 @endphp
                 {{ implode(' - ', $completeness) }}

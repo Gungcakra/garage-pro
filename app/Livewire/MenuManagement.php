@@ -67,12 +67,10 @@ class MenuManagement extends Component
 
     public function edit($id)
     {
-        $menu = Menu::findOrFail($id);
         $this->menuId = $id;
-        $this->name = $menu->name;
-        $this->route = $menu->route;
-        $this->order = $menu->order;
+        $menu = Menu::findOrFail($id);
         $this->icon = $menu->icon;
+        $this->fill($menu->only(['name', 'route', 'order', 'icon']));
         $this->dispatch('show-modal');
     }
 
@@ -155,9 +153,7 @@ class MenuManagement extends Component
     {
         $submenu = SubMenu::findOrFail($id);
         $this->subMenuId = $id;
-        $this->subMenuName = $submenu->name;
-        $this->subMenuRoute = $submenu->route;
-        $this->subMenuOrder = $submenu->order;
+        $this->fill($submenu->only(['name', 'route', 'order']));
         $this->dispatch('show-submenu-modal');
     }
     public function updateSubMenu($id)

@@ -10,7 +10,7 @@ use Livewire\Component;
 #[Layout('layouts.admin')]
 class ServiceOperational extends Component
 {
-    public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $status, $idToDelete, $name, $email, $phone, $address, $latestId, $invoice, $invoiceId, $qrCode, $writer, $result, $dataUri;
+    public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk,  $kunci, $status, $idToDelete, $name, $email, $phone, $address, $latestId, $invoice, $invoiceId, $qrCode, $writer, $result, $dataUri;
 
     public function openModal()
     {
@@ -57,13 +57,12 @@ class ServiceOperational extends Component
             'customer_id' => $this->customer_id,
             'check' => $this->check,
             'stnk' => $this->stnk,
-            'bpkb' => $this->bpkb,
             'kunci' => $this->kunci,
             'plate_number' => $this->plate_number,
             'status' => $this->status,
         ]);
         $this->dispatch('success', 'Service operational created successfully.');
-        $this->reset([ 'customer_id', 'check', 'stnk', 'bpkb', 'kunci', 'plate_number', 'status']);
+        $this->reset([ 'customer_id', 'check', 'stnk', 'kunci', 'plate_number', 'status']);
         $this->latestId = ModelsServiceOperational::where('code', $this->code)->first()->id;
         $this->getInvoice($this->latestId);
 

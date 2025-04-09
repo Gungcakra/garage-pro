@@ -93,7 +93,9 @@ class DatabaseSeeder extends Seeder
        
 
 
+        $developer = Role::firstOrCreate(['name' => 'developer', 'guard_name' => 'web']);
         $admin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+
         $employee = Role::firstOrCreate(['name' => 'employee', 'guard_name' => 'web']);
 
         // Define permissions
@@ -118,15 +120,29 @@ class DatabaseSeeder extends Seeder
         }
 
         // Assign permissions to roles
+        $developer->syncPermissions(['dashboard','user', 'employee', 'customer',
+            'menu','role', 'service', 'sparepart', 'serviceoperational','servicedetail', 'reportserviceoperational']);
         $admin->syncPermissions(['dashboard','user', 'employee', 'customer',
-            'menu','role', 'menu', 'service', 'sparepart', 'serviceoperational','servicedetail', 'reportserviceoperational']);
-        $employee->syncPermissions(['employee']);
-        $user =  User::factory()->create([
+            'role', 'service', 'sparepart', 'serviceoperational','servicedetail', 'reportserviceoperational']);
+        $employee->syncPermissions(['serviceoperational', 'servicedetail', 'reportserviceoperational']);
+
+        // Create a developer user
+
+        $developerUser = User::factory()->create([
+            'name' => 'developer',
+            'email' => 'dev@me',
+            'password' => bcrypt('guarajadisini')
+        ]);
+        $developerUser->assignRole('developer');
+
+        $admin =  User::factory()->create([
             'name' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('admin123')
         ]);
-        $user->assignRole('admin');
+        $admin->assignRole('admin');
+
+        
 
         
         // Menu Dashboard

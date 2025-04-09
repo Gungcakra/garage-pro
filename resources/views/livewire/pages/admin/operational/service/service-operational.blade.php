@@ -121,13 +121,6 @@
                                     STNK
                                 </label>
                             </div>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" wire:model="bpkb" />
-                                <label for="flexCheckChecked">
-                                    BPKB
-                                </label>
-                            </div>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" wire:model="kunci" />
                                 <label for="flexCheckChecked">
@@ -329,11 +322,12 @@
         Livewire.on('show-modal', () => {
             var modalEl = document.getElementById('employeeModal');
             var existingModal = bootstrap.Modal.getInstance(modalEl);
-            if (existingModal) {
-                existingModal.dispose();
-            }
+            if (!existingModal) {
             var myModal = new bootstrap.Modal(modalEl, {});
             myModal.show();
+        } else {
+            existingModal.show();
+        }
         });
         Livewire.on('hide-modal', () => {
             var modalEl = document.getElementById('employeeModal');
@@ -342,6 +336,7 @@
                 modal.hide();
                 modal.dispose();
             }
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
             modalEl.style.display = 'none';
             modalEl.setAttribute('aria-hidden', 'true');
             modalEl.removeAttribute('aria-modal');

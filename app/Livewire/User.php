@@ -22,7 +22,7 @@ class User extends Component
     public function closeModal()
     {
         $this->userId = null;
-        $this->reset(['name', 'email', 'password']);
+        $this->reset(['name', 'email', 'password', 'selectedRole']);
         $this->dispatch('hide-modal');
     }
     public function create()

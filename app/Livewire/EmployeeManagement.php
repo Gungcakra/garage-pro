@@ -79,10 +79,7 @@ class EmployeeManagement extends Component
     {
         $employee = Employee::findOrFail($id);
         $this->employeeId = $employee->id;
-        $this->name = $employee->name;
-        $this->position = $employee->position;
-        $this->phone = $employee->phone;
-        $this->address = $employee->address;
+        $this->fill($employee->only(['name', 'position', 'phone', 'address']));
         $this->openModal();
     }
 
