@@ -64,13 +64,14 @@
                             <th>Vehicle Type</th>
                             <th>Plate Number</th>
                             <th>Completeness</th>
+                            <th>Date</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
 
                         @if (count($data) < 1) <tr>
-                            <td colspan="6" class="text-center">No Data Found</td>
+                            <td colspan="10" class="text-center">No Data Found</td>
                             </tr>
                             @else
                             @foreach ( $data as $index => $Service)
@@ -110,6 +111,9 @@
                                     if ($Service->stnk) $completeness[] = 'STNK';
                                     @endphp
                                     {{ implode(' - ', $completeness) }}
+                                </td>
+                                <td>
+                                    {{ \Carbon\Carbon::parse($Service->created_at)->translatedFormat('l, d F Y') }}
                                 </td>
                                 <td>
                                     <div class="badge badge-light-{{ $Service->status === 0 ? 'warning' : 'success' }}">{{ $Service->status === 0 ? 'Pending' : 'Complete' }}</div>

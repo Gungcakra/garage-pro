@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Customer as ModelsCustomer;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -17,7 +18,17 @@ class Customer extends Component
     protected $listeners = ['deleteCustomer'];
     public $search = '';
 
-   
+
+   public function mount()
+   {
+    $userPermissions = Auth::user()->roles->flatMap(function ($role) {
+        return $role->permissions->pluck('name');
+    });
+
+    if (!$userPermissions->contains('masterdata-customer')) {
+        abort(403, 'Unauthorized action.');
+    }
+   }
     public function render()
     {
         return view('livewire.pages.admin.masterdata.customer.index', [

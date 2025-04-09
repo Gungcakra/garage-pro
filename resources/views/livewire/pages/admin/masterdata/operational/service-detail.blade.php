@@ -10,7 +10,7 @@
                 <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Service Finalization</h1>
                 <!--end::Title-->
                 <!--begin::Breadcrumb-->
-                <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
+                <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1" style="cursor: pointer">
                     <!--begin::Item-->
                     <li class="breadcrumb-item text-muted">
                         <a href="{{ route('dashboard') }}" class="text-muted text-hover-primary" wire:navigate>Home</a>
@@ -22,7 +22,7 @@
                     </li>
                     <!--end::Item-->
                     <!--begin::Item-->
-                    <li class="breadcrumb-item text-muted">Service Operational</li>
+                    <li class="breadcrumb-item text-muted"> <a  class="text-muted text-hover-primary" wire:click="removeServiceDetailId">Service Operational</a></li>
 
                     <li class="breadcrumb-item">
                         <span class="bullet bg-gray-400 w-5px h-2px"></span>

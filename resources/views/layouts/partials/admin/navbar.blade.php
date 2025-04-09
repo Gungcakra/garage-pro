@@ -41,7 +41,7 @@
                         </span>
                         <!--end:Menu link-->
                         <!--begin:Menu sub-->
-                        <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown p-0 w-100 w-lg-850px">
+                        {{-- <div class="menu-sub menu-sub-lg-down-accordion menu-sub-lg-dropdown p-0 w-100 w-lg-850px">
                             <!--begin:Dashboards menu-->
                             <div class="menu-state-bg menu-extended overflow-hidden overflow-lg-visible" data-kt-menu-dismiss="true">
                                 <!--begin:Row-->
@@ -363,7 +363,7 @@
                                 <!--end:Row-->
                             </div>
                             <!--end:Dashboards menu-->
-                        </div>
+                        </div> --}}
                         <!--end:Menu sub-->
                     </div>
                     <!--end:Menu item-->

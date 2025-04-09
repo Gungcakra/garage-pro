@@ -125,10 +125,10 @@
                 @endphp
                 {{ implode(' - ', $completeness) }}
             </td>
-            <td>{{ $Service->updated_at }}</td>
+            <td>  {{ \Carbon\Carbon::parse($Service->updated_at)->translatedFormat('l, d F Y') }}</td>
             <td>
-                <div class="badge badge-light-{{ $Service->payment_method == 0 ? 'success' : ($Service->payment_method == 1 ? 'primary' : 'info') }}">
-                    {{ $Service->payment_method == 0 ? 'Cash' : ($Service->payment_method == 1 ? 'Card' : 'QRIS') }}
+                <div class="badge badge-light-{{ $Service->payment_method === null ? 'warning' : ($Service->payment_method == 0 ? 'success' : ($Service->payment_method == 1 ? 'primary' : 'info')) }}">
+                    {{ $Service->payment_method === null ? 'Pending' : ($Service->payment_method == 0 ? 'Cash' : ($Service->payment_method == 1 ? 'Card' : 'QRIS')) }}
                 </div>
             </td>
             @php
@@ -150,7 +150,7 @@
             </tr>
             @endforeach
             <tr>
-                <td colspan="8" class="text-center">Total</td>
+                <td colspan="9" class="text-center">Total</td>
                 @php
                 $grandTotal = $data->reduce(function ($carry, $Service) use ($tax) {
                 $servicesTotal = $Service->services->sum('pivot.price');

@@ -7,16 +7,27 @@ use Livewire\Component;
 use App\Models\ServiceOperational;
 use Livewire\Attributes\Layout;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
-#[Layout('layouts.admin')] 
+#[Layout('layouts.admin')]
 class Dashboard extends Component
 {
     public $startDate, $endDate, $thisMonthIncome, $thisMonthServices, $incomePerformance, $incomeChart;
-        
+
     protected $listeners = ['loadData'];
 
     public function mount()
     {
+
+        $userPermissions = Auth::user()->roles->flatMap(function ($role) {
+            return $role->permissions->pluck('name');
+        });
+
+        if (!$userPermissions->contains('dashboard')) {
+            abort(403, 'Unauthorized action.');
+        }
+
+    
         $currentMonth = Carbon::now()->month;
 
         $this->thisMonthIncome = ServiceOperational::with(['services', 'spareparts'])
@@ -34,12 +45,12 @@ class Dashboard extends Component
             ->whereMonth('created_at', $currentMonth)
             ->count();
 
-            
-         $this->startDate = Carbon::now()->startOfMonth();
-         $this->endDate = Carbon::now();
- 
+
+        $this->startDate = Carbon::now()->startOfMonth();
+        $this->endDate = Carbon::now();
+
         //  $this->loadIncomePerform    ance($this->startDate, $this->endDate);
-            
+
     }
 
     public function render()
@@ -59,7 +70,6 @@ class Dashboard extends Component
         $this->startDate = Carbon::parse($startDate);
         $this->endDate = Carbon::parse($endDate);
         $this->loadIncomePerformance($this->startDate, $this->endDate);
-        
     }
     // private function loadIncomePerformance($startDate, $endDate)
     // {
@@ -83,7 +93,7 @@ class Dashboard extends Component
     //             'income' => $value,
     //         ];
     //     })->values();
-        
+
     //     // $this->dispatch('incomeChartUpdated');
 
     // }

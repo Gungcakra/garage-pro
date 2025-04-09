@@ -101,16 +101,16 @@ class DatabaseSeeder extends Seeder
         // Define permissions
         $permissions = [
             'dashboard',
-            'user',
-            'employee',
-            'customer',
-            'menu',
-            'role',
-            'service',
-            'sparepart',
-            'serviceoperational',
-            'servicedetail',
-            'reportserviceoperational',
+            'masterdata-user',
+            'masterdata-employee',
+            'masterdata-customer',
+            'masterdata-menu',
+            'masterdata-role',
+            'masterdata-service',
+            'masterdata-sparepart',
+            'masterdata-servicedetail',
+            'operational-serviceoperational',
+            'report-serviceoperational',
 
                     
         ];
@@ -120,11 +120,38 @@ class DatabaseSeeder extends Seeder
         }
 
         // Assign permissions to roles
-        $developer->syncPermissions(['dashboard','user', 'employee', 'customer',
-            'menu','role', 'service', 'sparepart', 'serviceoperational','servicedetail', 'reportserviceoperational']);
-        $admin->syncPermissions(['dashboard','user', 'employee', 'customer',
-            'role', 'service', 'sparepart', 'serviceoperational','servicedetail', 'reportserviceoperational']);
-        $employee->syncPermissions(['serviceoperational', 'servicedetail', 'reportserviceoperational']);
+        $developer->syncPermissions([
+            'dashboard',
+            'masterdata-user',
+            'masterdata-employee',
+            'masterdata-customer',
+            'masterdata-menu',
+            'masterdata-role',
+            'masterdata-service',
+            'masterdata-sparepart',
+            'masterdata-servicedetail',
+            'operational-serviceoperational',
+            'report-serviceoperational'
+        ]);
+
+        $admin->syncPermissions([
+            'dashboard',
+            'masterdata-user',
+            'masterdata-employee',
+            'masterdata-customer',
+            'masterdata-role',
+            'masterdata-service',
+            'masterdata-sparepart',
+            'masterdata-servicedetail',
+            'operational-serviceoperational',
+            'report-serviceoperational'
+        ]);
+
+        $employee->syncPermissions([
+            'operational-serviceoperational',
+            'masterdata-servicedetail',
+            'report-serviceoperational'
+        ]);
 
         // Create a developer user
 
@@ -175,7 +202,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'User',
             'route' => 'user',
             'order' => 1,
-            'permission_id' => Permission::where('name', 'user')->first()->id
+            'permission_id' => Permission::where('name', 'masterdata-user')->first()->id
         ]);
 
         Submenu::create([
@@ -183,14 +210,14 @@ class DatabaseSeeder extends Seeder
             'name' => 'Role',
             'route' => 'role',
             'order' => 2,
-            'permission_id' => Permission::where('name', 'role')->first()->id
+            'permission_id' => Permission::where('name', 'masterdata-role')->first()->id
         ]);
         Submenu::create([
             'menu_id' => $masterData->id,
             'name' => 'Employee',
             'route' => 'employee',
             'order' => 3,
-            'permission_id' => Permission::where('name', 'employee')->first()->id
+            'permission_id' => Permission::where('name', 'masterdata-employee')->first()->id
         ]);
 
         Submenu::create([
@@ -198,7 +225,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Menu',
             'route' => 'menu',
             'order' => 4,
-            'permission_id' => Permission::where('name', 'menu')->first()->id
+            'permission_id' => Permission::where('name', 'masterdata-menu')->first()->id
         ]);
 
         Submenu::create([
@@ -206,7 +233,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Customer',
             'route' => 'customer',
             'order' => 5,
-            'permission_id' => Permission::where('name', 'customer')->first()->id
+            'permission_id' => Permission::where('name', 'masterdata-customer')->first()->id
         ]);
 
         Submenu::create([
@@ -214,21 +241,21 @@ class DatabaseSeeder extends Seeder
             'name' => 'Service',
             'route' => 'service',
             'order' => 6,
-            'permission_id' => Permission::where('name', 'service')->first()->id
+            'permission_id' => Permission::where('name', 'masterdata-service')->first()->id
         ]);
         Submenu::create([
             'menu_id' => $masterData->id,
             'name' => 'Spare Part',
             'route' => 'sparepart',
             'order' => 7,
-            'permission_id' => Permission::where('name', 'sparepart')->first()->id
+            'permission_id' => Permission::where('name', 'masterdata-sparepart')->first()->id
         ]);
         Submenu::create([
             'menu_id' => $masterData->id,
             'name' => 'Service Operational',
             'route' => 'servicedetail',
             'order' => 8,
-            'permission_id' => Permission::where('name', 'servicedetail')->first()->id
+            'permission_id' => Permission::where('name', 'masterdata-servicedetail')->first()->id
         ]);
 
         $operational = Menu::create([
@@ -242,7 +269,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Service Operational',
             'route' => 'serviceoperational',
             'order' => 1,
-            'permission_id' => Permission::where('name', 'serviceoperational')->first()->id
+            'permission_id' => Permission::where('name', 'operational-serviceoperational')->first()->id
         ]);
 
 
@@ -255,9 +282,9 @@ class DatabaseSeeder extends Seeder
         Submenu::create([
             'menu_id' => $report->id,
             'name' => 'Service Operational',
-            'route' => 'reportserviceoperational',
+            'route' => 'report-serviceoperational',
             'order' => 1,
-            'permission_id' => Permission::where('name', operator: 'reportserviceoperational')->first()->id
+            'permission_id' => Permission::where('name', operator: 'report-serviceoperational')->first()->id
         ]);
     }
 }

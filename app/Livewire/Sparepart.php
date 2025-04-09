@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -15,6 +16,17 @@ class Sparepart extends Component
     protected $listeners = ['deleteSparePart'];
     public $search = '';
 
+
+    public function mount()
+    {
+        $userPermissions = Auth::user()->roles->flatMap(function ($role) {
+            return $role->permissions->pluck('name');
+        });
+    
+        if (!$userPermissions->contains('masterdata-sparepart')) {
+            abort(403, 'Unauthorized action.');
+        }
+    }
     public function render()
     {
         return view('livewire.pages.admin.masterdata.sparepart.index', [

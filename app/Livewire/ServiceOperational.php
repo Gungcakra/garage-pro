@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Customer;
 use App\Models\ServiceOperational as ModelsServiceOperational;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -72,6 +73,13 @@ class ServiceOperational extends Component
     }
     public function mount()
     {
+        $userPermissions = Auth::user()->roles->flatMap(function ($role) {
+            return $role->permissions->pluck('name');
+        });
+    
+        if (!$userPermissions->contains('operational-serviceoperational')) {
+            abort(403, 'Unauthorized action.');
+        }
         $this->code = '#' . now()->format('YmdHis');
         $this->status = 0;
     }

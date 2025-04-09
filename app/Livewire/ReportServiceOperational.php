@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\ServiceOperational;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -16,6 +17,17 @@ class ReportServiceOperational extends Component
     public $serviceOperational, $startDate = '', $endDate = '', $status = '', $range, $tax = 12000;
 
     protected $listeners = ['loadData','loadStatus'];
+
+    public function mount()
+    {
+        $userPermissions = Auth::user()->roles->flatMap(function ($role) {
+            return $role->permissions->pluck('name');
+        });
+    
+        if (!$userPermissions->contains('report-serviceoperational')) {
+            abort(403, 'Unauthorized action.');
+        }
+    }
     
     public function render()
     {

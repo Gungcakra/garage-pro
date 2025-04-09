@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Service as ModelsService;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -15,6 +16,17 @@ class Service extends Component
     public $ServiceId, $name, $price, $idToDelete;
     protected $listeners = ['deleteService'];
     public $search = '';
+
+    public function mount()
+    {
+        $userPermissions = Auth::user()->roles->flatMap(function ($role) {
+            return $role->permissions->pluck('name');
+        });
+    
+        if (!$userPermissions->contains('masterdata-service')) {
+            abort(403, 'Unauthorized action.');
+        }
+    }
     public function render()
     {
         return view('livewire.pages.admin.masterdata.service.index', [

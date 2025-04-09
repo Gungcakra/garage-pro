@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Spatie\Permission\Models\Permission;
@@ -16,6 +17,13 @@ class RolesPermissions extends Component
 
     public function mount()
     {
+        $userPermissions = Auth::user()->roles->flatMap(function ($role) {
+            return $role->permissions->pluck('name');
+        });
+    
+        if (!$userPermissions->contains('masterdata-role')) {
+            abort(403, 'Unauthorized action.');
+        }
         $this->fetchRoles();
         $this->permissions = Permission::all();
     }

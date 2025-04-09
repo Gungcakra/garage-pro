@@ -28,7 +28,7 @@
                 <!--end::Breadcrumb-->
             </div>
             <div class="d-flex items-center">
-                <input type="text" class="form-control form-control-solid" placeholder="Search Service Name" id="search" autocomplete="off" wire:model.live.debounce.300ms="search" />
+                <input type="text" class="form-control form-control-solid" placeholder="Search Service Name" id="search" autocomplete="off" wire:model.live.debounce.100ms="search" />
             </div>
             <!--end::Page title-->
             <!--begin::Actions-->

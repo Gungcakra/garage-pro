@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Service;
 use App\Models\ServiceOperational;
 use Endroid\QrCode\QrCode;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -18,6 +19,17 @@ class ServiceDetail extends Component
     protected $listeners = ['loadData', 'loadDataService', 'loadDataSparepart', 'getInvoiceFromQr'];
 
     public $search = '', $searchService = '', $searchSparepart = '';
+
+    public function mount()
+    {
+        $userPermissions = Auth::user()->roles->flatMap(function ($role) {
+            return $role->permissions->pluck('name');
+        });
+    
+        if (!$userPermissions->contains('masterdata-servicedetail')) {
+            abort(403, 'Unauthorized action.');
+        }
+    }
     public function render()
     {
         if ($this->ServiceOperationalId) {
@@ -244,6 +256,11 @@ class ServiceDetail extends Component
         $this->invoiceId = null;
     }
 
+    public function removeServiceDetailId()
+    {
+        $this->ServiceOperationalId = null;
+        $this->resetPage();
+    }
 
     public function getInvoiceFromQr($code)
     {

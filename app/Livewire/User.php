@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\User as ModelsUser;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Spatie\Permission\Models\Role;
@@ -15,6 +16,16 @@ class User extends Component
     protected $listeners = ['deleteUser', 'loadData'];
     public $search = '';
 
+    public function mount()
+    {
+        $userPermissions = Auth::user()->roles->flatMap(function ($role) {
+            return $role->permissions->pluck('name');
+        });
+    
+        if (!$userPermissions->contains('masterdata-user')) {
+            abort(403, 'Unauthorized action.');
+        }
+    }
     public function openModal()
     {
         $this->dispatch('show-modal');

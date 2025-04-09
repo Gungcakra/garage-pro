@@ -7,6 +7,7 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Models\Employee;
 use App\Models\Menu;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\WithPagination;
 
@@ -21,6 +22,17 @@ class EmployeeManagement extends Component
 
     public $search = '';
     #[On('echo:data-refresh,.table-employee')]
+
+    public function mount()
+    {
+        $userPermissions = Auth::user()->roles->flatMap(function ($role) {
+            return $role->permissions->pluck('name');
+        });
+    
+        if (!$userPermissions->contains('masterdata-employee')) {
+            abort(403, 'Unauthorized action.');
+        }
+    }
 
     public function render()
     {

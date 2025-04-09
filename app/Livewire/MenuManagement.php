@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Menu;
 use App\Models\SubMenu;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Spatie\Permission\Models\Permission;
@@ -15,6 +16,17 @@ class MenuManagement extends Component
 
     protected $listeners = ['deleteMenu', 'deleteSubMenuConfirmed'];
     public $isModalOpen = false;
+
+    public function mount()
+    {
+        $userPermissions = Auth::user()->roles->flatMap(function ($role) {
+            return $role->permissions->pluck('name');
+        });
+    
+        if (!$userPermissions->contains('masterdata-menu')) {
+            abort(403, 'Unauthorized action.');
+        }
+    }
 
     public function openModal()
     {

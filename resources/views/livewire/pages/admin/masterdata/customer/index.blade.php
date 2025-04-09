@@ -28,7 +28,8 @@
                 <!--end::Breadcrumb-->
             </div>
             <div class="d-flex items-center">
-                <input type="text" class="form-control form-control-solid w-250px ps-14" placeholder="Search Customer" wire:model.live.debounce.300ms="search" />
+                <input type="text" class="form-control form-control-solid w-250px ps-14" placeholder="Search Customer" wire:model.live.debounce.100ms="search" />
+                
             </div>
             <!--end::Page title-->
             <!--begin::Actions-->
