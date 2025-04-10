@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Customer;
+use App\Models\Departement;
 use App\Models\Employee;
 use App\Models\Menu;
 use App\Models\Service;
@@ -23,8 +24,27 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-    
-        Employee::factory(30)->create();
+        Departement::insert([
+            ['name' => 'Mechanic', 'salary' => 6000000],
+            ['name' => 'Front Office', 'salary' => 5000000],
+            ['name' => 'Back Office', 'salary' => 5500000],
+            ['name' => 'Manager', 'salary' => 10000000],
+            ['name' => 'HRD', 'salary' => 8000000],
+        ]);
+        Employee::insert([
+            ['name' => 'John Doe', 'departement_id' => 4, 'phone' => '081234567890', 'address' => '123 Main St'],
+            ['name' => 'Jane Smith', 'departement_id' => 5, 'phone' => '081234567891', 'address' => '456 Elm St'],
+            ['name' => 'Alice Johnson', 'departement_id' => 2, 'phone' => '081234567892', 'address' => '789 Oak St'],
+            ['name' => 'Bob Brown', 'departement_id' => 1, 'phone' => '081234567893', 'address' => '101 Pine St'],
+            ['name' => 'Charlie Davis', 'departement_id' => 1, 'phone' => '081234567894', 'address' => '202 Maple St'],
+            ['name' => 'David Wilson', 'departement_id' => 1, 'phone' => '081234567895', 'address' => '303 Birch St'],
+            ['name' => 'Eve Taylor', 'departement_id' => 1, 'phone' => '081234567896', 'address' => '404 Cedar St'],
+            ['name' => 'Frank Harris', 'departement_id' => 1, 'phone' => '081234567897', 'address' => '505 Walnut St'],
+            ['name' => 'Grace Martin', 'departement_id' => 1, 'phone' => '081234567898', 'address' => '606 Cherry St'],
+            ['name' => 'Hank Lee', 'departement_id' => 1, 'phone' => '081234567899', 'address' => '707 Willow St'],
+            ['name' => 'Ivy Walker', 'departement_id' => 1, 'phone' => '081234567900', 'address' => '808 Ash St'],
+            ['name' => 'Jack Hall', 'departement_id' => 1, 'phone' => '081234567901', 'address' => '909 Poplar St'],
+        ]);
         Customer::factory(1000)->create();
         Service::insert([
             ['name' => 'Oil Change', 'price' => 150000],
@@ -109,6 +129,7 @@ class DatabaseSeeder extends Seeder
             'masterdata-service',
             'masterdata-sparepart',
             'masterdata-servicedetail',
+            'masterdata-bank',
             'operational-serviceoperational',
             'report-serviceoperational',
 

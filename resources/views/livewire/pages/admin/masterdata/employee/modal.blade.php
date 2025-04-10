@@ -1,4 +1,4 @@
-<div class="modal fade" tabindex="-1" id="employeeModal" aria-hidden="true"  wire:ignore.self>
+<div class="modal fade" tabindex="-1" id="employeeModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -47,8 +47,19 @@
                             </span>
                         </label>
                         <!--end::Label-->
-                      
-                        <input type="text" class="form-control form-control-solid @error('position') is-invalid @enderror" placeholder="Enter Position" autocomplete="off" id="position" wire:model="position" />
+
+
+
+                        <select class="form-select" data-control="select2" data-placeholder="Select Role" wire:model="selectedDepartement" data-dropdown-parent="#employeeModal">
+
+                            <option>Select Departement</option>
+                            @foreach ($departements as $departement)
+
+                            <option value="{{ $departement->id }}">{{ $departement->name }}</option>
+                            @endforeach
+
+                        </select>
+
                     </div>
                 </div>
                 <!--end::Input group-->
@@ -68,7 +79,7 @@
                             </span>
                         </label>
                         <!--end::Label-->
-                    
+
                         <input type="text" class="form-control form-control-solid @error('phone') is-invalid @enderror" placeholder="Enter Phone" id="phone" autocomplete="off" wire:model="phone" />
                     </div>
                     <div class="d-flex flex-column col-md-6 mb-8 fv-row">
@@ -84,7 +95,7 @@
                             </span>
                         </label>
                         <!--end::Label-->
-                     
+
                         <input type="text" class="form-control form-control-solid @error('address') is-invalid @enderror" placeholder="Enter Address" id="address" autocomplete="off" wire:model="address" />
 
                     </div>

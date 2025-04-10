@@ -29,6 +29,16 @@
             </div>
             <div class="d-flex items-center">
                 <input type="text" class="form-control form-control-solid" placeholder="Search Employee Name" id="search" autocomplete="off" wire:model.live.debounce.100ms="search" />
+
+                {{-- <select class="form-select" data-control="select2" data-placeholder="Select Customer" name="departement_id" id="departement_id" onchange="@this.set('selectedDepartement', this.value)">
+                    <option>Select Departement</option>
+                    @forelse($departements as $item)
+                        <option value="{{ $item->id }}" {{ $selectedDepartement == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
+                    @empty
+                        <option value="">No Data</option>
+                    @endforelse
+                   
+                </select> --}}
             </div>
             <!--end::Page title-->
             <!--begin::Actions-->
@@ -58,6 +68,7 @@
                             <th>Action</th>
                             <th>Name</th>
                             <th>Position</th>
+                            <th>Salary</th>
                             <th>Phone</th>
                             <th>Address</th>
                         </tr>
@@ -90,7 +101,8 @@
                                     <!--end::Menu item-->
                             </td>
                             <td>{{ $employee->name }}</td>
-                            <td>{{ $employee->position }}</td>
+                            <td>{{ $employee->departement->name }}</td>
+                            <td>RP {{ number_format($employee->departement->salary, 0, ',', '.') }}</td>
                             <td>{{ $employee->phone }}</td>
                             <td>{{ $employee->address }}</td>
 
@@ -113,7 +125,6 @@
 </div>
 @push('scripts')
 <script>
-    
     $(function() {
         Livewire.on('show-modal', () => {
         var modalEl = document.getElementById('employeeModal');
@@ -158,6 +169,9 @@
         });
     });
     });
+
+
+
     
 </script>
 @endpush

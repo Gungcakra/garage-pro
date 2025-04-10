@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Events\DataUpdate;
+use App\Models\Departement;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Models\Employee;
@@ -16,7 +17,7 @@ class EmployeeManagement extends Component
 {
     use WithPagination;
      protected $paginationTheme = 'bootstrap';
-    public $employeeId, $name, $position, $phone, $address, $idToDelete;
+    public $employeeId, $name, $selectedDepartement, $phone, $address, $idToDelete;
     public $isModalOpen = false;
     protected $listeners = ['deleteEmployee'];
 
@@ -41,6 +42,7 @@ class EmployeeManagement extends Component
             'data' => Employee::when($this->search, function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
             })->paginate(10),
+            'departements' => Departement::all(),
 
         ]);
     }
@@ -58,7 +60,7 @@ class EmployeeManagement extends Component
     }
     public function closeModal()
     {
-        $this->reset(['employeeId', 'name', 'position', 'phone', 'address']);
+        $this->reset(['employeeId', 'name', 'selectedDepartement', 'phone', 'address']);
         $this->isModalOpen = false;
         $this->employeeId = null;
         $this->dispatch(event: 'hide-modal');
@@ -67,17 +69,17 @@ class EmployeeManagement extends Component
     }
     public function store()
     {
+        
 
         $this->validate([
             'name' => 'required|string|max:255',
-            'position' => 'required|string|max:255',
             'phone' => 'required|string|max:15',
             'address' => 'required|string|max:255',
         ]);
 
         Employee::create([
+            'departement_id' => $this->selectedDepartement,
             'name' => $this->name,
-            'position' => $this->position,
             'phone' => $this->phone,
             'address' => $this->address,
         ]);
@@ -91,7 +93,8 @@ class EmployeeManagement extends Component
     {
         $employee = Employee::findOrFail($id);
         $this->employeeId = $employee->id;
-        $this->fill($employee->only(['name', 'position', 'phone', 'address']));
+        $this->fill($employee->only(['name', 'phone', 'address']));
+        $this->selectedDepartement = $employee->departement_id;
         $this->openModal();
     }
 
@@ -101,14 +104,14 @@ class EmployeeManagement extends Component
     {
         $this->validate([
             'name' => 'required|string|max:255',
-            'position' => 'required|string|max:255',
+            'selectedDepartement' => 'required',
             'phone' => 'required|string|max:15',
             'address' => 'required|string|max:255',
         ]);
         $employee = Employee::findOrFail($this->employeeId);
         $employee->update([
             'name' => $this->name,
-            'position' => $this->position,
+            'departement_id' => $this->selectedDepartement,
             'phone' => $this->phone,
             'address' => $this->address,
         ]);
@@ -137,6 +140,11 @@ class EmployeeManagement extends Component
         Employee::findOrFail($this->idToDelete)->delete();
         $this->dispatch('delete-success', 'Employee deleted successfully.');
       }
+    }
+
+    public function handleSelectedDepartement($value)
+    {
+        $this->selectedDepartement = $value;
     }
 
 }

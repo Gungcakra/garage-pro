@@ -231,7 +231,7 @@
                         @enderror
                         <select class="form-select" data-control="select2" data-placeholder="Select Role" wire:model="permissionId">
 
-                            <option>Select Role</option>
+                            <option>Select Permission</option>
                             @foreach ($permissions as $permission)
 
                             <option value="{{ $permission->id }}">{{ $permission->name }}</option>
