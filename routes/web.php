@@ -3,8 +3,10 @@
 use App\Http\Controllers\ProfileController;
 use App\Livewire\EmployeeManagement;
 use App\Livewire\Auth\Login;
+use App\Livewire\Bank;
 use App\Livewire\Customer;
 use App\Livewire\Dashboard;
+use App\Livewire\Departement;
 use App\Livewire\MenuManagement;
 use App\Livewire\ReportServiceOperational;
 use App\Livewire\RolesPermissions;
@@ -26,6 +28,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user', User::class)->name('user');
     Route::get('/customer', Customer::class)->name('customer');
     Route::get('/employee', EmployeeManagement::class)->name('employee');
+    Route::get('/departement', Departement::class)->name('departement');
+    Route::get('/bank', Bank::class)->name('bank');
     Route::get('/menu', MenuManagement::class)->name('menu');
     Route::get('/service', Service::class)->name('service');
     Route::get('/roles',RolesPermissions::class)->name('role');

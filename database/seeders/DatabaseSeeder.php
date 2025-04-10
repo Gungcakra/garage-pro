@@ -125,6 +125,8 @@ class DatabaseSeeder extends Seeder
             'masterdata-employee',
             'masterdata-customer',
             'masterdata-menu',
+            'masterdata-departement',
+            'masterdata-bank',
             'masterdata-role',
             'masterdata-service',
             'masterdata-sparepart',
@@ -147,6 +149,8 @@ class DatabaseSeeder extends Seeder
             'masterdata-employee',
             'masterdata-customer',
             'masterdata-menu',
+            'masterdata-bank',
+            'masterdata-departement',
             'masterdata-role',
             'masterdata-service',
             'masterdata-sparepart',
@@ -161,6 +165,9 @@ class DatabaseSeeder extends Seeder
             'masterdata-employee',
             'masterdata-customer',
             'masterdata-role',
+            'masterdata-menu',
+            'masterdata-bank',
+            'masterdata-departement',
             'masterdata-service',
             'masterdata-sparepart',
             'masterdata-servicedetail',
@@ -222,7 +229,7 @@ class DatabaseSeeder extends Seeder
             'menu_id' => $masterData->id,
             'name' => 'User',
             'route' => 'user',
-            'order' => 1,
+            'order' => 0,
             'permission_id' => Permission::where('name', 'masterdata-user')->first()->id
         ]);
 
@@ -230,8 +237,16 @@ class DatabaseSeeder extends Seeder
             'menu_id' => $masterData->id,
             'name' => 'Role',
             'route' => 'role',
-            'order' => 2,
+            'order' => 1,
             'permission_id' => Permission::where('name', 'masterdata-role')->first()->id
+        ]);
+
+        Submenu::create([
+            'menu_id' => $masterData->id,
+            'name' => 'Departement',
+            'route' => 'departement',
+            'order' => 2,
+            'permission_id' => Permission::where('name', 'masterdata-departement')->first()->id
         ]);
         Submenu::create([
             'menu_id' => $masterData->id,
@@ -278,6 +293,15 @@ class DatabaseSeeder extends Seeder
             'order' => 8,
             'permission_id' => Permission::where('name', 'masterdata-servicedetail')->first()->id
         ]);
+
+        Submenu::create([
+            'menu_id' => $masterData->id,
+            'name' => 'Bank',
+            'route' => 'bank',
+            'order' => 9,
+            'permission_id' => Permission::where('name', 'masterdata-bank')->first()->id
+        ]);
+
 
         $operational = Menu::create([
             'name' => 'Operational',
