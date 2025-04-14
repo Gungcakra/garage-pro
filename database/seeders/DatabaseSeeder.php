@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Bank;
 use App\Models\Customer;
 use App\Models\Departement;
 use App\Models\Employee;
@@ -133,6 +134,7 @@ class DatabaseSeeder extends Seeder
             'masterdata-servicedetail',
             'masterdata-bank',
             'operational-serviceoperational',
+            'operational-cashflow',
             'report-serviceoperational',
 
                     
@@ -154,8 +156,9 @@ class DatabaseSeeder extends Seeder
             'masterdata-role',
             'masterdata-service',
             'masterdata-sparepart',
-            'masterdata-servicedetail',
+            'masterdata-servicedetail',            
             'operational-serviceoperational',
+            'operational-cashflow',
             'report-serviceoperational'
         ]);
 
@@ -172,6 +175,7 @@ class DatabaseSeeder extends Seeder
             'masterdata-sparepart',
             'masterdata-servicedetail',
             'operational-serviceoperational',
+            'operational-cashflow',
             'report-serviceoperational'
         ]);
 
@@ -316,7 +320,14 @@ class DatabaseSeeder extends Seeder
             'order' => 1,
             'permission_id' => Permission::where('name', 'operational-serviceoperational')->first()->id
         ]);
-
+        Submenu::create([
+            
+            'menu_id' => $operational->id,
+            'name' => 'CashFlow',
+            'route' => 'cashflow',
+            'order' => 2,
+            'permission_id' => Permission::where('name', 'operational-cashflow')->first()->id
+        ]);
 
         $report = Menu::create([
             'name' => 'Report',
@@ -330,6 +341,25 @@ class DatabaseSeeder extends Seeder
             'route' => 'report-serviceoperational',
             'order' => 1,
             'permission_id' => Permission::where('name', operator: 'report-serviceoperational')->first()->id
+        ]);
+
+        Bank::create([
+            'name' => 'BCA',
+            'account_number' => '1234567890',
+            'account_name' => 'PT. Maju Mundur',
+            'amount' => 10000000,
+        ]);
+        Bank::create([
+            'name' => 'Cash',
+            'account_number' => '0987654321',
+            'account_name' => 'PT. Maju Mundur',
+            'amount' => 20000000,
+        ]);
+        Bank::create([
+            'name' => 'Card',
+            'account_number' => '1122334455',
+            'account_name' => 'PT. Maju Mundur',
+            'amount' => 15000000,
         ]);
     }
 }

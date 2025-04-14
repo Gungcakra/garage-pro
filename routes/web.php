@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Livewire\Cashflow;
 use App\Livewire\EmployeeManagement;
 use App\Livewire\Auth\Login;
 use App\Livewire\Bank;
@@ -39,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/servicedetail', ServiceDetail::class)->name('servicedetail');
     Route::get('/servicefinalize/{id}', [ServiceDetail::class, 'finalize'])->name('servicefinalize');
     Route::get('/report-service-operational', ReportServiceOperational::class)->name('report-serviceoperational');
+    Route::get('cashflow',Cashflow::class)->name('cashflow');
     Route::get('/test', MenuManagement::class)->name('test');
 });
 Route::fallback(function () {

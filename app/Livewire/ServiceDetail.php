@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Models\Bank;
+use App\Models\Cashflow;
 use App\Models\Service;
 use App\Models\ServiceOperational;
 use Endroid\QrCode\QrCode;
@@ -232,6 +234,59 @@ class ServiceDetail extends Component
         } else {
             $this->dispatch('error', 'Payment method is required.');
             return;
+        }
+
+        if($this->payment == 0){
+            $bank = Bank::where('name', 'Cash')->first();
+            if ($bank) {
+                $bank->amount += $this->totalPrice;
+                $bank->save();
+                
+            Cashflow::create([
+                'bank_id' => $bank->id,
+                'amount' => $this->totalPrice,
+                'description' => 'Service Operational ' . $serviceOperational->code,
+                'type' => 1, 
+            ]);
+            } else {
+                $this->dispatch('error', 'Bank with name "Cash" not found.');
+                return;
+            }
+
+           
+        }else if($this->payment == 1){
+            $bank = Bank::where('name', 'Card')->first();
+            if ($bank) {
+                $bank->amount += $this->totalPrice;
+                $bank->save();
+                
+            Cashflow::create([
+                'bank_id' => $bank->id,
+                'amount' => $this->totalPrice,
+                'description' => 'Service Operational ' . $serviceOperational->code,
+                'type' => 1, 
+            ]);
+            } else {
+                $this->dispatch('error', 'Bank with name "Cash" not found.');
+                return;
+            }
+            
+        }else{
+            $bank = Bank::where('name', 'BCA')->first();
+            if ($bank) {
+                $bank->amount += $this->totalPrice;
+                $bank->save();
+                
+            Cashflow::create([
+                'bank_id' => $bank->id,
+                'amount' => $this->totalPrice,
+                'description' => 'Service Operational ' . $serviceOperational->code,
+                'type' => 1, 
+            ]);
+            } else {
+                $this->dispatch('error', 'Bank with name "Cash" not found.');
+                return;
+            }
         }
 
 
