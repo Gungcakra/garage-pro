@@ -236,7 +236,7 @@ class ServiceDetail extends Component
             return;
         }
 
-        if($this->payment == 0){
+        if((int)$this->payment === 0){
             dd($this->payment);
             $bank = Bank::where('name', 'Cash')->first();
             if ($bank) {

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->integer('salary');
-           $table->timestampsTz(0, 'Asia/Jakarta');
+            $table->timestamps();
         });
     }
 

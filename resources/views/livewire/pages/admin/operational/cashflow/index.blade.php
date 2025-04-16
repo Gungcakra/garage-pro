@@ -92,9 +92,11 @@
                                         </div>
                                         <!--end::Menu item-->
                                         <!--begin::Menu item-->
+                                        @if (!\Illuminate\Support\Str::contains($cashflow->description, 'Service Operational #'))
                                         <div class="menu-item px-3">
                                             <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $cashflow->id }})">Delete</a>
                                         </div>
+                                        @endif
                                         <!--end::Menu item-->
                                 </td>
                                 <td>{{ $cashflow->bank->name }}</td>
@@ -105,7 +107,7 @@
                                         {{ $cashflow->type == 1 ? 'Credit' : 'Debet' }}
                                     </div>
                                 </td>
-                                <td>{{ \Carbon\Carbon::parse($cashflow->created_at)->format('d M Y H:i') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($cashflow->created_at)->timezone('Asia/Singapore')->format('d M Y H:i') }}</td>
 
                             </tr>
                             @endforeach
@@ -119,7 +121,7 @@
                 </div>
             </div>
 
-            {{-- @include('livewire.pages.admin.masterdata.user.modal') --}}
+            @include('livewire.pages.admin.operational.cashflow.modal')
 
         </div>
     </div>
@@ -141,17 +143,19 @@
         });
 
         Livewire.on('show-modal', () => {
-            var modalEl = document.getElementById('userModal');
+            var modalEl = document.getElementById('cashFlowModal');
             var existingModal = bootstrap.Modal.getInstance(modalEl);
             if (!existingModal) {
             var myModal = new bootstrap.Modal(modalEl, {});
             myModal.show();
+            console.log('modal');
+            
         } else {
             existingModal.show();
         }
         });
         Livewire.on('hide-modal', () => {
-            var modalEl = document.getElementById('userModal');
+            var modalEl = document.getElementById('cashFlowModal');
             var modal = bootstrap.Modal.getInstance(modalEl);
             if (modal) {
                 modal.hide();
@@ -175,7 +179,7 @@
                 , icon: "warning"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Livewire.dispatch('deleteUser');
+                    Livewire.dispatch('deleteCashflowConfirmed');
                 } else {
                     Swal.fire("Cancelled", "Delete Cancelled.", "info");
                 }

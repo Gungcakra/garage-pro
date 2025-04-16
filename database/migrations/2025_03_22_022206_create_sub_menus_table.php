@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('route')->nullable();
             $table->integer('order')->default(0);
             $table->integer('permission_id')->nullable();
-           $table->timestampsTz(0, 'Asia/Jakarta');
+            $table->timestamps();
         }); 
     }
 

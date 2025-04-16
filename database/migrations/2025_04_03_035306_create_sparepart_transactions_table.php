@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('spare_part_id')->constrained('spare_parts')->onDelete('cascade');
             $table->integer('quantity')->default(1);
             $table->integer('price')->default(0);
-           $table->timestampsTz(0, 'Asia/Jakarta');
+            $table->timestamps();
         });
     }
 
