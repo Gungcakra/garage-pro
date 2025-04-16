@@ -58,6 +58,7 @@
                             <th>No</th>
                             <th>Action</th>
                             <th>Name</th>
+                            <th>Account Name</th>
                             <th>Account Number</th>
                             <th>Amount</th>
                         </tr>
@@ -88,6 +89,7 @@
                                         <!--end::Menu item-->
                                 </td>
                                 <td>{{ $bank->name }}</td>
+                                <td>{{ $bank->account_name }}</td>
                                 <td>{{ $bank->account_number }}</td>
                                 <td>Rp {{ number_format($bank->amount, 0, ',', '.') }}</td>
 

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
-            $table->timestamps();
+           $table->timestampsTz(0, 'Asia/Jakarta');
         });
     }
 

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('icon')->nullable();
             $table->string('route')->nullable();
             $table->integer('order')->default(0);
-            $table->timestamps();
+           $table->timestampsTz(0, 'Asia/Jakarta');
         });
     }
 

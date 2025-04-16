@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('menu_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('submenu_id')->nullable()->constrained()->onDelete('cascade');
             $table->boolean('can_access')->default(true);
-            $table->timestamps();
+           $table->timestampsTz(0, 'Asia/Jakarta');
         });
     }
 

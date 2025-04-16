@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('account_number')->unique();
             $table->string('account_name');
             $table->decimal('amount', 15, 2);
-            $table->timestamps();
+           $table->timestampsTz(0, 'Asia/Jakarta');
         });
     }
 

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('service_operational_id')->constrained('service_operationals')->onDelete('cascade');
             $table->foreignId('service_id')->constrained('services')->onDelete('cascade');
             $table->integer('price')->default(0);
-            $table->timestamps();
+           $table->timestampsTz(0, 'Asia/Jakarta');
         });
     }
 

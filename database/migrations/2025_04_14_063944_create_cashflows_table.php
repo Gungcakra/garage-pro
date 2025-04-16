@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer(column: 'amount');
             $table->string(column: 'description')->nullable();
             $table->integer(column: 'type')->nullable();
-            $table->timestamps();
+            $table->timestampsTz(0, 'Asia/Jakarta');
         });
     }
 

@@ -1,5 +1,5 @@
 <div class="d-flex flex-column flex-column-fluid">
-    <x-slot:title>User Management</x-slot:title>
+    <x-slot:title>Cashflow Management</x-slot:title>
     <!--begin::Toolbar-->
     <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
         <!--begin::Toolbar container-->
@@ -27,8 +27,15 @@
                 </ul>
                 <!--end::Breadcrumb-->
             </div>
-            <div class="d-flex items-center">
-                <input type="text" class="form-control form-control-solid" placeholder="Search User Name" id="search" autocomplete="off" wire:model.live.dobonce.300ms="search" />
+            <div class="d-flex items-center gap-3">
+                <div class="form-group position-relative">
+                    <input type="text" class="form-control form-control-solid" placeholder="Search Cashflow" id="search" autocomplete="off" wire:model.live.dobonce.300ms="search" />
+                    <i class="bi bi-search position-absolute top-50 end-0 translate-middle-y me-3 text-muted"></i>
+                </div>
+                <div class="form-group position-relative mb-0">
+                    <input type="text" class="form-control form-control-solid pe-10" placeholder="Pick date range" id="range" name="range" wire:model="range" />
+                    <i class="bi bi-calendar3 position-absolute top-50 end-0 translate-middle-y me-3 text-muted"></i>
+                </div>
             </div>
             <!--end::Page title-->
             <!--begin::Actions-->
@@ -37,7 +44,8 @@
                 {{-- <a href="#" class="btn btn-sm fw-bold btn-secondary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app">Rollover</a> --}}
                 <!--end::Secondary button-->
                 <!--begin::Primary button-->
-                <button class="btn btn-sm fw-bold btn-primary" wire:click="create()">Add User</button>
+                <button class="btn btn-sm fw-bold btn-primary" wire:click="create()">Add CashFlow</button>
+                <button class="btn btn-sm fw-bold btn-success" wire:click="create()">Report</button>
                 <!--end::Primary button-->
             </div>
             <!--end::Actions-->
@@ -56,9 +64,11 @@
                         <tr class="fw-semibold fs-6 text-muted">
                             <th>No</th>
                             <th>Action</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
+                            <th>Bank</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                            <th>Type</th>
+                            <th>Date</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -67,9 +77,9 @@
                             </tr>
                             @else
 
-                            @foreach ( $data as $index => $user)
+                            @foreach ( $data as $index => $cashflow)
 
-                            <tr wire:key="user-{{ $user->id }}">
+                            <tr wire:key="cashflow-{{ $cashflow->id }}">
                                 <td>{{ $index + 1 }}</td>
                                 <td>
                                     <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
@@ -78,18 +88,24 @@
                                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-3">
-                                            <a wire:click="edit({{ $user->id }})" class="menu-link px-3 w-100">Edit</a>
+                                            <a wire:click="edit({{ $cashflow->id }})" class="menu-link px-3 w-100">Edit</a>
                                         </div>
                                         <!--end::Menu item-->
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-3">
-                                            <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $user->id }})">Delete</a>
+                                            <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $cashflow->id }})">Delete</a>
                                         </div>
                                         <!--end::Menu item-->
                                 </td>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->getRoleNames()->first() }}</td>
+                                <td>{{ $cashflow->bank->name }}</td>
+                                <td>Rp {{ number_format($cashflow->amount, 0, ',', '.') }}</td>
+                                <td>{{ $cashflow->description }}</td>
+                                <td> 
+                                    <div class="badge badge-light-{{ $cashflow->type == 1 ? 'success' : 'danger' }}">
+                                        {{ $cashflow->type == 1 ? 'Credit' : 'Debet' }}
+                                    </div>
+                                </td>
+                                <td>{{ \Carbon\Carbon::parse($cashflow->created_at)->format('d M Y H:i') }}</td>
 
                             </tr>
                             @endforeach
@@ -103,7 +119,7 @@
                 </div>
             </div>
 
-            @include('livewire.pages.admin.masterdata.user.modal')
+            {{-- @include('livewire.pages.admin.masterdata.user.modal') --}}
 
         </div>
     </div>
@@ -111,6 +127,19 @@
 @push('scripts')
 <script>
     $(function() {
+        $("#range").daterangepicker();
+        $("#range").on("apply.daterangepicker", function(event, picker) {
+            $(this).val(
+                picker.startDate.format("YYYY-MM-DD") +
+                " - " +
+                picker.endDate.format("YYYY-MM-DD")
+            );
+            Livewire.dispatch('loadData', {
+                startDate: picker.startDate.format("YYYY-MM-DD")
+                , endDate: picker.endDate.format("YYYY-MM-DD")
+            });
+        });
+
         Livewire.on('show-modal', () => {
             var modalEl = document.getElementById('userModal');
             var existingModal = bootstrap.Modal.getInstance(modalEl);

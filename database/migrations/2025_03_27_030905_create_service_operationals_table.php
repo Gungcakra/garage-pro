@@ -22,7 +22,7 @@ return new class extends Migration
             $table->boolean('kunci')->default(false)->nullable();
             $table->integer('payment_method')->nullable();
             $table->boolean('status')->default(false);
-            $table->timestamps();
+           $table->timestampsTz(0, 'Asia/Jakarta');
         });
     }
 

@@ -237,6 +237,7 @@ class ServiceDetail extends Component
         }
 
         if($this->payment == 0){
+            dd($this->payment);
             $bank = Bank::where('name', 'Cash')->first();
             if ($bank) {
                 $bank->amount += $this->totalPrice;
