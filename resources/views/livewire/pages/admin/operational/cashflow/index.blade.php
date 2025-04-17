@@ -45,7 +45,7 @@
                 <!--end::Secondary button-->
                 <!--begin::Primary button-->
                 <button class="btn btn-sm fw-bold btn-primary" wire:click="create()">Add CashFlow</button>
-                <button class="btn btn-sm fw-bold btn-success" wire:click="create()">Report</button>
+                <button class="btn btn-sm fw-bold btn-success" onclick="printMainContent()">Report</button>
                 <!--end::Primary button-->
             </div>
             <!--end::Actions-->
@@ -58,12 +58,12 @@
         <!--begin::Content container-->
         <div class="flex flex-column container">
 
-            <div class="table-responsive">
+            <div class="table-responsive main">
                 <table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5">
                     <thead>
                         <tr class="fw-semibold fs-6 text-muted">
                             <th>No</th>
-                            <th>Action</th>
+                            <th class="action">Action</th>
                             <th>Bank</th>
                             <th>Amount</th>
                             <th>Description</th>
@@ -81,7 +81,7 @@
 
                             <tr wire:key="cashflow-{{ $cashflow->id }}">
                                 <td>{{ $index + 1 }}</td>
-                                <td>
+                                <td class="action">
                                     <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
                                         <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
                                     <!--begin::Menu-->
@@ -186,8 +186,22 @@
             });
         });
 
-        
+
     });
+    function printMainContent() {
+        var printContents = document.querySelector('.main').cloneNode(true);
+        var originalContents = document.body.innerHTML;
+
+        // Remove elements with the class 'action' from the cloned content
+        printContents.querySelectorAll('.action').forEach(el => el.remove());
+
+        document.body.innerHTML = printContents.innerHTML;
+        document.title = "Cashflow Report";
+        window.print();
+        document.body.innerHTML = originalContents;
+        window.location.reload();
+    }
+    
 
 </script>
 @endpush

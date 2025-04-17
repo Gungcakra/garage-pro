@@ -38,7 +38,7 @@
     <!--begin::Content-->
     <div id="kt_app_content" class="app-content flex-column-fluid">
         <!--begin::Content container-->
-        <div id="kt_app_content_container" class="app-container container-xxl">
+        <div id="kt_app_content_container" class="app-container container-xxl"  style="min-height: 100vh">
             <!--begin::Row-->
             <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
                 <!--begin::Col-->
@@ -140,7 +140,7 @@
                 </div>
                 <!--end::Col-->
                 <!--begin::Col-->
-                <div class="col-xl-6">
+                {{-- <div class="col-xl-6">
                     <!--begin::Chart widget 36-->
                     <div class="card card-flush overflow-hidden h-lg-100">
                         <!--begin::Header-->
@@ -154,7 +154,7 @@
                             <!--begin::Toolbar-->
                             <div class="card-toolbar">
                                 <!--begin::Daterangepicker(defined in src/js/layout/app.js)-->
-                                {{-- <div class="btn btn-sm btn-light d-flex align-items-center px-4" onchange="loadData()">
+                                <div class="btn btn-sm btn-light d-flex align-items-center px-4" onchange="loadData()">
 									<!--begin::Display range-->
 									<div class="text-gray-600 fw-bold">Loading date range...</div>
 									<!--end::Display range-->
@@ -166,7 +166,7 @@
 										<span class="path5"></span>
 										<span class="path6"></span>
 									</i>
-								</div> --}}
+								</div>
                                 <input type="text" class="btn btn-sm btn-light d-flex align-items-center px-4" id="range">
                                 <i class="ki-duotone ki-calendar-8 fs-1 ms-2 me-0">
                                     <span class="path1"></span>
@@ -191,7 +191,7 @@
                         <!--end::Card body-->
                     </div>
                     <!--end::Chart widget 36-->
-                </div>
+                </div> --}}
                 <!--end::Col-->
             </div>
             <!--end::Row-->
@@ -381,7 +381,7 @@
 			</div> --}}
             <!--end::Row-->
             <!--begin::Row-->
-            <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
+            {{-- <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
                 <!--begin::Col-->
                 <div class="col-xl-4">
                     <!--begin::Chart Widget 37-->
@@ -1094,10 +1094,10 @@
                     <!--end::Table widget 15-->
                 </div>
                 <!--end::Col-->
-            </div>
+            </div> --}}
             <!--end::Row-->
             <!--begin::Row-->
-            <div class="row g-5 g-xl-10">
+            {{-- <div class="row g-5 g-xl-10">
                 <!--begin::Col-->
                 <div class="col-xl-4">
                     <!--begin::Chart widget 31-->
@@ -1158,7 +1158,7 @@
                     <!--end::Maps widget 2-->
                 </div>
                 <!--end::Col-->
-            </div>
+            </div> --}}
             <!--end::Row-->
         </div>
         <!--end::Content container-->
