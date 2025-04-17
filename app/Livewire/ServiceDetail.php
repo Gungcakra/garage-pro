@@ -190,11 +190,13 @@ class ServiceDetail extends Component
     public function setPayment($payment)
     {
         $this->payment = $payment;
+     
         
     }
 
     public function printBill()
     {
+        
 
         if (!$this->ServiceOperationalId) {
             $this->dispatch('error', 'Service Operational ID is required.');
@@ -229,15 +231,15 @@ class ServiceDetail extends Component
         }
 
 
-        if ($this->payment) {
+        if ($this->payment !== null) {
             $serviceOperational->update(['payment_method' => $this->payment, 'status' => 1]);
         } else {
             $this->dispatch('error', 'Payment method is required.');
             return;
         }
 
-        if((int)$this->payment === 0){
-            dd($this->payment);
+        
+        if ($this->payment == 0) {
             $bank = Bank::where('name', 'Cash')->first();
             if ($bank) {
                 $bank->amount += $this->totalPrice;
@@ -246,7 +248,7 @@ class ServiceDetail extends Component
             Cashflow::create([
                 'bank_id' => $bank->id,
                 'amount' => $this->totalPrice,
-                'description' => 'Service Operational ' . $serviceOperational->code,
+                'description' => "Service Operational {$serviceOperational->code}",
                 'type' => 1, 
             ]);
             } else {
@@ -255,7 +257,7 @@ class ServiceDetail extends Component
             }
 
            
-        }else if($this->payment == 1){
+        }else if((int)$this->payment == 1){
             $bank = Bank::where('name', 'Card')->first();
             if ($bank) {
                 $bank->amount += $this->totalPrice;
