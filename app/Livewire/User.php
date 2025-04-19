@@ -42,12 +42,17 @@ class User extends Component
     }
     public function store()
     {
-        $this->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'password' => 'required|min:6',
-            'selectedRole' => 'required',
-        ]);
+        try{
+            $this->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email',
+                'password' => 'required|min:6',
+                'selectedRole' => 'required',
+            ]);
+        }catch (\Illuminate\Validation\ValidationException $e) {
+            $this->dispatch('error', collect($e->errors())->flatten()->first());
+            return;
+        }
 
         $user =  ModelsUser::create([
             'name' => $this->name,
@@ -75,31 +80,34 @@ class User extends Component
     }
     public function update()
     {
+
+    try{
         $this->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email',
             'selectedRole' => 'required',
             'password' => 'nullable|min:6',
         ]);
-        try {
-            $user = ModelsUser::find($this->userId);
-            $dataToUpdate = [
-                'name' => $this->name,
-                'email' => $this->email
-            ];
+      
+    }catch (\Illuminate\Validation\ValidationException $e) {
+        $this->dispatch('error', collect($e->errors())->flatten()->first());
+        return;
+    }
+        $user = ModelsUser::find($this->userId);
+        $dataToUpdate = [
+            'name' => $this->name,
+            'email' => $this->email
+        ];
 
-            if (!empty($this->password)) {
-                $dataToUpdate['password'] = bcrypt($this->password);
-            }
-
-            $user->update($dataToUpdate);
-
-            $user->syncRoles($this->selectedRole);
-            $this->dispatch('success', 'User updated successfully.');
-            $this->closeModal();
-        } catch (\Exception $e) {
-            $this->dispatch('error', 'Failed to update user: ' . $e->getMessage());
+        if (!empty($this->password)) {
+            $dataToUpdate['password'] = bcrypt($this->password);
         }
+
+        $user->update($dataToUpdate);
+
+        $user->syncRoles($this->selectedRole);
+        $this->dispatch('success', 'User updated successfully.');
+        $this->closeModal();
     }
     public function delete($id)
     {

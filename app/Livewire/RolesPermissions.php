@@ -78,20 +78,25 @@ class RolesPermissions extends Component
         $this->roleId = $id;
         $role = Role::findOrFail($id);
 
-        // Ambil semua permissions
+        
         $this->permissions = Permission::all();
-
-        // Ambil permissions yang sudah dimiliki oleh role
+        
         $this->selectedPermissions = $role->permissions->pluck('id')->toArray();
-        // dd($this->selectedPermissions);
+        
         $this->openModalAsign();
     }
 
     public function assignPermissionsToRole()
     {
-        $this->validate([
-            'selectedPermissions' => 'required|array',
-        ]);
+        try{
+            $this->validate([
+                'selectedPermissions' => 'required|array',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->dispatch('error', collect($e->errors())->flatten()->first());
+            return;
+            }
+
         $role = Role::findOrFail($this->roleId);
         $permissionNames = Permission::whereIn('id', $this->selectedPermissions)->pluck('name')->toArray();
         $role->syncPermissions($permissionNames);
@@ -122,9 +127,14 @@ class RolesPermissions extends Component
     }
     public function storeRole()
     {
-        $this->validate([
-            'name' => 'required|unique:roles,name',
-        ]);
+        try{
+            $this->validate([
+                'name' => 'required|unique:roles,name',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->dispatch('error', collect($e->errors())->flatten()->first());
+            return;
+        }
         Role::create(['name' => $this->name]);
         $this->dispatch('success', 'Role created successfully');
         $this->closeModal();
@@ -146,9 +156,14 @@ class RolesPermissions extends Component
 
     public function updateRole()
     {
-        $this->validate([
-            'name' => 'required|unique:roles,name,' . $this->roleId,
-        ]);
+        try{
+            $this->validate([
+                'name' => 'required|unique:roles,name,' . $this->roleId,
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->dispatch('error', collect($e->errors())->flatten()->first());
+            return;
+        }
         $role = Role::find($this->roleId);
         if ($role) {
             $role->name = $this->name;
@@ -174,9 +189,14 @@ class RolesPermissions extends Component
     }
     public function updatePermission()
     {
-        $this->validate([
-            'permissionName' => 'required|unique:permissions,name,' . $this->permissionId,
-        ]);
+        try{
+            $this->validate([
+                'permissionName' => 'required|unique:permissions,name,' . $this->permissionId,
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->dispatch('error', collect($e->errors())->flatten()->first());
+            return;
+        }
         $permission = Permission::find($this->permissionId);
         if ($permission) {
             $permission->name = $this->permissionName;

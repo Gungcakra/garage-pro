@@ -53,10 +53,15 @@ class Service extends Component
 
     public function store()
     {
-        $this->validate([
-            'name' => 'required',
-            'price' => 'required',
-        ]);
+        try{
+            $this->validate([
+                'name' => 'required',
+                'price' => 'required',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->dispatch('error', collect($e->errors())->flatten()->first());
+            return;
+        }
 
         ModelsService::create([
             'name' => $this->name,
@@ -78,10 +83,15 @@ class Service extends Component
 
     public function update()
     {
-        $this->validate([
-            'name' => 'required',
-            'price' => 'required',
-        ]);
+        try{
+            $this->validate([
+                'name' => 'required',
+                'price' => 'required',
+            ]);    
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->dispatch('error', collect($e->errors())->flatten()->first());
+            return;
+        }
 
         ModelsService::find($this->ServiceId)->update([
             'name' => $this->name,

@@ -56,12 +56,18 @@ class Customer extends Component
 
     public function store()
     {
-        $this->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required',
-            'address' => 'required',
-        ]);
+        try{
+            $this->validate([
+                'name' => 'required',
+                'email' => 'required|email',
+                'phone' => 'required',
+                'address' => 'required',
+            ]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->dispatch('error', collect($e->errors())->flatten()->first());
+            return;
+        }
 
        ModelsCustomer::create([
             'name' => $this->name,
@@ -84,12 +90,18 @@ class Customer extends Component
 
     public function update(){
         $customer = ModelsCustomer::find($this->CustomerId);
-        $this->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'phone' => 'required',
-            'address' => 'required',
-        ]);
+        try{
+
+            $this->validate([
+                'name' => 'required',
+                'email' => 'required|email',
+                'phone' => 'required',
+                'address' => 'required',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->dispatch('error', collect($e->errors())->flatten()->first());
+            return;
+        }
         $customer->update([
             'name' => $this->name,
             'email' => $this->email,

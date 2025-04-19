@@ -27,7 +27,7 @@
                 <!--end::Breadcrumb-->
             </div>
             <div class="d-flex items-center">
-                <input type="text" class="form-control form-control-solid" placeholder="Search Spare Part Name" id="search" autocomplete="off" wire:model.live.debounce.300="search" />
+                {{-- <input type="text" class="form-control form-control-solid" placeholder="Search Spare Part Name" id="search" autocomplete="off" wire:model.live.debounce.300="search" /> --}}
             </div>
             <!--end::Page title-->
             <!--begin::Actions-->
@@ -47,61 +47,79 @@
     <!--begin::Content-->
     <div id="kt_app_content" class="app-content flex-column-fluid">
         <!--begin::Content container-->
-        <div class="flex flex-column container">
+        <div id="kt_app_content_container" class="app-container container-xxl">
 
-            <div class="table-responsive">
-                <table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5">
-                    <thead>
-                        <tr class="fw-semibold fs-6 text-muted">
-                            <th>No</th>
-                            <th>Action</th>
-                            <th>Name</th>
-                            <th>Brand</th>
-                            <th>Stock</th>
-                            <th>Price</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        @if (count($data) < 1) <tr>
-                            <td colspan="6" class="text-center">No Data Found</td>
+            <div class="card p-5">
+                <div class="flex w-full">
+                    <div class="d-flex align-items-center position-relative my-1">
+                        <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                        <input
+                            type="text"
+                            data-kt-customer-table-filter="search"
+                            class="form-control form-control-solid w-250px ps-12"
+                            placeholder="Search Spare parts"
+                            wire:model.live.debounce.100ms="search"
+                        />
+                    </div>
+    
+                </div>
+                <div class="table-responsive">
+                    <table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5">
+                        <thead>
+                            <tr class="fw-semibold fs-6 text-muted">
+                                <th>No</th>
+                                <th>Action</th>
+                                <th>Name</th>
+                                <th>Brand</th>
+                                <th>Stock</th>
+                                <th>Price</th>
                             </tr>
-                            @else
-                            @foreach ( $data as $index => $SparePart)
-
-                            <tr wire:key="SparePart-{{ $SparePart->id }}">
-                                <td>{{ $index + 1 }}</td>
-                                <td>
-                                    <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                        <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                                    <!--begin::Menu-->
-                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                        <!--begin::Menu item-->
-                                        <div class="menu-item px-3">
-                                            <a wire:click="edit({{ $SparePart->id }})" class="menu-link px-3 w-100">Edit</a>
-                                        </div>
-                                        <!--end::Menu item-->
-                                        <!--begin::Menu item-->
-                                        <div class="menu-item px-3">
-                                            <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $SparePart->id }})">Delete</a>
-                                        </div>
-                                        <!--end::Menu item-->
-                                </td>
-                                <td>{{ $SparePart->name }}</td>
-                                <td>{{ $SparePart->brand }}</td>
-                                <td>{{ $SparePart->stock }}</td>
-                                <td>RP {{ number_format($SparePart->price, 0, ',', '.') }}</td>
-
-                            </tr>
-                            @endforeach
-                            @endif
-                    </tbody>
-
-
-                </table>
-
-                <div class="mt-4 d-flex justify-content-center">
-                    {{ $data->onEachSide(1)->links() }}
+                        </thead>
+                        <tbody>
+    
+                            @if (count($data) < 1) <tr>
+                                <td colspan="6" class="text-center">No Data Found</td>
+                                </tr>
+                                @else
+                                @foreach ( $data as $index => $SparePart)
+    
+                                <tr wire:key="SparePart-{{ $SparePart->id }}">
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+                                            <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+                                        <!--begin::Menu-->
+                                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+                                            <!--begin::Menu item-->
+                                            <div class="menu-item px-3">
+                                                <a wire:click="edit({{ $SparePart->id }})" class="menu-link px-3 w-100">Edit</a>
+                                            </div>
+                                            <!--end::Menu item-->
+                                            <!--begin::Menu item-->
+                                            <div class="menu-item px-3">
+                                                <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $SparePart->id }})">Delete</a>
+                                            </div>
+                                            <!--end::Menu item-->
+                                    </td>
+                                    <td>{{ $SparePart->name }}</td>
+                                    <td>{{ $SparePart->brand }}</td>
+                                    <td>{{ $SparePart->stock }}</td>
+                                    <td>RP {{ number_format($SparePart->price, 0, ',', '.') }}</td>
+    
+                                </tr>
+                                @endforeach
+                                @endif
+                        </tbody>
+    
+    
+                    </table>
+    
+                    <div class="mt-4 d-flex justify-content-center">
+                        {{ $data->onEachSide(1)->links() }}
+                    </div>
                 </div>
             </div>
 

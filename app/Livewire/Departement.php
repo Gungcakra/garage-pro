@@ -43,10 +43,16 @@ class Departement extends Component
 
     public function store()
     {
-        $this->validate([
-            'name' => 'required',
-            'salary' => 'required|numeric',
-        ]);
+        try{
+            $this->validate([
+                'name' => 'required',
+                'salary' => 'required|numeric',
+            ]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->dispatch('error', collect($e->errors())->flatten()->first());
+            return;
+        }
 
         ModelsDepartement::updateOrCreate(
             ['id' => $this->departementId],
@@ -80,10 +86,15 @@ class Departement extends Component
     }
     public function update()
     {
-        $this->validate([
-            'name' => 'required',
-            'salary' => 'required|numeric',
-        ]);
+        try{
+            $this->validate([
+                'name' => 'required',
+                'salary' => 'required|numeric',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->dispatch('error', collect($e->errors())->flatten()->first());
+            return;
+        }
 
         ModelsDepartement::updateOrCreate(
             ['id' => $this->departementId],

@@ -52,12 +52,17 @@ class Sparepart extends Component
     }
     public function store()
     {
-        $this->validate([
-            'name' => 'required',
-            'brand' => 'required',
-            'price' => 'required|numeric',
-            'stock' => 'required|integer',
-        ]);
+        try{
+            $this->validate([
+                'name' => 'required',
+                'brand' => 'required',
+                'price' => 'required|numeric',
+                'stock' => 'required|integer',
+            ]);
+        }catch (\Illuminate\Validation\ValidationException $e) {
+            $this->dispatch('error', collect($e->errors())->flatten()->first());
+            return;
+        }
 
         \App\Models\SparePart::create([
             'name' => $this->name,
@@ -82,14 +87,18 @@ class Sparepart extends Component
     }
     public function update()
     {
-        $validatedData = $this->validate([
-            'name' => 'required',
-            'brand' => 'required',
-            'price' => 'required|numeric',
-            'stock' => 'required|integer',
-        ]);
+        try{
+            $this->validate([
+                 'name' => 'required',
+                 'brand' => 'required',
+                 'price' => 'required|numeric',
+                 'stock' => 'required|integer',
+             ]);
+        }catch (\Illuminate\Validation\ValidationException $e) {
+            $this->dispatch('error', collect($e->errors())->flatten()->first());
+            return;
+        }
 
-        if ($validatedData) {
             $sparePart = \App\Models\SparePart::find($this->SparePartId);
             $sparePart->update([
             'name' => $this->name,
@@ -100,7 +109,7 @@ class Sparepart extends Component
 
             $this->dispatch('success', 'Spare part updated successfully.');
             $this->closeModal();
-        }
+        
     }
     public function delete($id)
     {

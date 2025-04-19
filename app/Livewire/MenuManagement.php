@@ -60,12 +60,19 @@ class MenuManagement extends Component
     }
     public function store()
     {
-        $this->validate([
-            'name' => 'required|string|max:255',
-            'route' => 'required|string|max:255',
-            'order' => 'required|integer',
-            'icon' => 'required|string|max:255',
-        ]);
+        
+        try{
+     
+            $this->validate([
+                'name' => 'required|string|max:255',
+                'route' => 'required|string|max:255',
+                'order' => 'required|integer',
+                'icon' => 'required|string|max:255',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->dispatch('error', collect($e->errors())->flatten()->first());
+            return;
+        }
         Menu::create([
             'name' => $this->name,
             'route' => $this->route,
@@ -129,12 +136,17 @@ class MenuManagement extends Component
     }
     public function storeSubMenu($menuId)
     {
-        $this->validate([
-            'subMenuName' => 'required|string|max:255',
-            'subMenuRoute' => 'required|string|max:255',
-            'subMenuOrder' => 'required|integer',
-            'permissionId' => 'required|exists:permissions,id',
-        ]);
+        try{
+            $this->validate([
+                'subMenuName' => 'required|string|max:255',
+                'subMenuRoute' => 'required|string|max:255',
+                'subMenuOrder' => 'required|integer',
+                'permissionId' => 'required|exists:permissions,id',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->dispatch('error', collect($e->errors())->flatten()->first());
+            return;
+        }
 
         SubMenu::create([
             'menu_id' => $menuId,
@@ -170,12 +182,17 @@ class MenuManagement extends Component
     }
     public function updateSubMenu($id)
     {
-        $this->validate([
-            'subMenuName' => 'required|string|max:255',
-            'subMenuRoute' => 'required|string|max:255',
-            'subMenuOrder' => 'required|integer',
-            'permissionId' => 'required|exists:permissions,id',
-        ]);
+        try{
+            $this->validate([
+                'subMenuName' => 'required|string|max:255',
+                'subMenuRoute' => 'required|string|max:255',
+                'subMenuOrder' => 'required|integer',
+                'permissionId' => 'required|exists:permissions,id',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->dispatch('error', collect($e->errors())->flatten()->first());
+            return;
+        }
 
         $submenu = SubMenu::findOrFail($id);
         $submenu->update([
@@ -187,13 +204,5 @@ class MenuManagement extends Component
 
         $this->dispatch('success', 'Submenu updated successfully!');
         $this->closeSubMenuModal();
-    }
-    public function submitForm()
-    {
-        if ($this->menuId) {
-            $this->update();
-        } else {
-            $this->store();
-        }
     }
 }

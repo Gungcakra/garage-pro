@@ -28,7 +28,7 @@
                 <!--end::Breadcrumb-->
             </div>
             <div class="d-flex items-center">
-                <input type="text" class="form-control form-control-solid w-250px ps-14" placeholder="Search Customer" wire:model.live.debounce.100ms="search" />
+               
                 
             </div>
             <!--end::Page title-->
@@ -48,9 +48,26 @@
     <!--end::Toolbar-->
     <!--begin::Content-->
     <div id="kt_app_content" class="app-content flex-column-fluid">
+        <div id="kt_app_content_container" class="app-container container-xxl">
+            
         <!--begin::Content container-->
-        <div class="flex flex-column container">
+        <div class="card p-5">
+            <div class="flex w-full">
+                <div class="d-flex align-items-center position-relative my-1">
+                    <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i>
+                    <input
+                        type="text"
+                        data-kt-customer-table-filter="search"
+                        class="form-control form-control-solid w-250px ps-12"
+                        placeholder="Search Customers"
+                        wire:model.live.debounce.100ms="search"
+                    />
+                </div>
 
+            </div>
             <div class="table-responsive">
                 <table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5">
                     <thead>
@@ -69,7 +86,7 @@
                             </tr>
                             @else
                             @foreach ( $data as $index => $Customer)
-
+    
                             <tr wire:key="Customer-{{ $Customer->id }}">
                                 <td>{{ $index + 1 }}</td>
                                 <td>
@@ -92,22 +109,23 @@
                                 <td>{{ $Customer->email }}</td>
                                 <td>{{ $Customer->phone }}</td>
                                 <td>{{ $Customer->address }}</td>
-
+    
                             </tr>
                             @endforeach
                             @endif
                     </tbody>
-
-
+    
+    
                 </table>
                 <div class="mt-4 d-flex justify-content-center">
                     {{ $data->onEachSide(1)->links() }}
                 </div>
             </div>
-
-            @include('livewire.pages.admin.masterdata.customer.modal')
-
         </div>
+
+        @include('livewire.pages.admin.masterdata.customer.modal')
+
+       </div>
     </div>
 </div>
 @push('scripts')

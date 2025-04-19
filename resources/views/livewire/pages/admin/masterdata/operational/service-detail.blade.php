@@ -1,5 +1,4 @@
-<x-slot:title>Service Detail {{ $ServiceOperationalId }}</x-slot:title>
-<div class="d-flex flex-column container">
+<div class="d-flex flex-column flex-column-fluid">
 
     <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
         <!--begin::Toolbar container-->
@@ -22,7 +21,7 @@
                     </li>
                     <!--end::Item-->
                     <!--begin::Item-->
-                    <li class="breadcrumb-item text-muted"> <a  class="text-muted text-hover-primary" wire:click="removeServiceDetailId">Service Operational</a></li>
+                    <li class="breadcrumb-item text-muted"> <a class="text-muted text-hover-primary" wire:click="removeServiceDetailId">Service Operational</a></li>
 
                     <li class="breadcrumb-item">
                         <span class="bullet bg-gray-400 w-5px h-2px"></span>
@@ -228,12 +227,15 @@
                 <!--end::Header-->
                 <!--begin::Body-->
                 <div class="card-body pt-0">
-                    <span class="fs-2 text-white">Check</span>
-                    <p class="fs-3 text-white">
+                    <span class="fs-2 text-gray-800">Check</span>
+                    <p class="fs-3 text-gray-800">
                         {{ $data->check }}
                     </p>
-
-                    <span class="fs-2 text-white">Services</span>
+                    <div class="mb-0">
+                        <label for="kt_datepicker_1" class="form-label">Set Due</label>
+                        <input class="form-control form-control-solid" placeholder="Pick a date" id="kt_datepicker_1" />
+                    </div>
+                    <span class="fs-2 text-gray-800">Services</span>
                     <!--begin::Table container-->
                     <div class="table-responsive mb-8">
                         <!--begin::Table-->
@@ -275,7 +277,7 @@
                         <!--end::Table-->
                     </div>
 
-                    <span class="fs-2 text-white">Spare Parts</span>
+                    <span class="fs-2 text-gray-800">Spare Parts</span>
                     @forelse ( $sparepartAdd as $sparepart )
                     <div class="table-responsive mb-8">
                         <!--begin::Table-->
@@ -334,7 +336,7 @@
                     <!--begin::Summary-->
                     <div class="d-flex flex-stack bg-success rounded-3 p-6 mb-11">
                         <!--begin::Content-->
-                        <div class="fs-6 fw-bold text-white">
+                        <div class="fs-6 fw-bold text-gray-800">
                             <span class="d-block lh-1 mb-2">Subtotal</span>
                             {{-- <span class="d-block mb-2">Discounts</span> --}}
                             <span class="d-block mb-9">Tax</span>
@@ -342,7 +344,7 @@
                         </div>
                         <!--end::Content-->
                         <!--begin::Content-->
-                        <div class="fs-6 fw-bold text-white text-end">
+                        <div class="fs-6 fw-bold text-gray-800 text-end">
                             <span class="d-block lh-1 mb-2" data-kt-pos-element="total">RP {{ number_format($subTotal, 0, ',', '.') }}</span>
                             {{-- <span class="d-block mb-2" data-kt-pos-element="discount">-$8.00</span> --}}
                             <span class="d-block mb-9" data-kt-pos-element="tax">RP {{ number_format($tax, 0, ',', '.') }}</span>
@@ -418,21 +420,7 @@
         </div>
         <!--end::Sidebar-->
     </div>
-  
+
 
 </div>
-{{-- @push('scripts')
-<script>
-    function handleSearchService() {
-        Livewire.dispatch('loadDataService');
-    }
-
-    function handleSearchSparepart() {
-        Livewire.dispatch('loadDataSparepart');
-    }
-    $(function() {
-
-    });
-
-</script>
-@endpush --}}
+@include('livewire.pages.admin.masterdata.operational.script')

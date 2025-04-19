@@ -28,7 +28,7 @@
                 <!--end::Breadcrumb-->
             </div>
             <div class="d-flex items-center">
-                <input type="text" class="form-control form-control-solid w-250px ps-14" placeholder="Search Bank" wire:model.live.debounce.100ms="search" />
+               
                 
             </div>
             <!--end::Page title-->
@@ -49,63 +49,80 @@
     <!--begin::Content-->
     <div id="kt_app_content" class="app-content flex-column-fluid">
         <!--begin::Content container-->
-        <div class="flex flex-column container">
-
-            <div class="table-responsive">
-                <table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5">
-                    <thead>
-                        <tr class="fw-semibold fs-6 text-muted">
-                            <th>No</th>
-                            <th>Action</th>
-                            <th>Name</th>
-                            <th>Account Name</th>
-                            <th>Account Number</th>
-                            <th>Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (count($data) < 1) <tr>
-                            <td colspan="6" class="text-center">No Data Found</td>
-                            </tr>
-                            @else
-                            @foreach ( $data as $index => $bank)
-
-                            <tr wire:key="bank-{{ $bank->id }}">
-                                <td>{{ $index + 1 }}</td>
-                                <td>
-                                    <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                        <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                                    <!--begin::Menu-->
-                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                        <!--begin::Menu item-->
-                                        <div class="menu-item px-3">
-                                            <a wire:click="edit({{ $bank->id }})" class="menu-link px-3 w-100">Edit</a>
-                                        </div>
-                                        <!--end::Menu item-->
-                                        <!--begin::Menu item-->
-                                        <div class="menu-item px-3">
-                                            <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $bank->id }})">Delete</a>
-                                        </div>
-                                        <!--end::Menu item-->
-                                </td>
-                                <td>{{ $bank->name }}</td>
-                                <td>{{ $bank->account_name }}</td>
-                                <td>{{ $bank->account_number }}</td>
-                                <td>Rp {{ number_format($bank->amount, 0, ',', '.') }}</td>
-
-                            </tr>
-                            @endforeach
-                            @endif
-                    </tbody>
-
-
-                </table>
-                <div class="mt-4 d-flex justify-content-center">
-                    {{ $data->onEachSide(1)->links() }}
+        <div id="kt_app_content_container" class="app-container container-xxl">
+            <div class="card p-5">
+                <div class="card-header">
+                    <div class="d-flex align-items-center position-relative my-1">
+                        <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                        <input
+                            type="text"
+                            data-kt-customer-table-filter="search"
+                            class="form-control form-control-solid w-250px ps-12"
+                            placeholder="Search Banks"
+                            wire:model.live.debounce.100ms="search"
+                        />
+                    </div>
+    
                 </div>
+                <div class="table-responsive">
+                    <table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5">
+                        <thead>
+                            <tr class="fw-semibold fs-6 text-muted">
+                                <th>No</th>
+                                <th>Action</th>
+                                <th>Name</th>
+                                <th>Account Name</th>
+                                <th>Account Number</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (count($data) < 1) <tr>
+                                <td colspan="6" class="text-center">No Data Found</td>
+                                </tr>
+                                @else
+                                @foreach ( $data as $index => $bank)
+    
+                                <tr wire:key="bank-{{ $bank->id }}">
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+                                            <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+                                        <!--begin::Menu-->
+                                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+                                            <!--begin::Menu item-->
+                                            <div class="menu-item px-3">
+                                                <a wire:click="edit({{ $bank->id }})" class="menu-link px-3 w-100">Edit</a>
+                                            </div>
+                                            <!--end::Menu item-->
+                                            <!--begin::Menu item-->
+                                            <div class="menu-item px-3">
+                                                <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $bank->id }})">Delete</a>
+                                            </div>
+                                            <!--end::Menu item-->
+                                    </td>
+                                    <td>{{ $bank->name }}</td>
+                                    <td>{{ $bank->account_name }}</td>
+                                    <td>{{ $bank->account_number }}</td>
+                                    <td>Rp {{ number_format($bank->amount, 0, ',', '.') }}</td>
+    
+                                </tr>
+                                @endforeach
+                                @endif
+                        </tbody>
+    
+    
+                    </table>
+                    <div class="mt-4 d-flex justify-content-center">
+                        {{ $data->onEachSide(1)->links() }}
+                    </div>
+                </div>
+    
+                @include('livewire.pages.admin.masterdata.bank.modal')
             </div>
-
-            @include('livewire.pages.admin.masterdata.bank.modal')
 
         </div>
     </div>

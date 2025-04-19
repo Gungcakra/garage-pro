@@ -69,13 +69,18 @@ class EmployeeManagement extends Component
     }
     public function store()
     {
-        
+        try{
+            $this->validate([
+                'name' => 'required|string|max:255',
+                'phone' => 'required|string|max:15',
+                'address' => 'required|string|max:255',
+            ]);
+            
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->dispatch('error', collect($e->errors())->flatten()->first());
+            return;
+        }
 
-        $this->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:15',
-            'address' => 'required|string|max:255',
-        ]);
 
         Employee::create([
             'departement_id' => $this->selectedDepartement,
@@ -102,12 +107,19 @@ class EmployeeManagement extends Component
 
     public function update()
     {
-        $this->validate([
-            'name' => 'required|string|max:255',
-            'selectedDepartement' => 'required',
-            'phone' => 'required|string|max:15',
-            'address' => 'required|string|max:255',
-        ]);
+
+        try{
+
+            $this->validate([
+                'name' => 'required|string|max:255',
+                'selectedDepartement' => 'required',
+                'phone' => 'required|string|max:15',
+                'address' => 'required|string|max:255',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->dispatch('error', collect($e->errors())->flatten()->first());
+            return;
+        }
         $employee = Employee::findOrFail($this->employeeId);
         $employee->update([
             'name' => $this->name,

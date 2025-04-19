@@ -51,12 +51,17 @@ class Bank extends Component
     }
     public function store()
     {
-        $this->validate([
+        try {
+            $this->validate([
             'name' => 'required',
             'account_number' => 'required',
             'amount' => 'required|numeric',
-        ]);
-
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->dispatch('error', collect($e->errors())->flatten()->first());
+            return;
+        }
+        
         ModelsBank::updateOrCreate(
             ['id' => $this->bankId],
             [
@@ -88,11 +93,18 @@ class Bank extends Component
     }
     public function update()
     {
-        $this->validate([
-            'name' => 'required',
-            'account_number' => 'required',
-            'amount' => 'required|numeric',
-        ]);
+
+        try{
+            $this->validate([
+                'name' => 'required',
+                'account_number' => 'required',
+                'amount' => 'required|numeric',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            $this->dispatch('error', collect($e->errors())->flatten()->first());
+            return;
+        }
+
 
         ModelsBank::updateOrCreate(
             ['id' => $this->bankId],

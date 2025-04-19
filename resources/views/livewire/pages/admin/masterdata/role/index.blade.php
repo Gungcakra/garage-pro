@@ -121,50 +121,54 @@
             @endforeach
 
         </div>
-        <div class="row g-5 g-xl-8 d-flex justify-content-center m-5">
-            <table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5">
-                <thead>
-                    <tr class="fw-semibold fs-6 text-muted">
-                        <th>No</th>
-                        <th>Action</th>
-                        <th>Name</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    @if (count($permissions) < 1) <tr>
-                        <td colspan="6" class="text-center">No Data Found</td>
-                        </tr>
-                        @else
-                        @foreach ( $permissions as $index => $permission)
-
-                        <tr wire:key="permission-{{ $permission->id }}">
-                            <td>{{ $index + 1 }}</td>
-                            <td>
-                                <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                    <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                                <!--begin::Menu-->
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <a wire:click="editPermission({{ $permission->id }})" class="menu-link px-3 w-100">Edit</a>
-                                    </div>
-                                    <!--end::Menu item-->
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="deletePermission({{ $permission->id }})">Delete</a>
-                                    </div>
-                                    <!--end::Menu item-->
-                            </td>
-                            <td>{{ $permission->name }}</td>
-
-                        </tr>
-                        @endforeach
-                        @endif
-                </tbody>
-
-
-            </table>
+        <div id="kt_app_content_container" class="app-container container-xxl">
+            <div class="card p-5">
+                <div class="row g-5 g-xl-8 d-flex justify-content-center m-5">
+                    <table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5">
+                        <thead>
+                            <tr class="fw-semibold fs-6 text-muted">
+                                <th>No</th>
+                                <th>Action</th>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+        
+                            @if (count($permissions) < 1) <tr>
+                                <td colspan="6" class="text-center">No Data Found</td>
+                                </tr>
+                                @else
+                                @foreach ( $permissions as $index => $permission)
+        
+                                <tr wire:key="permission-{{ $permission->id }}">
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+                                            <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+                                        <!--begin::Menu-->
+                                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+                                            <!--begin::Menu item-->
+                                            <div class="menu-item px-3">
+                                                <a wire:click="editPermission({{ $permission->id }})" class="menu-link px-3 w-100">Edit</a>
+                                            </div>
+                                            <!--end::Menu item-->
+                                            <!--begin::Menu item-->
+                                            <div class="menu-item px-3">
+                                                <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="deletePermission({{ $permission->id }})">Delete</a>
+                                            </div>
+                                            <!--end::Menu item-->
+                                    </td>
+                                    <td>{{ $permission->name }}</td>
+        
+                                </tr>
+                                @endforeach
+                                @endif
+                        </tbody>
+        
+        
+                    </table>
+                </div>
+            </div>
         </div>
         {{-- MODAL --}}
         @include('livewire.pages.admin.masterdata.role.modal')

@@ -109,6 +109,11 @@
             Livewire.on('delete-success', (message) => {
                 Swal.fire("Deleted!", message, "success");
             });
+
+            Livewire.on('error', (message) => {
+                toastr.error(message);
+            });
+
             Livewire.hook('morphed', () => {
                 KTMenu.createInstances();
             });
@@ -123,9 +128,7 @@
     function handleSearchSparepart() {
         Livewire.dispatch('loadDataSparepart');
     }
-        $(function(){
-
-    });
+      
     function printInvoice() {
 
         const printContents = document.querySelector('.main').innerHTML;
@@ -150,6 +153,7 @@
     function backOperational() {
         window.Livewire.navigate('serviceoperational');
     }
+        
 
     </script>
     <script>
@@ -159,8 +163,9 @@
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
     <script data-navigate-once src="{{ asset('assets/plugins/global/plugins.bundle.js')}}"></script>
     <script data-navigate-once src="{{ asset('assets/js/scripts.bundle.js')}}"></script>
-
+   
     @stack('scripts')
+    @stack('script')
     {{-- <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/laravel-echo@2.0.2/dist/echo.iife.min.js"></script>
     <script>
