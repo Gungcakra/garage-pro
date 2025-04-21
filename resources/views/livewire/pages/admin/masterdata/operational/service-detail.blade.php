@@ -104,12 +104,12 @@
                     </ul>
                     <!--end::Nav-->
                     <!--begin::Tab Content-->
-                    <div class="tab-content">
+                    <div class="tab-content" >
                         <!--begin::Tap pane-->
 
                         <!--end::Tap pane-->
                         <!--begin::Tap pane-->
-                        <div class="tab-pane show {{ $tabService === true ? 'active' : '' }}" id="service">
+                        <div class="tab-pane show {{ $tabService === true ? 'active' : '' }} card p-5" id="service" >
                             <!--begin::Wrapper-->
                             <div class="d-flex flex-column d-grid gap-5 gap-xxl-9 ">
                                 <div class="d-flex items-center">
@@ -155,7 +155,7 @@
                         </div>
                         <!--end::Tap pane-->
                         <!--begin::Tap pane-->
-                        <div class="tab-pane show {{ $tabSparepart === true ? 'active' : '' }}" id="sparepart">
+                        <div class="tab-pane show {{ $tabSparepart === true ? 'active' : '' }} card p-5" id="sparepart">
                             <!--begin::Wrapper-->
                             <div class="d-flex flex-column d-grid gap-5 gap-xxl-9 ">
                                 <div class="d-flex items-center">
@@ -232,8 +232,8 @@
                         {{ $data->check }}
                     </p>
                     <div class="mb-0">
-                        <label for="kt_datepicker_1" class="form-label">Set Due</label>
-                        <input class="form-control form-control-solid" placeholder="Pick a date" id="kt_datepicker_1" />
+                        <span class="fs-2 text-gray-800">Set Due Date</span>
+                        <input class="form-control form-control-solid" type="date" placeholder="Pick a date" id="kt_datepicker_1" wire:model="target_date" />
                     </div>
                     <span class="fs-2 text-gray-800">Services</span>
                     <!--begin::Table container-->

@@ -53,11 +53,15 @@
                                 </div>
                                 <div class="flex-root d-flex flex-column">
                                     <span class="text-muted">Date</span>
-                                    <span class="fs-5">{{ $data->updated_at->format('Y-m-d') }}</span>
+                                    <span class="fs-5">{{  \Carbon\Carbon::parse($data->updated_at)->translatedFormat('l, d F Y') }}</span>
                                 </div>
                                 <div class="flex-root d-flex flex-column">
                                     <span class="text-muted">Vehicle Type</span>
                                     <span class="fs-5">{{ $data->vehicle_type }}</span>
+                                </div>
+                                <div class="flex-root d-flex flex-column">
+                                    <span class="text-muted">Due Date</span>
+                                    <span class="fs-5">{{  \Carbon\Carbon::parse($data->target_date)->translatedFormat('l, d F Y') }}</span>
                                 </div>
                                 {{-- <div class="flex-root d-flex flex-column">
                                 <span class="text-muted">Invoice ID</span>

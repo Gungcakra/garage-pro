@@ -17,7 +17,7 @@ class ServiceDetail extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-    public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $payment, $status, $idToDelete, $tabService = true, $tabSparepart, $serviceAdd = [], $sparepartAdd = [], $totalServicePrice, $totalSparepartPrice, $subTotal = 0, $tax = 12000, $totalPrice = 0, $invoice, $invoiceId, $qrCode, $writer, $result, $dataUri;
+    public $ServiceOperationalId, $customer_id, $code, $check, $plate_number, $stnk, $bpkb, $kunci, $payment, $status, $idToDelete, $tabService = true, $tabSparepart, $serviceAdd = [], $sparepartAdd = [], $totalServicePrice, $totalSparepartPrice, $subTotal = 0, $tax = 12000, $totalPrice = 0, $invoice, $invoiceId, $qrCode, $writer, $result, $dataUri, $target_date;
     protected $listeners = ['loadData', 'loadDataService', 'loadDataSparepart', 'getInvoiceFromQr'];
 
     public $search = '', $searchService = '', $searchSparepart = '';
@@ -230,7 +230,7 @@ class ServiceDetail extends Component
             }
         }
 
-
+        $serviceOperational->target_date = $this->target_date;
         if ($this->payment !== null) {
             $serviceOperational->update(['payment_method' => $this->payment, 'status' => 1]);
         } else {

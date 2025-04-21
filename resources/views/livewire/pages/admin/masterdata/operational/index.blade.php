@@ -81,6 +81,7 @@
                             <th>Plate Number</th>
                             <th>Completeness</th>
                             <th>Date</th>
+                            <th>Due Date</th>
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -130,6 +131,9 @@
                                 </td>
                                 <td>
                                     {{ \Carbon\Carbon::parse($Service->created_at)->translatedFormat('l, d F Y') }}
+                                </td>
+                                <td>
+                                    {{ $Service->target_date ? \Carbon\Carbon::parse($Service->target_date)->translatedFormat('l, d F Y') : '-' }}
                                 </td>
                                 <td>
                                     <div class="badge badge-light-{{ $Service->status === 0 ? 'warning' : 'success' }}">{{ $Service->status === 0 ? 'Pending' : 'Complete' }}</div>

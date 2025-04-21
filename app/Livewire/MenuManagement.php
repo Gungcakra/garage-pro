@@ -43,7 +43,7 @@ class MenuManagement extends Component
 
     public function closeSubMenuModal()
     {
-        $this->reset(['menuId', 'subMenuName', 'subMenuRoute', 'subMenuRoute']);
+        $this->reset(['menuId', 'subMenuId','subMenuName', 'subMenuOrder', 'subMenuRoute','permissionId']);
         $this->dispatch(event: 'hide-submenu-modal');
     }
     public function render()
@@ -177,7 +177,12 @@ class MenuManagement extends Component
     {
         $submenu = SubMenu::findOrFail($id);
         $this->subMenuId = $id;
-        $this->fill($submenu->only(['name', 'route', 'order']));
+        $this->permissionId = $submenu->permission_id;
+        $this->menuId = $submenu->menu_id;
+        $this->subMenuName = $submenu->name;
+        $this->subMenuRoute = $submenu->route;
+        $this->subMenuOrder = $submenu->order;
+        // $this->fill($submenu->only(['subMenuName', 'subMenuRoute', 'subMenuOrder']));
         $this->dispatch('show-submenu-modal');
     }
     public function updateSubMenu($id)

@@ -45,87 +45,88 @@
     <!--begin::Content-->
     <div id="kt_app_content" class="app-content flex-column-fluid">
         <!--begin::Content container-->
-        <div class="flex flex-column container">
-
-            <div class="table-responsive">
-                <table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5">
-                    <thead>
-                        <tr class="fw-semibold fs-6 text-muted">
-                            <th>No</th>
-                            <th>Action</th>
-                            <th>Name</th>
-                            <th>Icon</th>
-                            <th>Route</th>
-                            <th>Order</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ( $data as $index => $menu)
-
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>
-                                <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Menu
-                                    <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                                <!--begin::Menu-->
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <a wire:click="edit({{ $menu->id }})" class="menu-link px-3 w-100">Edit</a>
-                                    </div>
-                                    <!--end::Menu item-->
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $menu->id }})">Delete</a>
-                                    </div>
-
-                                    <div class="menu-item px-3">
-                                        <a class="menu-link px-3 w-100" wire:click="createSubMenu({{ $menu->id }})">Add SubMenu</a>
-                                    </div>
-                            </td>
-                            <td>{{ $menu->name }}</td>
-                            <td>{{ $menu->icon }}</td>
-                            <td>{{ $menu->route }}</td>
-                            <td>{{ $menu->order }}</td>
-                        </tr>
-                        <tr class="fw-semibold fs-6 text-muted">
-                            <th></th>
-                            <th>Action</th>
-                            <th>Name</th>
-                            <th>Route</th>
-                            <th>Permission</th>
-                        </tr>
-                        @foreach($menu->submenus as $submenu)
-                        <tr>
-                            <td></td>
-                            <td>
-                                <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">SubMenu
-                                    <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                                <!--begin::Menu-->
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-
-                                    <div class="menu-item px-3">
-                                        <a class="menu-link px-3 w-100" wire:click="editSubMenu({{ $submenu->id}})">Edit</a>
-                                    </div>
-
-                                    <div class="menu-item px-3">
-                                        <a class="menu-link px-3 w-100" wire:click="deleteSubMenu({{ $submenu->id }})">Delete</a>
-                                    </div>
-                            </td>
-                            <td>— {{ $submenu->name }}</td>
-                            <td>{{ $submenu->route }}</td>
-                            <td>{{ $submenu->permission->name }}</td>
-                        </tr>
-                        @endforeach
-                        @endforeach
-                    </tbody>
-
-
-                </table>
+        <div id="kt_app_content_container" class="app-container container-xxl">
+            <div class="card p-5">
+                <div class="table-responsive">
+                    <table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5">
+                        <thead>
+                            <tr class="fw-semibold fs-6 text-muted">
+                                <th>No</th>
+                                <th>Action</th>
+                                <th>Name</th>
+                                <th>Icon</th>
+                                <th>Route</th>
+                                <th>Order</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ( $data as $index => $menu)
+    
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Menu
+                                        <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+                                    <!--begin::Menu-->
+                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+                                        <!--begin::Menu item-->
+                                        <div class="menu-item px-3">
+                                            <a wire:click="edit({{ $menu->id }})" class="menu-link px-3 w-100">Edit</a>
+                                        </div>
+                                        <!--end::Menu item-->
+                                        <!--begin::Menu item-->
+                                        <div class="menu-item px-3">
+                                            <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $menu->id }})">Delete</a>
+                                        </div>
+    
+                                        <div class="menu-item px-3">
+                                            <a class="menu-link px-3 w-100" wire:click="createSubMenu({{ $menu->id }})">Add SubMenu</a>
+                                        </div>
+                                </td>
+                                <td>{{ $menu->name }}</td>
+                                <td>{{ $menu->icon }}</td>
+                                <td>{{ $menu->route }}</td>
+                                <td>{{ $menu->order }}</td>
+                            </tr>
+                            <tr class="fw-semibold fs-6 text-muted">
+                                <th></th>
+                                <th>Action</th>
+                                <th>Name</th>
+                                <th>Route</th>
+                                <th>Permission</th>
+                            </tr>
+                            @foreach($menu->submenus as $submenu)
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">SubMenu
+                                        <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+                                    <!--begin::Menu-->
+                                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
+    
+                                        <div class="menu-item px-3">
+                                            <a class="menu-link px-3 w-100" wire:click="editSubMenu({{ $submenu->id}})">Edit</a>
+                                        </div>
+    
+                                        <div class="menu-item px-3">
+                                            <a class="menu-link px-3 w-100" wire:click="deleteSubMenu({{ $submenu->id }})">Delete</a>
+                                        </div>
+                                </td>
+                                <td>— {{ $submenu->name }}</td>
+                                <td>{{ $submenu->route }}</td>
+                                <td>{{ $submenu->permission->name }}</td>
+                            </tr>
+                            @endforeach
+                            @endforeach
+                        </tbody>
+    
+    
+                    </table>
+                </div>
+                
+                {{-- MENU SUBMENU MODAL --}}
+                @include('livewire.pages.admin.masterdata.menu.modal')
             </div>
-            
-            {{-- MENU SUBMENU MODAL --}}
-            @include('livewire.pages.admin.masterdata.menu.modal')
 
         </div>
     </div>
