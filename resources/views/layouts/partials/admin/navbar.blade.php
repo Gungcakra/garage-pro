@@ -3081,7 +3081,7 @@
             <!--begin::Navbar-->
             <div class="app-navbar flex-shrink-0">
                 <!--begin::Search-->
-                <div class="app-navbar-item align-items-stretch ms-1 ms-md-4">
+                {{-- <div class="app-navbar-item align-items-stretch ms-1 ms-md-4">
                     <!--begin::Search-->
                     <div id="kt_header_search" class="header-search d-flex align-items-stretch" data-kt-search-keypress="true" data-kt-search-min-length="2" data-kt-search-enter="enter" data-kt-search-layout="menu" data-kt-menu-trigger="auto" data-kt-menu-overflow="false" data-kt-menu-permanent="true" data-kt-menu-placement="bottom-end">
                         <!--begin::Search toggle-->
@@ -4564,7 +4564,7 @@
                     </div>
                     <!--end::My apps-->
                     <!--end::Menu wrapper-->
-                </div>
+                </div> --}}
                 <!--end::My apps links-->
                 <!--begin::User menu-->
                 <div class="app-navbar-item ms-1 ms-md-4" id="kt_header_user_menu_toggle">
