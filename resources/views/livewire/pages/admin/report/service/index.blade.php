@@ -29,7 +29,7 @@
                 </ul>
                 <!--end::Breadcrumb-->
             </div>
-            
+
             <!--end::Page title-->
             <!--begin::Actions-->
             <div class="d-flex align-items-center gap-2 gap-lg-3">
@@ -83,105 +83,85 @@
                             </tr>
                         </thead>
                         <tbody>
-    
+
                             @if (count($data) < 1) <tr>
                                 <td colspan="10" class="text-center">No Data Found</td>
                                 </tr>
                                 @else
                                 @foreach ( $data as $index => $Service)
-    
+
                                 <tr wire:key="Service-{{ $Service->id }}">
                                     <td>{{ $index + 1 }}</td>
-                                    {{-- <td>
-                                        <a href="#" class="btn btn-sm btn-light btn-flex btn-center btn-active-light-primary" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                                            <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                                        <!--begin::Menu-->
-                                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4" data-kt-menu="true">
-                                            <!--begin::Menu item-->
-                                            <div class="menu-item px-3">
-                                                @if($Service->status === 0)
-                                                <a wire:click="finalize({{ $Service->id }})" class="menu-link px-3 w-100">Finalize</a>
-                                    @else
-                                    <a wire:click="invoiceService({{ $Service->id }})" class="menu-link px-3 w-100">Invoice</a>
-    
-                                    @endif
-                </div>
-                <!--end::Menu item-->
-                <!--begin::Menu item-->
-                <div class="menu-item px-3">
-                    <a href="#" class="menu-link px-3 w-100" data-kt-ecommerce-product-filter="delete_row" wire:click="delete({{ $Service->id }})">Delete</a>
-                </div>
-                <!--end::Menu item-->
-                </td> --}}
-                <td class="fw-bold">{{ $Service->code }}</td>
-                <td>{{ $Service->customer->name }}</td>
-                <td>{{ $Service->check }}</td>
-                <td>{{ $Service->vehicle_type }}</td>
-                <td>{{ $Service->plate_number }}</td>
-                <td>
-                    @php
-                    $completeness = [];
-                    if ($Service->kunci) $completeness[] = 'Kunci';
-                    if ($Service->stnk) $completeness[] = 'STNK';
-                    @endphp
-                    {{ implode(' - ', $completeness) }}
-                </td>
-                <td>  {{ \Carbon\Carbon::parse($Service->updated_at)->translatedFormat('l, d F Y') }}</td>
-                <td>
-                    <div class="badge badge-light-{{ $Service->payment_method === null ? 'warning' : ($Service->payment_method == 0 ? 'success' : ($Service->payment_method == 1 ? 'primary' : 'info')) }}">
-                        {{ $Service->payment_method === null ? 'Pending' : ($Service->payment_method == 0 ? 'Cash' : ($Service->payment_method == 1 ? 'Card' : 'QRIS')) }}
+
+                                    <td class="fw-bold">{{ $Service->code }}</td>
+                                    <td>{{ $Service->customer->name }}</td>
+                                    <td>{{ $Service->check }}</td>
+                                    <td>{{ $Service->vehicle_type }}</td>
+                                    <td>{{ $Service->plate_number }}</td>
+                                    <td>
+                                        @php
+                                        $completeness = [];
+                                        if ($Service->kunci) $completeness[] = 'Kunci';
+                                        if ($Service->stnk) $completeness[] = 'STNK';
+                                        @endphp
+                                        {{ implode(' - ', $completeness) }}
+                                    </td>
+                                    <td> {{ \Carbon\Carbon::parse($Service->updated_at)->translatedFormat('l, d F Y') }}</td>
+                                    <td>
+                                        <div class="badge badge-light-{{ $Service->payment_method === null ? 'warning' : ($Service->payment_method == 0 ? 'success' : ($Service->payment_method == 1 ? 'primary' : 'info')) }}">
+                                            {{ $Service->payment_method === null ? 'Pending' : ($Service->payment_method == 0 ? 'Cash' : ($Service->payment_method == 1 ? 'Card' : 'QRIS')) }}
+                                        </div>
+                                    </td>
+                                    @php
+                                    $servicesTotal = $Service->services->sum('pivot.price');
+                                    $sparepartsTotal = $Service->spareparts->sum('pivot.price');
+                                    if($sparepartsTotal || $servicesTotal > 0){
+
+                                    $total = $servicesTotal + $sparepartsTotal + $tax;
+                                    }else{
+                                    $total = 0;
+                                    }
+                                    @endphp
+                                    <td>Rp {{ number_format($total, 0, ',', '.') }}</td>
+                                    <td>
+                                        {{-- {{ $Service->status }} --}}
+                                        <div class="badge badge-light-{{ $Service->status === 0 ? 'warning' : 'success' }}">{{ $Service->status === 0 ? 'Pending' : 'Complete' }}</div>
+                                    </td>
+
+                                </tr>
+                                @endforeach
+                                <tr>
+                                    <td colspan="9" class="text-center">Total</td>
+                                    @php
+                                    $grandTotal = $data->reduce(function ($carry, $Service) use ($tax) {
+                                    $servicesTotal = $Service->services->sum('pivot.price');
+                                    $sparepartsTotal = $Service->spareparts->sum('pivot.price');
+
+                                    if($sparepartsTotal || $servicesTotal > 0){
+                                    return $carry + $servicesTotal + $sparepartsTotal + $tax;
+                                    }else{
+                                    return $carry;
+                                    }
+                                    }, 0);
+                                    @endphp
+                                    <td>Rp {{ number_format($grandTotal, 0, ',', '.') }}</td>
+                                    <td></td>
+                                </tr>
+                                @endif
+                        </tbody>
+
+
+                    </table>
+
+                    <div class="mt-4 d-flex justify-content-center">
+                        {{-- {{ $data->onEachSide(1)->links() }} --}}
                     </div>
-                </td>
-                @php
-                $servicesTotal = $Service->services->sum('pivot.price');
-                $sparepartsTotal = $Service->spareparts->sum('pivot.price');
-                if($sparepartsTotal || $servicesTotal > 0){
-    
-                $total = $servicesTotal + $sparepartsTotal + $tax;
-                }else{
-                $total = 0;
-                }
-                @endphp
-                <td>Rp {{ number_format($total, 0, ',', '.') }}</td>
-                <td>
-                    {{-- {{ $Service->status }} --}}
-                    <div class="badge badge-light-{{ $Service->status === 0 ? 'warning' : 'success' }}">{{ $Service->status === 0 ? 'Pending' : 'Complete' }}</div>
-                </td>
-    
-                </tr>
-                @endforeach
-                <tr>
-                    <td colspan="9" class="text-center">Total</td>
-                    @php
-                    $grandTotal = $data->reduce(function ($carry, $Service) use ($tax) {
-                    $servicesTotal = $Service->services->sum('pivot.price');
-                    $sparepartsTotal = $Service->spareparts->sum('pivot.price');
-    
-                    if($sparepartsTotal || $servicesTotal > 0){
-                    return $carry + $servicesTotal + $sparepartsTotal + $tax;
-                    }else{
-                    return $carry;
-                    }
-                    }, 0);
-                    @endphp
-                    <td>Rp {{ number_format($grandTotal, 0, ',', '.') }}</td>
-                    <td></td>
-                </tr>
-                @endif
-                </tbody>
-    
-    
-                </table>
-    
-                <div class="mt-4 d-flex justify-content-center">
-                    {{-- {{ $data->onEachSide(1)->links() }} --}}
                 </div>
             </div>
-            </div>
 
 
+        </div>
     </div>
-</div>
 
 
 </div>

@@ -49,6 +49,25 @@ class Dashboard extends Component
         $this->startDate = Carbon::now()->startOfMonth();
         $this->endDate = Carbon::now();
 
+        $data = ServiceOperational::with(['services', 'spareparts'])
+            ->where('status', 1)
+            ->get();
+
+        $this->incomePerformance = $data->groupBy(function ($item) {
+            return Carbon::parse($item->created_at)->format('Y-m-d H:00');
+        })->map(function ($group) {
+            return $group->reduce(function ($carry, $item) {
+                $serviceIncome = $item->services->sum('pivot.price');
+                $sparepartIncome = $item->spareparts->sum('pivot.price');
+                return $carry + $serviceIncome + $sparepartIncome;
+            }, 0);
+        });
+        $this->incomeChart = $this->incomePerformance->map(function ($value, $key) {
+            return [
+                'hour' => $key,
+                'income' => $value,
+            ];
+        })->values();
         //  $this->loadIncomePerformance($this->startDate, $this->endDate);
 
     }
@@ -61,7 +80,7 @@ class Dashboard extends Component
             'menus' => Menu::with('submenus')->get(),
             'thisMonthIncome' => $this->thisMonthIncome,
             'thisMonthService' => $this->thisMonthServices,
-            // 'incomeChart' => $this->incomeChart,
+            'incomeChart' => $this->incomeChart,
         ]);
     }
 
@@ -73,26 +92,7 @@ class Dashboard extends Component
     }
     // private function loadIncomePerformance($startDate, $endDate)
     // {
-    //     $data = ServiceOperational::with(['services', 'spareparts'])
-    //         ->where('status', 1)
-    //         ->whereBetween('created_at', [$startDate, $endDate])
-    //         ->get();
-
-    //     $this->incomePerformance = $data->groupBy(function ($item) {
-    //         return Carbon::parse($item->created_at)->format('Y-m-d H:00');
-    //     })->map(function ($group) {
-    //         return $group->reduce(function ($carry, $item) {
-    //             $serviceIncome = $item->services->sum('pivot.price');
-    //             $sparepartIncome = $item->spareparts->sum('pivot.price');
-    //             return $carry + $serviceIncome + $sparepartIncome;
-    //         }, 0);
-    //     });
-    //     $this->incomeChart = $this->incomePerformance->map(function ($value, $key) {
-    //         return [
-    //             'hour' => $key,
-    //             'income' => $value,
-    //         ];
-    //     })->values();
+        
 
     //     // $this->dispatch('incomeChartUpdated');
 

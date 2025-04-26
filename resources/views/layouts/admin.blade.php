@@ -163,6 +163,7 @@
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
     <script data-navigate-once src="{{ asset('assets/plugins/global/plugins.bundle.js')}}"></script>
     <script data-navigate-once src="{{ asset('assets/js/scripts.bundle.js')}}"></script>
+	<script data-navigate-once src="{{ asset('assets/js/custom/widgets.js') }}"></script>
    
     @stack('scripts')
     @stack('script')

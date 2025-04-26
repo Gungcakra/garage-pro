@@ -194,6 +194,36 @@
                 </div> --}}
                 <!--end::Col-->
             </div>
+            <div class="row g-5 g-xl-8">
+                <div class="col-xl-12">
+                    <!--begin::Charts Widget 3-->
+                    <div class="card card-xl-stretch mb-xl-8">
+                        <!--begin::Header-->
+                        <div class="card-header border-0 pt-5">
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label fw-bold fs-3 mb-1">Recent Services Transaction</span>
+                                {{-- <span class="text-muted fw-semibold fs-7">More than 1000 new records</span> --}}
+                            </h3>
+                            <!--begin::Toolbar-->
+                            {{-- <div class="card-toolbar" data-kt-buttons="true">
+                                <a class="btn btn-sm btn-color-muted btn-active btn-active-primary active px-4 me-1" id="kt_charts_widget_3_year_btn">Year</a>
+                                <a class="btn btn-sm btn-color-muted btn-active btn-active-primary px-4 me-1" id="kt_charts_widget_3_month_btn">Month</a>
+                                <a class="btn btn-sm btn-color-muted btn-active btn-active-primary px-4" id="kt_charts_widget_3_week_btn">Week</a>
+                            </div> --}}
+                            <!--end::Toolbar-->
+                        </div>
+                        <!--end::Header-->
+                        <!--begin::Body-->
+                        <div class="card-body">
+                            <!--begin::Chart-->
+                            <div id="kt_charts_widget_3_chart" style="height: 350px"></div>
+                            <!--end::Chart-->
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Charts Widget 3-->
+                </div>
+            </div>
             <!--end::Row-->
             <!--begin::Row-->
             {{-- <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
@@ -1163,6 +1193,9 @@
         </div>
         <!--end::Content container-->
     </div>
+
+</div>
+@push('scripts')
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script>
 		$(function() {
@@ -1192,12 +1225,119 @@
 			});
 		});
 
-		// window.incomeChartData = @json($incomeChart);
-		
+		window.incomeChartData = @json($incomeChart);
+		console.log(window.incomeChartData);
+        
 
+        (function () {
+            var e = document.getElementById("kt_charts_widget_3_chart");
+            if (e) {
+            var t = { self: null, rendered: false };
 
+            var renderChart = function () {
+                var chartHeight = parseInt(KTUtil.css(e, "height"));
+                var gray500 = KTUtil.getCssVariableValue("--bs-gray-500");
+                var gray200 = KTUtil.getCssVariableValue("--bs-gray-200");
+                var infoColor = KTUtil.getCssVariableValue("--bs-info");
+
+                var options = {
+                series: [
+                    {
+                    name: "Monthly Service",
+                    data: window.incomeChartData.map(item => item.income),
+                    },
+                ],
+                chart: {
+                    fontFamily: "inherit",
+                    type: "area",
+                    height: chartHeight,
+                    toolbar: { show: false },
+                },
+                plotOptions: {},
+                legend: { show: false },
+                dataLabels: { enabled: false },
+                fill: { type: "solid", opacity: 1 },
+                stroke: {
+                    curve: "smooth",
+                    show: true,
+                    width: 3,
+                    colors: [infoColor],
+                },
+                xaxis: {
+                    categories: window.incomeChartData.map(item => item.hour),
+                    axisBorder: { show: false },
+                    axisTicks: { show: false },
+                    labels: {
+                    style: {
+                        colors: gray500,
+                        fontSize: "12px",
+                    },
+                    },
+                    crosshairs: {
+                    position: "front",
+                    stroke: {
+                        color: infoColor,
+                        width: 1,
+                        dashArray: 3,
+                    },
+                    },
+                    tooltip: {
+                    enabled: true,
+                    offsetY: 0,
+                    style: { fontSize: "12px" },
+                    },
+                },
+                yaxis: {
+                    labels: {
+                    style: {
+                        colors: gray500,
+                        fontSize: "12px",
+                    },
+                    },
+                },
+                states: {
+                    normal: { filter: { type: "none", value: 0 } },
+                    hover: { filter: { type: "none", value: 0 } },
+                    active: {
+                    allowMultipleDataPointsSelection: false,
+                    filter: { type: "none", value: 0 },
+                    },
+                },
+                tooltip: {
+                    style: { fontSize: "12px" },
+                    y: {
+                    formatter: function (value) {
+                        return "Rp " + value + "K";
+                    },
+                    },
+                },
+                colors: [
+                    KTUtil.getCssVariableValue("--bs-info-light"),
+                ],
+                grid: {
+                    borderColor: gray200,
+                    strokeDashArray: 4,
+                    yaxis: { lines: { show: true } },
+                },
+                markers: { strokeColor: infoColor, strokeWidth: 3 },
+                };
+
+                t.self = new ApexCharts(e, options);
+                t.self.render();
+                t.rendered = true;
+            };
+
+            renderChart();
+
+            KTThemeMode.on("kt.thememode.change", function () {
+                if (t.rendered) {
+                t.self.destroy();
+                }
+                renderChart();
+            });
+            }
+        })();
        
 
     </script>
-
-</div>
+@endpush
