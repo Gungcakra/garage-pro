@@ -231,7 +231,7 @@
                     <p class="fs-3 text-gray-800">
                         {{ $data->check }}
                     </p>
-                    <div class="mb-0">
+                    <div class="mb-8">
                         <span class="fs-2 text-gray-800">Set Due Date</span>
                         <input class="form-control form-control-solid" type="date" placeholder="Pick a date" id="kt_datepicker_1" wire:model="target_date" />
                     </div>

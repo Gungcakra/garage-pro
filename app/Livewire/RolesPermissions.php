@@ -12,7 +12,7 @@ use Spatie\Permission\Models\Role;
 
 class RolesPermissions extends Component
 {
-    public $roles, $permissions, $name, $permissionName, $selectedRole, $selectedPermissions = [], $roleId, $idRoleToDelete, $permissionId, $roleWithPermissions;
+    public $roles, $permissions, $name, $permissionName, $selectedRole, $selectedPermissions = [], $roleId, $idRoleToDelete, $permissionId, $roleWithPermissions, $search = '';
     protected $listeners = ['deleteRoleConfirm', 'deletePermissionConfirm'];
 
     public function mount()
@@ -257,6 +257,10 @@ class RolesPermissions extends Component
     }
     public function render()
     {
-        return view('livewire.pages.admin.masterdata.role.index');
+        return view('livewire.pages.admin.masterdata.role.index',[
+            'permissionData' => Permission::when($this->search, function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%');
+            })->get()
+        ]);
     }
 }

@@ -90,6 +90,7 @@
                     <!--end::Header-->
                     <!--begin::Body-->
                     <div class="card-body pt-5">
+                        
                         <!--begin::Item-->
                         @foreach ($role->permissions as $permission)
                         <div class="d-flex align-items-center mb-7">
@@ -123,6 +124,22 @@
         </div>
         <div id="kt_app_content_container" class="app-container container-xxl">
             <div class="card p-5">
+                <div class="flex w-full">
+                    <div class="d-flex align-items-center position-relative my-1">
+                        <i class="ki-duotone ki-magnifier fs-3 position-absolute ms-5">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                        <input
+                            type="text"
+                            data-kt-customer-table-filter="search"
+                            class="form-control form-control-solid w-250px ps-12"
+                            placeholder="Search Permission Name"
+                            wire:model.live.debounce.100ms="search"
+                        />
+                    </div>
+    
+                </div>
                 <div class="row g-5 g-xl-8 d-flex justify-content-center m-5">
                     <table id="kt_datatable_zero_configuration" class="table table-row-bordered gy-5">
                         <thead>
@@ -134,11 +151,11 @@
                         </thead>
                         <tbody>
         
-                            @if (count($permissions) < 1) <tr>
+                            @if (count($permissionData) < 1) <tr>
                                 <td colspan="6" class="text-center">No Data Found</td>
                                 </tr>
                                 @else
-                                @foreach ( $permissions as $index => $permission)
+                                @foreach ( $permissionData as $index => $permission)
         
                                 <tr wire:key="permission-{{ $permission->id }}">
                                     <td>{{ $index + 1 }}</td>

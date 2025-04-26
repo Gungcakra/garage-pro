@@ -197,115 +197,125 @@ class ServiceDetail extends Component
     public function printBill()
     {
         
-
-        if (!$this->ServiceOperationalId) {
-            $this->dispatch('error', 'Service Operational ID is required.');
-            return;
-        }
-
-        $serviceOperational = ServiceOperational::find($this->ServiceOperationalId);
-
-        if (!$serviceOperational) {
-            $this->dispatch('error', 'Service Operational not found.');
-            return;
-        }
-
-
-        foreach ($this->serviceAdd as $service) {
-            $serviceOperational->services()->attach($service['id'], ['price' => $service['price']]);
-        }
-
-
-        foreach ($this->sparepartAdd as $sparepart) {
-            $serviceOperational->spareparts()->attach($sparepart['id'], [
-                'quantity' => $sparepart['qty'],
-                'price' => $sparepart['price']
-            ]);
-
-
-            $sparepartModel = \App\Models\SparePart::find($sparepart['id']);
-            if ($sparepartModel) {
-                $sparepartModel->stock -= $sparepart['qty'];
-                $sparepartModel->save();
-            }
-        }
-
-        $serviceOperational->target_date = $this->target_date;
-        if ($this->payment !== null) {
-            $serviceOperational->update(['payment_method' => $this->payment, 'status' => 1]);
-        } else {
-            $this->dispatch('error', 'Payment method is required.');
-            return;
-        }
-
-        
-        if ($this->payment == 0) {
-            $bank = Bank::where('name', 'Cash')->first();
-            if ($bank) {
-                $bank->amount += $this->totalPrice;
-                $bank->save();
-                
-            Cashflow::create([
-                'bank_id' => $bank->id,
-                'amount' => $this->totalPrice,
-                'description' => "Service Operational {$serviceOperational->code}",
-                'type' => 1, 
-            ]);
-            } else {
-                $this->dispatch('error', 'Bank with name "Cash" not found.');
-                return;
-            }
-
-           
-        }else if((int)$this->payment == 1){
-            $bank = Bank::where('name', 'Card')->first();
-            if ($bank) {
-                $bank->amount += $this->totalPrice;
-                $bank->save();
-                
-            Cashflow::create([
-                'bank_id' => $bank->id,
-                'amount' => $this->totalPrice,
-                'description' => 'Service Operational ' . $serviceOperational->code,
-                'type' => 1, 
-            ]);
-            } else {
-                $this->dispatch('error', 'Bank with name "Cash" not found.');
-                return;
-            }
+        try{
+            $this->validate([
+                'target_date' => 'required|date',
+                'payment' => 'required|in:0,1,2',
             
-        }else{
-            $bank = Bank::where('name', 'BCA')->first();
-            if ($bank) {
-                $bank->amount += $this->totalPrice;
-                $bank->save();
-                
-            Cashflow::create([
-                'bank_id' => $bank->id,
-                'amount' => $this->totalPrice,
-                'description' => 'Service Operational ' . $serviceOperational->code,
-                'type' => 1, 
             ]);
-            } else {
-                $this->dispatch('error', 'Bank with name "Cash" not found.');
+            if (!$this->ServiceOperationalId) {
+                $this->dispatch('error', 'Service Operational ID is required.');
                 return;
             }
+    
+            $serviceOperational = ServiceOperational::find($this->ServiceOperationalId);
+    
+            if (!$serviceOperational) {
+                $this->dispatch('error', 'Service Operational not found.');
+                return;
+            }
+    
+    
+            foreach ($this->serviceAdd as $service) {
+                $serviceOperational->services()->attach($service['id'], ['price' => $service['price']]);
+            }
+    
+    
+            foreach ($this->sparepartAdd as $sparepart) {
+                $serviceOperational->spareparts()->attach($sparepart['id'], [
+                    'quantity' => $sparepart['qty'],
+                    'price' => $sparepart['price']
+                ]);
+    
+    
+                $sparepartModel = \App\Models\SparePart::find($sparepart['id']);
+                if ($sparepartModel) {
+                    $sparepartModel->stock -= $sparepart['qty'];
+                    $sparepartModel->save();
+                }
+            }
+    
+            $serviceOperational->target_date = $this->target_date;
+            if ($this->payment !== null) {
+                $serviceOperational->update(['payment_method' => $this->payment, 'status' => 1]);
+            } else {
+                $this->dispatch('error', 'Payment method is required.');
+                return;
+            }
+    
+            
+            if ($this->payment == 0) {
+                $bank = Bank::where('name', 'Cash')->first();
+                if ($bank) {
+                    $bank->amount += $this->totalPrice;
+                    $bank->save();
+                    
+                Cashflow::create([
+                    'bank_id' => $bank->id,
+                    'amount' => $this->totalPrice,
+                    'description' => "Service Operational {$serviceOperational->code}",
+                    'type' => 1, 
+                ]);
+                } else {
+                    $this->dispatch('error', 'Bank with name "Cash" not found.');
+                    return;
+                }
+    
+               
+            }else if((int)$this->payment == 1){
+                $bank = Bank::where('name', 'Card')->first();
+                if ($bank) {
+                    $bank->amount += $this->totalPrice;
+                    $bank->save();
+                    
+                Cashflow::create([
+                    'bank_id' => $bank->id,
+                    'amount' => $this->totalPrice,
+                    'description' => 'Service Operational ' . $serviceOperational->code,
+                    'type' => 1, 
+                ]);
+                } else {
+                    $this->dispatch('error', 'Bank with name "Cash" not found.');
+                    return;
+                }
+                
+            }else{
+                $bank = Bank::where('name', 'BCA')->first();
+                if ($bank) {
+                    $bank->amount += $this->totalPrice;
+                    $bank->save();
+                    
+                Cashflow::create([
+                    'bank_id' => $bank->id,
+                    'amount' => $this->totalPrice,
+                    'description' => 'Service Operational ' . $serviceOperational->code,
+                    'type' => 1, 
+                ]);
+                } else {
+                    $this->dispatch('error', 'Bank with name "Cash" not found.');
+                    return;
+                }
+            }
+    
+    
+            $this->serviceAdd = [];
+            $this->sparepartAdd = [];
+            $this->totalServicePrice = 0;
+            $this->totalSparepartPrice = 0;
+            $this->subTotal = 0;
+            $this->totalPrice = 0;
+    
+    
+            $this->dispatch('success', 'Transaction saved successfully.');
+            $this->invoiceId = $serviceOperational->id;
+            $this->ServiceOperationalId = null;
+            $this->invoice = true;
+            $this->invoiceService($this->invoiceId);
+    
+        }catch (\Exception $e) {
+            $this->dispatch('error',  $e->getMessage());
         }
-
-
-        $this->serviceAdd = [];
-        $this->sparepartAdd = [];
-        $this->totalServicePrice = 0;
-        $this->totalSparepartPrice = 0;
-        $this->subTotal = 0;
-        $this->totalPrice = 0;
-
-
-        $this->dispatch('success', 'Transaction saved successfully.');
-        $this->invoiceId = $serviceOperational->id;
-        $this->ServiceOperationalId = null;
-        $this->invoice = true;
-        $this->invoiceService($this->invoiceId);
+        
     }
 
     public function removeInvoice()
